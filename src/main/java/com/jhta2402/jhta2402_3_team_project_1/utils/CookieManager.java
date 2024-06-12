@@ -17,11 +17,6 @@ public class CookieManager {
         cookie.setPath("/");
         response.addCookie(cookie);
     }
-    //cookie 읽는 method 만들기 -> return 값은 String
-    // 쿠키는 따로 지우는 명령어가 없음.
-    // 동일한 이름으로 쿠키를 생성하면서 지속시간을 0으로 설정하면 쿠키를 삭제할 수 있음.
-
-    //readCookie, deleteCookie 만들기
 
     public static String readCookie(HttpServletRequest request, String cookieName) {
         Cookie cookies[] = request.getCookies(); // 리턴타입이 배열임

@@ -17,14 +17,6 @@ public class UserDao {
         return result;
     }
 
-    public int idCheck(String email) {
-        int result = 0;
-        SqlSession sqlSession = MybatisConnectionFactory.getSqlSession();
-        result = sqlSession.insert("idCheck", email);
-        sqlSession.close();
-        return result;
-    }
-
     public int emailCheck(String email) {
         int result = 0;
         SqlSession sqlSession = MybatisConnectionFactory.getSqlSession();
