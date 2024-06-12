@@ -40,7 +40,7 @@ public class Login extends HttpServlet {
                 .email(req.getParameter("email"))
                 .build();
         UserDao userDao = new UserDao();
-        UserDto loginMemberDto = userDao.loginMember(userDto);
+        UserDto loginMemberDto = userDao.loginUser(userDto);
 
         // email과 password 받아서 이것을 암호화하여 PW 확인
 

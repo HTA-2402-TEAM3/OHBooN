@@ -41,18 +41,18 @@ public class UserDao {
         return result;
     }
 
-    public UserDto loginMember(UserDto userDto) {
+    public UserDto loginUser(UserDto userDto) {
         UserDto loginMemberDto = null;
         SqlSession sqlSession = MybatisConnectionFactory.getSqlSession();
-        loginMemberDto = sqlSession.selectOne("loginMember", userDto);
+        loginMemberDto = sqlSession.selectOne("loginUser", userDto);
         sqlSession.close();
         return loginMemberDto;
     }
 
-    public UserDto infoMember(String email) {
+    public UserDto infoUser(String email) {
         UserDto infoMemberDto = null;
         SqlSession sqlSession = MybatisConnectionFactory.getSqlSession();
-        infoMemberDto = sqlSession.selectOne("loginMember", email);
+        infoMemberDto = sqlSession.selectOne("loginUser", email);
         sqlSession.close();
         return infoMemberDto;
     }

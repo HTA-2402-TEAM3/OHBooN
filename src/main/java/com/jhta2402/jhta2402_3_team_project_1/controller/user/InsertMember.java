@@ -73,7 +73,7 @@ public class InsertMember extends HttpServlet {
         UserDto userDto = UserDto.builder()
                 .email(req.getParameter("email"))
                 .nickname(req.getParameter("nickname"))
-                .userName(req.getParameter("username"))
+                .userName(req.getParameter("userName"))
                 .birth(req.getParameter("birth"))
                 .phone(req.getParameter("phone"))
                 .available(true)
