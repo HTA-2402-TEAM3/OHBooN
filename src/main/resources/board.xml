@@ -3,7 +3,22 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ohboon.ohboon.dto.BoardDTO">
-    <select id="getBoardList" resultType="BoardDTO">
-        SELECT * FROM board
+
+    <select id="findAll" resultType="BoardDTO">
+        select * from board
     </select>
+
+    <select id="findByID" resultType="BoardDTO" parameterType="long">
+        SELECT * FROM board where id = #{id}
+    </select>
+
+    <insert id="save" parameterType="BoardDTO">
+        insert into board(email, subject, content, reg_date, view_option, category, location, meet_date, modify_date)
+        values(#{email}, #{subject}, #{content}, now(), #{viewOption}, #{category}, #{location}, #{meetDate}, now())
+    </insert>
+
+    <update id="modify" parameterType="BoardDTO">
+        update board set subject = #{subject}, content = #{content}, category = #{category}, location = #{location},
+        meetDate = #{meetDate}, modifyDate = sysdate where id = #{id}
+    </update>
 </mapper>
