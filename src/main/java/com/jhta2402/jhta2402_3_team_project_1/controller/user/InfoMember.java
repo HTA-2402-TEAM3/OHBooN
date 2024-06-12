@@ -17,9 +17,9 @@ public class InfoMember extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String email = req.getParameter("email");
         UserDao userDao = new UserDao();
-        UserDto infoMemberDto = userDao.infoUser(email);
-        System.out.println(infoMemberDto.toString());
-        req.setAttribute("infoMemberDto", infoMemberDto);
+        UserDto infoUserDto = userDao.infoUser(email);
+        System.out.println(infoUserDto.toString());
+        req.setAttribute("infoMemberDto", infoUserDto);
         RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/member/info-member.jsp");
         dispatcher.forward(req, resp);
     }
