@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.jhta2402.mybatis">
+    <insert id="insertMember" parameterType="MemberDto">
+        INSERT INTO "MEMBER" values(
+            member_seq.nextval, #{email}, #{nickname}, #{username}, #{birth},
+            #{phone}, #{available}, #{userPW}, #{grade}, #{meetingLocation}, #{meetingTime}, #{evaluation}, #{profile}
+        )
+    </insert>
+
+    <!--(참고) value 대신 아무 값이나 써도 됨.-->
+    <!--#을 붙이면 문자열 처리됨... 문자열 앞뒤로 "" 가 붙음-->
+    <!--$을 붙이면  "" 가 붙지 않고 그대로 들어음-->
+
+    <select id="idCheck" resultType="int" parameterType="String">
+        Select count(*) as total from member where userid = #{email}
+    </select>
+
+    <select id="loginMember" resultType="MemberDto" parameterType="MemberDto">
+        select * from member where userid = #{email}
+    </select>
+
+<!--    <select id="infoMember" resultType="MemberDto" parameterType="MemberDto">-->
+<!--        select * from member where userid = #{userID}-->
+<!--    </select>-->
+
+
+</mapper>

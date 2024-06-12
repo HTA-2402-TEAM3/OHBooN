@@ -1,0 +1,56 @@
+
+.error-404 {
+    /*background-image: url("../images/image_404_error.png");*/
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+}
+.error-404 a {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.error-500 {
+    /*background-image: url("../images/image_500_error.png");*/
+    background-size: cover;
+    background-position: center;
+    height: 100vh;
+}
+.error-500 a {
+    position: absolute;
+    bottom: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+}
+.content {
+    /*줄바꿈 자동 인식*/
+    white-space: pre-line;
+}
+.ck-editor__main .ck-content {
+    height: 300px;
+}
+
+.step2 {
+    padding-left: 20px;
+}
+.step3 {
+    padding-left: 40px;
+}
+.step4 {
+    padding-left: 60px;
+}
+
+#preview img {
+    width: 100px;
+    height: 100px;
+    aspect-ratio: auto;
+    object-fit: contain;
+}
+.profile {
+    border-radius: 100px;
+    width: 38px !important;
+    height: 50px;
+    object-fit: cover;
+    overflow: hidden;
+}
