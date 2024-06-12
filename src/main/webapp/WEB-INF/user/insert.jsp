@@ -191,7 +191,7 @@
             $("#userID").focus();
         }else{
             $.ajax({
-                url:"/member/id-check",
+                url:"/user/id-uniqueness-check",
                 data: {
                     userID:$("#userID").val()
                 },

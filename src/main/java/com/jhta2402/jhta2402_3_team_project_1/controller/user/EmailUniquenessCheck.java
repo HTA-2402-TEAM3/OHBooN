@@ -13,13 +13,13 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet("/user/id-check")
-public class IdCheck extends HttpServlet {
+@WebServlet("/user/email-uniqueness-check")
+public class EmailUniquenessCheck extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String email = req.getParameter("email");
         UserDao userDao = new UserDao();
-        int result = userDao.idCheck(email);
+        int result = userDao.emailCheck(email);
 
         // 결과값을 json으로 변경해서 프론트에 전달해야 함.
         Gson gson = new Gson();

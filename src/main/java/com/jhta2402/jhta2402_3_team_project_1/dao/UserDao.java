@@ -25,6 +25,22 @@ public class UserDao {
         return result;
     }
 
+    public int emailCheck(String email) {
+        int result = 0;
+        SqlSession sqlSession = MybatisConnectionFactory.getSqlSession();
+        result = sqlSession.insert("emailCheck", email);
+        sqlSession.close();
+        return result;
+    }
+
+    public int nicknameCheck(String nickname) {
+        int result = 0;
+        SqlSession sqlSession = MybatisConnectionFactory.getSqlSession();
+        result = sqlSession.insert("nicknameCheck", nickname);
+        sqlSession.close();
+        return result;
+    }
+
     public UserDto loginMember(UserDto userDto) {
         UserDto loginMemberDto = null;
         SqlSession sqlSession = MybatisConnectionFactory.getSqlSession();
