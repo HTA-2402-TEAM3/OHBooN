@@ -27,9 +27,6 @@ public class Login extends HttpServlet {
 
          */
 
-//        System.out.println("Grade.MANAGER ==="+Grade.MANAGER);
-//        System.out.println("Grade.MANAGER label     ==="+Grade.MANAGER.getLabel());
-
         req.getRequestDispatcher("/WEB-INF/member/login.jsp").forward(req, resp);
     }
 
