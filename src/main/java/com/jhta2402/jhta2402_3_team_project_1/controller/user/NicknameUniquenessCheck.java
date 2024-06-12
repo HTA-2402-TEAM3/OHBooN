@@ -19,7 +19,7 @@ public class NicknameUniquenessCheck extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String nickname = req.getParameter("nickname");
         UserDao userDao = new UserDao();
-        int result = userDao.idCheck(nickname);
+        int result = userDao.nicknameCheck(nickname);
 
         // 결과값을 json으로 변경해서 프론트에 전달해야 함.
         Gson gson = new Gson();

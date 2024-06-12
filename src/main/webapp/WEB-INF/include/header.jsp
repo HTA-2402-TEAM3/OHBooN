@@ -34,8 +34,8 @@
         <c:choose>
             <c:when test="${sessionID eq null}">
                 <div class="col-md-3 text-end">
-                    <a href="/member/login" class="btn btn-outline-primary me-2">Login</a>
-                    <a href="/member/insert" class="btn btn-primary">Sign-up</a>
+                    <a href="/user/login" class="btn btn-outline-primary me-2">Login</a>
+                    <a href="/user/insert" class="btn btn-primary">Sign-up</a>
                 </div>
             </c:when>
             <c:otherwise>
@@ -44,7 +44,7 @@
 
                         <div class="col-md-3 text-end d-flex align-items-center">
                             <c:choose>
-                                <c:when test="${not empty infoMemberDto.renameProfile}">
+                                <c:when test="${not empty infoUserDto.renameProfile}">
                                     <a href="../user/info?userID=${sessionID}" class="d-block">
                                         <img src="${request.contextPath}/upload/${profile}">
                                     </a>
