@@ -1,8 +1,12 @@
 package com.ohboon.ohboon.dto;
 
-import lombok.*;
-
 import java.time.LocalDateTime;
+
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.ToString;
 
 @Getter
 @NoArgsConstructor
@@ -10,14 +14,14 @@ import java.time.LocalDateTime;
 @Builder
 @ToString
 public class BoardDTO {
-    private long id;
-    private String email;
-    private String subject;
-    private String content;
-    private LocalDateTime regDate;
-    private int viewOption;
-    private String category;
-    private String location;
-    private LocalDateTime meetDate;
-    private LocalDateTime modifyDate;
+	private long id;
+	private String email;
+	private String subject;
+	private String content;
+	private LocalDateTime regDate;
+	private int viewOption;
+	private String category;
+	private String location;
+	private LocalDateTime meetDate;
+	private LocalDateTime modifyDate;
 }
