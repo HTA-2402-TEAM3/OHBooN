@@ -4,6 +4,12 @@
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <properties resource="db.properties"></properties>
+
+    <settings>
+        <!-- 스네이크 케이스를 CamelCase로 자동 변환 -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+
     <typeAliases>
         <typeAlias alias="BoardDTO" type="com.ohboon.ohboon.dto.BoardDTO"/>
     </typeAliases>
