@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletResponse;
 public class CookieManager {
 
     // static으로 설정하여 따로 생성할 필요가 없게 함
-    public static void createCookie(HttpServletResponse response,
+    public static void createEmailCookie(HttpServletResponse response,
                                     String cookieName,
                                     String cookieValue,
                                     int second) {
@@ -38,9 +38,9 @@ public class CookieManager {
         return cookieValue;
     }
 
-    public static void deleteCookie(HttpServletResponse response, String cookieName) {
-        // createCookie()에서 존속시간에 0을 넣음
-        createCookie(response, cookieName, null, 0);
+    public static void deleteEmailCookie(HttpServletResponse response, String cookieName) {
+        // createEmailCookie()에서 존속시간에 0을 넣음
+        createEmailCookie(response, cookieName, null, 0);
     }
 
 }
