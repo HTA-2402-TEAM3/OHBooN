@@ -1,4 +1,4 @@
-package com.jhta2402.jhta2402_3_team_project_1.controller.member;
+package com.jhta2402.jhta2402_3_team_project_1.controller.user;
 
 import com.jhta2402.jhta2402_3_team_project_1.dao.UserDao;
 import com.jhta2402.jhta2402_3_team_project_1.dto.UserDto;
@@ -14,7 +14,7 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
 
-@WebServlet("/member/login")
+@WebServlet("/user/login")
 public class Login extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

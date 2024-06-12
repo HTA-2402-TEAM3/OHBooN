@@ -1,4 +1,4 @@
-package com.jhta2402.jhta2402_3_team_project_1.controller.member;
+package com.jhta2402.jhta2402_3_team_project_1.controller.user;
 
 import com.jhta2402.jhta2402_3_team_project_1.dao.UserDao;
 import com.jhta2402.jhta2402_3_team_project_1.dto.Grade;
@@ -73,14 +73,12 @@ public class InsertMember extends HttpServlet {
         UserDto userDto = UserDto.builder()
                 .email(req.getParameter("email"))
                 .nickname(req.getParameter("nickname"))
-                .username(req.getParameter("username"))
+                .userName(req.getParameter("username"))
                 .birth(req.getParameter("birth"))
                 .phone(req.getParameter("phone"))
                 .available(true)
                 .userPW(hashUserPW)
                 .grade(Grade.MEMBER)
-                .meetingLocation(req.getParameter("meetingLocation"))
-                .meetingTime(req.getParameter("meetingTime"))
                 .evaluation(0)
                 .profile(renameProfile)
                 .build();

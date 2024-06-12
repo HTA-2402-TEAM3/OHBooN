@@ -27,7 +27,7 @@
         </div>
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
             <li><a href="../index/index" class="nav-link px-2 link-secondary">Home</a></li>
-            <li><a href="../member/list" class="nav-link px-2">List</a></li>
+            <li><a href="../user/list" class="nav-link px-2">List</a></li>
             <li><a href="../board/list?page=1" class="nav-link px-2">Board</a></li>
             <li><a href="" class="nav-link px-2">FAQs</a></li>
         </ul>
@@ -45,24 +45,24 @@
                         <div class="col-md-3 text-end d-flex align-items-center">
                             <c:choose>
                                 <c:when test="${not empty infoMemberDto.renameProfile}">
-                                    <a href="../member/info?userID=${sessionID}" class="d-block">
+                                    <a href="../user/info?userID=${sessionID}" class="d-block">
                                         <img src="${request.contextPath}/upload/${profile}">
                                     </a>
                                 </c:when>
                                 <c:otherwise>
-                                    <a href="../member/info?userID=${sessionID}" class="d-block">
+                                    <a href="../user/info?userID=${sessionID}" class="d-block">
                                         <img src="../images/user.png" class="profile">
                                     </a>
                                 </c:otherwise>
                             </c:choose>
 
-                            <a href="../member/info?userID=${sessionID}" class="d-block">
+                            <a href="../user/info?userID=${sessionID}" class="d-block">
                                 <span> ${sessionName}</span>
                             </a>
                             <span> 님</span>
                         </div>
                     </div>
-                    <a href="../member/logout" class="btn btn-primary mx-2">LOGOUT</a>
+                    <a href="../user/logout" class="btn btn-primary mx-2">LOGOUT</a>
                 </div>
             </c:otherwise>
         </c:choose>

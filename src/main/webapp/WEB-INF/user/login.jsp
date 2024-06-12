@@ -4,7 +4,7 @@
 <%@ include file="../include/header.jsp" %>
 
 <main class="form-signin w-100 m-auto">
-    <form action="../member/login" method="post">
+    <form action="../user/login" method="post">
 
         <h2 class="h3 mb-3 fw-normal">LOGIN</h2>
 

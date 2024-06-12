@@ -1,4 +1,4 @@
-package com.jhta2402.jhta2402_3_team_project_1.controller.member;
+package com.jhta2402.jhta2402_3_team_project_1.controller.user;
 
 import com.jhta2402.jhta2402_3_team_project_1.utils.ScriptWriter;
 import jakarta.servlet.ServletException;
@@ -12,7 +12,7 @@ import java.io.IOException;
 
 //로그아웃은 세션을 종료시키는 것
 
-@WebServlet("/member/logout")
+@WebServlet("/user/logout")
 public class Logout extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

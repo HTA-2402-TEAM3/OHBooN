@@ -1,4 +1,4 @@
-package com.jhta2402.jhta2402_3_team_project_1.controller.member;
+package com.jhta2402.jhta2402_3_team_project_1.controller.user;
 
 import com.google.gson.Gson;
 import com.jhta2402.jhta2402_3_team_project_1.dao.UserDao;
@@ -13,7 +13,7 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet("/member/id-check")
+@WebServlet("/user/id-check")
 public class IdCheck extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {

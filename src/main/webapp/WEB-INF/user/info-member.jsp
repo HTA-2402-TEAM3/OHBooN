@@ -45,7 +45,7 @@
         </tr>
     </table>
     <div>
-        <a href="../member/password-change" class="btn btn-dark">비밀번호 변경</a>
+        <a href="../user/password-change" class="btn btn-dark">비밀번호 변경</a>
         <%--page 만들고 기존 비밀번호, 변경할 비밀번호, 변경할 비밀번호 확인 을 입력하는 창을 만들어 비밀번호 바꾸기--%>
     </div>
 </div>

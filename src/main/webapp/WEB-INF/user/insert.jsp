@@ -4,7 +4,7 @@
 <div class="container">
     <h2 class="mt-5 mb-5">회원가입</h2>
 
-    <form action="../member/insert" method="post" enctype="multipart/form-data">
+    <form action="../user/insert" method="post" enctype="multipart/form-data">
         <div class="mb-3">
             <div class="row g-3">
                 <div class="col-auto">
