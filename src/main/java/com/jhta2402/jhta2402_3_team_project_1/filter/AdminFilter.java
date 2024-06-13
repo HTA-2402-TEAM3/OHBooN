@@ -19,7 +19,7 @@ import java.io.IOException;
 // Spring을 사용할 경우 Sptring context 안에서 동작하는 interceptor가 필터와 비슷한 역할을 수행함.
 
 
-@WebFilter( {"/admin/*"} )
+@WebFilter("/admin/*")
 public class AdminFilter implements Filter {
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {

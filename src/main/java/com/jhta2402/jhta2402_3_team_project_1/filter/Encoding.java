@@ -6,15 +6,12 @@ import jakarta.servlet.annotation.WebFilter;
 import java.io.IOException;
 
 
-@WebFilter("/*") // 모든 페이지에 다 적용하겠다는 뜻
+@WebFilter("/index/index") // 모든 페이지에 다 적용하겠다는 뜻
 public class Encoding implements Filter {
 
     private String encoding = "UTF-8";
 
-
-    @Override
-    public void init(FilterConfig filterConfig) throws ServletException {
-        System.out.println("encoding init");
+    public Encoding() {
     }
 
     @Override
@@ -27,8 +24,4 @@ public class Encoding implements Filter {
         chain.doFilter(request, response);
     }
 
-    @Override
-    public void destroy() {
-        System.out.println("encoding filter destroyed");
-    }
 }

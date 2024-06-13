@@ -7,7 +7,7 @@ import jakarta.servlet.http.HttpServletRequest;
 
 import java.io.IOException;
 
-@WebFilter("/*")
+@WebFilter("/")
 public class LogFilter implements Filter {
 
     @Override
