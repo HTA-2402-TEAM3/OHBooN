@@ -18,7 +18,9 @@
     </insert>
 
     <update id="modify" parameterType="BoardDTO">
-        update board set subject = #{subject}, content = #{content}, category = #{category}, location = #{location},
-        meetDate = #{meetDate}, modifyDate = sysdate where id = #{id}
+        update board set
+        subject = #{subject}, content = #{content}, category = #{category}, location = #{location},
+        meet_date = #{meetDate}, modify_date = now()
+        where id = #{id}
     </update>
 </mapper>
