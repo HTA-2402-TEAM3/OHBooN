@@ -53,9 +53,10 @@
         <div class="mb-3">
             <div class="row g-3">
                 <div class="col-auto">
-                    <label for="phone" class="form-label">CELLULAR PHONE NUMBER</label>
+                    <label for="phone" class="form-label">CELLPHONE NUMBER</label>
                     <input type="text" class="form-control" id="phone" placeholder="cellphone number" >
-                    <div class="invalid-feedback invalid-feedback-confirm"></div>
+                    <div class="invalid-feedback invalid-feedback-phone-number"></div>
+                    <div class="invalid-feedback invalid-feedback-phone-length"></div>
                 </div>
             </div>
         </div>
@@ -283,14 +284,14 @@
         }
     }
 
-    // 미작성 항목 검사 함수
-    function notWrittenCheck(){
+    // 모든 항목 검사 함수
+    function allWrittenCheck(){
         if($("#email").val().trim()==="") {
             alert("Email을 작성해주세요.");
             $("#email").focus();
             return false;
         }
-        if(isEmailChecked==false){
+        if(isEmailChecked===false){
             alert("이메일 중복체크를 해주세요.");
             $("#email").focus();
             return false;
@@ -300,7 +301,7 @@
             $("#nickname").focus();
             return false;
         }
-        if(isNicknameChecked==false){
+        if(isNicknameChecked===false){
             alert("닉네임 중복체크를 해주세요.");
             $("#nickname").focus();
             return false;
@@ -311,7 +312,7 @@
             return false;
         }
         checkPW(); // 비밀번호 유효성 검사
-        if(isValidPW==false){
+        if(isValidPW===false){
             alert("올바른 비밀번호를 입력해주세요.")
             $("#userPW").focus();
             return false;
@@ -328,6 +329,11 @@
         }
         if($("#phone").val().trim()==="") {
             alert("휴대폰 번호를 작성해주세요.");
+            $("#phone").focus();
+            return false;
+        }
+        if(isValidPhoneNum === false) {
+            alert("올바른 휴대폰 번호를 작성해주세요.");
             $("#phone").focus();
             return false;
         }
@@ -430,9 +436,10 @@
     var isEmailChecked = false; // 이메일 중복체크를 통과했는지 확인을 위한 변수
     var isNicknameChecked = false; // 닉네임 중복체크를 통과했는지 확인을 위한 변수
     var isValidPW = false;  // 패스워드가 유효한지를 표시
+    var isValidPhoneNum = false; // 전화번호가 유효한지 표시
 
-    // 회원가입 버튼 -> 미작성 여부 확인
-    $("#btn-sign").on("click", notWrittenCheck);
+    // 회원가입 버튼 -> 모든 작성항목 확인
+    $("#btn-sign").on("click", allWrittenCheck);
 
     // 이메일 중복 체크 버튼 -> 이메일 중복검사
     $("#btn-duplicate-email").on("click",emailDuplicateCheck);
@@ -468,6 +475,31 @@
         }else{
             $(".invalid-feedback.invalid-feedback-confirm").hide();
             $(".invalid-feedback.invalid-feedback-confirm").text("");
+        }
+    });
+
+    // 화면에 휴대폰 번호의 유효성 여부를 표시
+    $("#phone").on("keyup",function(e){
+        const phone = $("#phone").val();
+        var checkPhoneLength  = /^.{9,14}$/; // 길이 제한: 9~14
+        var checkPhoneNumber = /^[0-9]+$/; // 숫자만 입력 가능
+
+        isValidPhoneNum = true;
+
+        $(".invalid-feedback").hide();
+
+        if (phone !== "") {
+            if (!checkPhoneNumber.test(phone)) {
+                $(".invalid-feedback.invalid-feedback-phone-number").text("휴대폰 번호는 숫자만 작성해주세요.").show();
+                isValidPhoneNum = false;
+            }
+            if (!checkPhoneLength.test(phone)) {
+                $(".invalid-feedback.invalid-feedback-phone-length").text("휴대폰 번호는 9자리 이상 14자리 이하로 작성해주세요.").show();
+                isValidPhoneNum = false;
+            }
+            if (isValidPhoneNum) {
+                $(".invalid-feedback").hide();
+            }
         }
     });
 

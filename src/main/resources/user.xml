@@ -7,7 +7,7 @@
     <insert id="insertMember" parameterType="UserDto">
         INSERT INTO "user" values(
             #{email}, #{nickname}, #{username}, #{birth},
-            #{phone}, true, #{userPW}, #{grade}, #{evaluation}, #{profile}, sysdate
+            #{phone}, true, #{userPW}, #{grade}, null, #{profile}, sysdate
         )
     </insert>
 
