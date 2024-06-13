@@ -12,5 +12,4 @@ public class ModalDto {
     private String title;
     private String msg;
     private String isState;
-
 }

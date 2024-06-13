@@ -54,7 +54,7 @@
             <div class="row g-3">
                 <div class="col-auto">
                     <label for="phone" class="form-label">CELLPHONE NUMBER</label>
-                    <input type="text" class="form-control" id="phone" placeholder="cellphone number" >
+                    <input type="text" class="form-control" id="phone" name="phone" placeholder="cellphone number" >
                     <div class="invalid-feedback invalid-feedback-phone-number"></div>
                     <div class="invalid-feedback invalid-feedback-phone-length"></div>
                 </div>

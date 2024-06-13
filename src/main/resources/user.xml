@@ -5,9 +5,9 @@
 <mapper namespace="com.jhta2402.mybatis">
 
     <insert id="insertMember" parameterType="UserDto">
-        INSERT INTO "user" values(
+        INSERT INTO user values(
             #{email}, #{nickname}, #{username}, #{birth},
-            #{phone}, true, #{userPW}, #{grade}, null, #{profile}, sysdate
+            #{phone}, true, #{userPW}, #{grade}, null, #{profile}, #{createDate}
         )
     </insert>
 

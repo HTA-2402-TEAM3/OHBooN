@@ -9,9 +9,9 @@
         <h2 class="h3 mb-3 fw-normal">LOGIN</h2>
 
         <div class="form-floating">
-            <input type="text" class="form-control" id="floatingInput" placeholder="id" name="userID"
-                   value="${cookie.loggedID.value}">
-            <label for="floatingInput">User ID </label>
+            <input type="text" class="form-control" id="floatingInput" placeholder="User Email" name="email"
+                   value="${cookie.loggedEmail.value}">
+            <label for="floatingInput">User Email </label>
         </div>
         <div class="form-floating">
             <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="userPW">
@@ -20,7 +20,7 @@
 
         <div class="form-check text-start my-3">
             <input class="form-check-input" type="checkbox" id="flexCheckDefault" name="saveID"
-                   value="yes" <c:if test="${cookie.loggedID.value != null}">checked</c:if> >
+                   value="yes" <c:if test="${cookie.loggedEmail.value != null}">checked</c:if> >
             <label class="form-check-label" for="flexCheckDefault">
                 Remember me
             </label>

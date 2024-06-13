@@ -17,8 +17,11 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.File;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+
+import static java.time.LocalDateTime.now;
 
 @MultipartConfig
 @WebServlet("/user/insert")
@@ -27,6 +30,8 @@ public class InsertMember extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/WEB-INF/user/insert.jsp").forward(req,resp);
+
+
     }
 
     @Override
@@ -51,7 +56,7 @@ public class InsertMember extends HttpServlet {
             profile.write(serverUploadDir+File.separator+fileName); //원본파일을 미리 써놓기
             String first = fileName.substring(0, fileName.lastIndexOf(".")); // 파일명 (jun)
             String extention = fileName.substring(fileName.lastIndexOf(".")); // 확장자명 (.jpg)
-            LocalDateTime now = LocalDateTime.now();
+            LocalDateTime now = now();
             DateTimeFormatter dateTimeFormatter = DateTimeFormatter.ofPattern("YYYYMMdd_hhmmss");
             String formatNow = now.format(dateTimeFormatter); // 20240531_123741
             renameProfile = first + "_" + formatNow + extention; // 재명명된 파일이름(jun_20240531_123741.jpg)
@@ -73,7 +78,7 @@ public class InsertMember extends HttpServlet {
         UserDto userDto = UserDto.builder()
                 .email(req.getParameter("email"))
                 .nickname(req.getParameter("nickname"))
-                .userName(req.getParameter("userName"))
+                .username(req.getParameter("userName"))
                 .birth(req.getParameter("birth"))
                 .phone(req.getParameter("phone"))
                 .available(true)
@@ -81,6 +86,7 @@ public class InsertMember extends HttpServlet {
                 .grade(Grade.MEMBER)
                 .evaluation(0)
                 .profile(renameProfile)
+                .createDate(now())
                 .build();
 
         UserDao userDao = new UserDao();

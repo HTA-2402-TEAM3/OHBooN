@@ -54,6 +54,7 @@ public class Login extends HttpServlet {
                 session.setAttribute("sessionGrade", loginMemberDto.getGrade());
                 session.setAttribute("profile", loginMemberDto.getProfile());
 
+
                 ModalDto modalDto = new ModalDto("로그인", "로그인되었습니다.","show");
 
                 /*
