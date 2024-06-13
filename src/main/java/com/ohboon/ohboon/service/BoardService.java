@@ -30,4 +30,22 @@ public class BoardService {
 		return byID.orElseThrow(() -> new IllegalStateException("해당하는 게시글이 없습니다."));
 	}
 
+	public void modify(BoardDTO boardDTO) {
+		BoardDAO boardDAO = new BoardDAO(false);
+
+		boardDAO.findByID(boardDTO.getId());
+
+		int modifyResult = boardDAO.modify(boardDTO);
+
+		if (modifyResult <= 0) {
+			boardDAO.rollback();
+			boardDAO.close();
+			throw new IllegalStateException("해당 게시글의 수정에 실패했습니다.");
+		}
+
+		boardDAO.commit();
+		boardDAO.close();
+
+	}
+
 }
