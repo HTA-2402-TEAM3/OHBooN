@@ -8,9 +8,9 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class ChatDTO {
-    private int chatID;
-    private int matchID;
-    private int boardID;
+    private long chatID;
+    private long matchID;
+    private long boardID;
     private String sender;
     private String receiver;
 }

@@ -8,7 +8,8 @@ import lombok.*;
 @NoArgsConstructor
 @ToString
 public class MatchDTO {
-    private int id;
-    private int boardId;
+    private long id;
+    private long boardId;
     private boolean isMath;
+//    private String boardWriter;
 }
