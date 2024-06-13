@@ -1,11 +1,9 @@
 package com.jhta2402.jhta2402_3_team_project_1.dto;
 
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
-@Data // getter, setter, toString 포함
+@Getter
+@Setter
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder

@@ -238,7 +238,7 @@
             alert ("닉네임을 입력해주세요.");
             $("#nickname").val("");
             $("#nickname").focus();
-        }else if(userID.indexOf(" ")>0){
+        }else if(nickname.indexOf(" ")>0){
             isNicknameChecked=false;
             alert("닉네임을 공백없이 작성해주세요");
             $("#nickname").val("");

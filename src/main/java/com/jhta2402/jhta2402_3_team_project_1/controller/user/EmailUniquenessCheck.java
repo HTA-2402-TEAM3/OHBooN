@@ -18,6 +18,7 @@ public class EmailUniquenessCheck extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String email = req.getParameter("email");
+        System.out.println(email);
         UserDao userDao = new UserDao();
         int result = userDao.emailCheck(email);
 
