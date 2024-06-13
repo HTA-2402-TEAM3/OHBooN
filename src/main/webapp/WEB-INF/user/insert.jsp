@@ -208,7 +208,6 @@
                         alert("이미 존재하는 이메일입니다. 다른 이메일을 사용해주세요.")
                         $("#email").focus();
                     }else {
-                        isEmailChecked = false;
                         const askUsingEmail = confirm("사용 가능한 이메일입니다. 사용하시겠습니까?");
                         if(askUsingEmail) {
                             $("#email").attr("readonly", true); // 읽기만 가능
@@ -264,7 +263,6 @@
                         $("#nickname").val("");
                         $("#nickname").focus();
                     }else {
-                        isNicknameChecked = false;
                         const askUsingNickname = confirm("사용 가능한 닉네임입니다. 사용하시겠습니까?");
                         if(askUsingNickname) {
                             $("#nickname").attr("readonly", true); // 읽기만 가능

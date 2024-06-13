@@ -15,6 +15,7 @@ public class BasicFilter implements Filter {
         System.out.println("encoding filter init call === " + filterName);
     }
 
+
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         // 일반 서블릿 리퀘스트

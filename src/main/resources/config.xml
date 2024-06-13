@@ -11,20 +11,20 @@
     </settings>
 
     <typeAliases>
-        <typeAlias alias="BoardDTO" type="com.ohboon.ohboon.dto.BoardDTO"/>
+        <typeAlias alias="UserDto" type="com.ohboon.ohboon.dto.UserDto"/>
     </typeAliases>
     <environments default="development">
         <environment id="development">
             <transactionManager type="JDBC"/>
             <dataSource type="POOLED">
                 <property name="driver" value="org.mariadb.jdbc.Driver"/>
-                <property name="url" value="jdbc:mariadb://localhost:3306/ohboon"/>
+                <property name="url" value="jdbc:mariadb://192.168.0.37:8090/sys"/>
                 <property name="username" value="ohboon"/>
-                <property name="password" value="123987"/>
+                <property name="password" value="8090"/>
             </dataSource>
         </environment>
     </environments>
     <mappers>
-        <mapper resource="board.xml"/>
+        <mapper resource="user.xml"/>
     </mappers>
 </configuration>
