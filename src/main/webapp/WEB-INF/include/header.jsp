@@ -32,7 +32,7 @@
             <li><a href="" class="nav-link px-2">FAQs</a></li>
         </ul>
         <c:choose>
-            <c:when test="${sessionID eq null}">
+            <c:when test="${sessionEmail eq null}">
                 <div class="col-md-3 text-end">
                     <a href="/user/login" class="btn btn-outline-primary me-2">Login</a>
                     <a href="/user/insert" class="btn btn-primary">Sign-up</a>
@@ -45,19 +45,19 @@
                         <div class="col-md-3 text-end d-flex align-items-center">
                             <c:choose>
                                 <c:when test="${not empty infoUserDto.renameProfile}">
-                                    <a href="../user/info?userID=${sessionID}" class="d-block">
+                                    <a href="../user/info?nickname=${sessionNickname}" class="d-block">
                                         <img src="${request.contextPath}/upload/${profile}">
                                     </a>
                                 </c:when>
                                 <c:otherwise>
-                                    <a href="../user/info?userID=${sessionID}" class="d-block">
+                                    <a href="../user/info?nickname=${sessionNickname}" class="d-block">
                                         <img src="../images/user.png" class="profile">
                                     </a>
                                 </c:otherwise>
                             </c:choose>
 
-                            <a href="../user/info?userID=${sessionID}" class="d-block">
-                                <span> ${sessionName}</span>
+                            <a href="../user/info?nickname=${sessionNickname}" class="d-block">
+                                <span> ${sessionNickname}</span>
                             </a>
                             <span> 님</span>
                         </div>

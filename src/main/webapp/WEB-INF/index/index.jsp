@@ -2,8 +2,9 @@
 <%@ include file="../include/header.jsp" %>
 <div class="container">
     <h2 class="mt-5 mb-5"> INDEX PAGE </h2>
-    <%=session.getAttribute("sessionNickname")%>
-</br>
-    <%=session.getAttribute("sessionEmail")%>
+
+    <p>Session Email :  <%=session.getAttribute("sessionEmail")%> </p>
+    <p>Session Nickname :  <%=session.getAttribute("sessionNickname")%> </p>
+
 </div>
 <%@ include file="../include/footer.jsp"%>
