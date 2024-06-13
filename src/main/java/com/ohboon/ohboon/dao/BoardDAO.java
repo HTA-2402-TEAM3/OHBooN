@@ -27,6 +27,10 @@ public class BoardDAO {
 		return this.sqlSession.insert("save", boardDTO);
 	}
 
+	public int modify(BoardDTO boardDTO) {
+		return this.sqlSession.update("modify", boardDTO);
+	}
+
 	public void close() {
 		sqlSession.close();
 	}
