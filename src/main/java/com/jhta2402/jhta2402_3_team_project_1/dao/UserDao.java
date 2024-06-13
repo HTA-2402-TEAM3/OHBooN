@@ -41,11 +41,11 @@ public class UserDao {
         return loginMemberDto;
     }
 
-    public UserDto infoUser(String email) {
-        UserDto infoMemberDto = null;
+    public UserDto infoUser(String nickname) {
+        UserDto infoUserDto = null;
         SqlSession sqlSession = MybatisConnectionFactory.getSqlSession();
-        infoMemberDto = sqlSession.selectOne("loginUser", email);
+        infoUserDto = sqlSession.selectOne("infoUser", nickname);
         sqlSession.close();
-        return infoMemberDto;
+        return infoUserDto;
     }
 }
