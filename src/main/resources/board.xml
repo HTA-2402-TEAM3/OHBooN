@@ -6,4 +6,7 @@
     <select id="getBoardList" resultType="BoardDTO">
         SELECT * FROM board
     </select>
+    <select id="findEmailByBoardId" resultType="String" parameterType="long">
+        SELECT email FROM board WHERE id = #{id}
+    </select>
 </mapper>
