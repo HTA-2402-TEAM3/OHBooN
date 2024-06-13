@@ -1,6 +1,7 @@
 package com.jhta2402.jhta2402_3_team_project_1.filter;
 
-import com.jhta2402.mybatis.dto.ModalDto;
+
+import com.jhta2402.jhta2402_3_team_project_1.dto.ModalDto;
 import jakarta.servlet.*;
 import jakarta.servlet.annotation.WebFilter;
 import jakarta.servlet.http.HttpServletRequest;
