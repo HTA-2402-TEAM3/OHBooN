@@ -2,5 +2,6 @@
 <%@ include file="../include/header.jsp" %>
 <div class="container">
     <h2 class="mt-5 mb-5"> INDEX PAGE </h2>
+    <%=session.getAttributeNames()%>
 </div>
 <%@ include file="../include/footer.jsp"%>

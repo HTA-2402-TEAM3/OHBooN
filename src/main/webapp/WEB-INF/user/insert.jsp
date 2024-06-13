@@ -5,13 +5,25 @@
     <h2 class="mt-5 mb-5">회원가입</h2>
 
     <form action="../user/insert" method="post" enctype="multipart/form-data">
+
         <div class="mb-3">
             <div class="row g-3">
                 <div class="col-auto">
-                    <label for="userID" class="form-label">USER ID</label>
-                    <input type="text" class="form-control" id="userID" placeholder="user id" name="userID">
-                    <button type="button" id="btn-duplicate" class="btn btn-dark mt-2">ID DUPLICATION CHECK</button>
-                    <button type="button" id="btn-revise" class="btn btn-outline-primary mt-2">ID REVISE</button>
+                    <label for="email" class="form-label">USER E-MAIL</label>
+                    <input type="email" class="form-control" id="email" placeholder="user email" name="email">
+                    <button type="button" id="btn-duplicate-email" class="btn btn-dark mt-2">EMAIL CHECK</button>
+                    <button type="button" id="btn-revise-email" class="btn btn-outline-primary mt-2">Modify</button>
+                </div>
+            </div>
+        </div>
+
+        <div class="mb-3">
+            <div class="row g-3">
+                <div class="col-auto">
+                    <label for="nickname" class="form-label">USER NICKNAME</label>
+                    <input type="text" class="form-control" id="nickname" placeholder="user nickname" name="nickname">
+                    <button type="button" id="btn-duplicate-nickname" class="btn btn-dark mt-2">NICKNAME CHECK</button>
+                    <button type="button" id="btn-revise-nickname" class="btn btn-outline-primary mt-2">Modify</button>
                 </div>
             </div>
         </div>
@@ -41,46 +53,45 @@
         <div class="mb-3">
             <div class="row g-3">
                 <div class="col-auto">
+                    <label for="phone" class="form-label">CELLULAR PHONE NUMBER</label>
+                    <input type="text" class="form-control" id="phone" placeholder="cellphone number" >
+                    <div class="invalid-feedback invalid-feedback-confirm"></div>
+                </div>
+            </div>
+        </div>
+        <div class="mb-3">
+            <div class="row g-3">
+                <div class="col-auto">
                     <label for="userName" class="form-label">USER NAME</label>
                     <input type="text" class="form-control" id="userName" placeholder="user name" name="userName">
                 </div>
             </div>
         </div>
-        <div class="mb-3">
-            <div class="row g-3">
-                <div class="col-auto">
-                    <label for="userEmail" class="form-label">E-MAIL</label>
-                    <input type="email" class="form-control" id="userEmail" placeholder="user email" name="userEmail">
-                </div>
-            </div>
-        </div>
 
-        <div class="mb-3">
-            <label for="postCode" class="form-label">POSTAL CODE</label>
-            <div class="row g-3">
-                <div class="col-auto"><input type="text" class="form-control" id="postCode" placeholder="post code" name="postCode"></div>
-                <div class="col-auto"><button type="button" id="btn-postcode" class="btn btn-dark">우편번호 찾기</button></div>
-            </div>
-        </div>
-
-        <div class="mb-3">
-            <div class="row g-3">
-                <div class="col-auto">
-                    <label for="address" class="form-label">ADDRESS</label>
-                    <input type="text" class="form-control" id="address" placeholder="address" name="address" readonly>
-                </div>
-                <%--readonly를 적용하여 읽기만 가능하게 설정--%>
-            </div>
-        </div>
-
-        <div class="mb-3">
-            <div class="row g-3">
-                <div class="col-auto">
-                    <label for="detail-address" class="form-label">DETAIL ADDRESS</label>
-                    <input type="text" class="form-control" id="detail-address" placeholder="detail address" name="addressDetail">
-                </div>
-            </div>
-        </div>
+<%--        <div class="mb-3">--%>
+<%--            <label for="postCode" class="form-label">POSTAL CODE</label>--%>
+<%--            <div class="row g-3">--%>
+<%--                <div class="col-auto"><input type="text" class="form-control" id="postCode" placeholder="post code" name="postCode"></div>--%>
+<%--                <div class="col-auto"><button type="button" id="btn-postcode" class="btn btn-dark">우편번호 찾기</button></div>--%>
+<%--            </div>--%>
+<%--        </div>--%>
+<%--        <div class="mb-3">--%>
+<%--            <div class="row g-3">--%>
+<%--                <div class="col-auto">--%>
+<%--                    <label for="address" class="form-label">ADDRESS</label>--%>
+<%--                    <input type="text" class="form-control" id="address" placeholder="address" name="address" readonly>--%>
+<%--                </div>--%>
+<%--                &lt;%&ndash;readonly를 적용하여 읽기만 가능하게 설정&ndash;%&gt;--%>
+<%--            </div>--%>
+<%--        </div>--%>
+<%--        <div class="mb-3">--%>
+<%--            <div class="row g-3">--%>
+<%--                <div class="col-auto">--%>
+<%--                    <label for="detail-address" class="form-label">DETAIL ADDRESS</label>--%>
+<%--                    <input type="text" class="form-control" id="detail-address" placeholder="detail address" name="addressDetail">--%>
+<%--                </div>--%>
+<%--            </div>--%>
+<%--        </div>--%>
 
         <div class="mb-3">
             <div class="row g-3">
@@ -107,17 +118,8 @@
     </form>
 </div>
 
-<%--
-    <div class='a' style='width:300px; height: 300px; border: 1px solid #000'>
-        a
-        <div class='b' style='width:200px; height: 200px; border: 1px solid #000'>
-            b
-            <div class='c' style='width:100px; height: 100px; border: 1px solid #000'> c</div>
-        </div>
-    </div>
-    --%>
-
 <script>
+    //프로필 사진 넣기
     $("#profile").on("change", function(e){
         // console.log(e);
         // console.log(e.currentTarget.files[0]);
@@ -169,54 +171,113 @@
     });
 */
 
-    //아이디 중복 검사 함수
-    function idDuplicateCheck(){
-        const userID=$("#userID").val();
-        var check_id = RegExp(/^[a-z0-9]{4,10}$/); // 아이디 유효성 검사용 변수 (영문 소문자, 숫자만 이용하여 4-10글자 가능)
+    //이메일 중복 검사 함수
+    function emailDuplicateCheck(){
+        const email=$("#email").val();
+        let check_email =  RegExp(/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i);
+        // 이메일 유효성 검사용 변수
 
-        if(userID == "") {
-            isIdChecked=false;
-            alert ("아이디를 입력해주세요.");
-            $("#userID").val("");
-            $("#userID").focus();
-        }else if(userID.indexOf(" ")>0){
-            isIdChecked=false;
-            alert("아이디를 공백없이 작성해주세요");
-            $("#userID").val("");
-            $("#userID").focus();
-        }else if (!check_id.test(userID)) {
-            isIdChecked=false;
-            alert("아이디는 영문 소문자와 숫자만을 사용하여 4-10자리를 입력해주세요.");
-            $("#userID").val("");
-            $("#userID").focus();
-        }else{
+        // 이메일 검증 요소 추가
+        if(email == "") {
+            isEmailChecked=false;
+            alert("이메일을 입력해주세요.");
+            $("#email").val("");
+            $("#email").focus();
+        }else if(email.indexOf(" ")>0){
+            isEmailChecked=false;
+            alert("이메일을 공백없이 작성해주세요");
+            $("#email").val("");
+            $("#email").focus();
+        }else if(!check_email.test(email)){
+            isEmailChecked=false;
+            alert("이메일 형식에 맞게 작성해주세요!");
+            $("#email").val("");
+            $("#email").focus();
+            return false;
+        } else{
             $.ajax({
-                url:"/user/id-uniqueness-check",
+                url:"/user/email-uniqueness-check",
                 data: {
-                    userID:$("#userID").val()
+                    email:$("#email").val()
                 },
                 method:"post",
                 success:function(data) {
                     console.log(data);
                     if(data.count>0) {
-                        isIdChecked = false;
-                        alert("이미 존재하는 아이디입니다.")
-                        $("#userID").val("");
-                        $("#userID").focus();
+                        isEmailChecked = false;
+                        alert("이미 존재하는 이메일입니다. 다른 이메일을 사용해주세요.")
+                        $("#email").focus();
                     }else {
-                        const used = confirm("사용 가능한 아이디입니다. 사용하시겠습니까?");
-                        if(used) {
-                            $("#userID").attr("readonly", true); // 읽기만 가능
-                            isIdChecked = true; // 아이디 체크 true 로 반환
+                        isEmailChecked = false;
+                        const askUsingEmail = confirm("사용 가능한 이메일입니다. 사용하시겠습니까?");
+                        if(askUsingEmail) {
+                            $("#email").attr("readonly", true); // 읽기만 가능
+                            isEmailChecked = true; // 이메일 체크 true 로 반환
                         }else {
-                            isIdChecked = false;
-                            $("#userID").val(""); // 공백으로 만듦
-                            $("userID").focus();
+                            isEmailChecked = false;
+                            $("#email").val(""); // 공백으로 만듦
+                            $("#email").focus();
                         }
                     }
                 },
                 fail:function(error) {
-                    isIdChecked = false;
+                    isEmailChecked = false;
+                    console.log(error);
+                }
+            });
+            return false;
+        }
+    }
+
+    //닉네임 중복 검사 함수
+    function nicknameDuplicateCheck(){
+        const nickname=$("#nickname").val();
+        var check_nickname = RegExp(/^[a-z0-9]{4,10}$/); // 닉네임 유효성 검사용 변수 (영문 소문자, 숫자만 이용하여 4-10글자 가능)
+
+        if(nickname == "") {
+            isNicknameChecked=false;
+            alert ("닉네임을 입력해주세요.");
+            $("#nickname").val("");
+            $("#nickname").focus();
+        }else if(userID.indexOf(" ")>0){
+            isNicknameChecked=false;
+            alert("닉네임을 공백없이 작성해주세요");
+            $("#nickname").val("");
+            $("#nickname").focus();
+        }else if (!check_nickname.test(nickname)) {
+            isNicknameChecked=false;
+            alert("닉네임은 영문 소문자와 숫자만을 사용하여 4-10자리를 입력해주세요.");
+            $("#nickname").val("");
+            $("#nickname").focus();
+        }else{
+            $.ajax({
+                url:"/user/nickname-uniqueness-check",
+                data: {
+                    nickname:$("#nickname").val()
+                },
+                method:"post",
+                success:function(data) {
+                    console.log(data);
+                    if(data.count>0) {
+                        isNicknameChecked = false;
+                        alert("이미 존재하는 닉네임입니다. 다른 닉네임을 사용해주세요.")
+                        $("#nickname").val("");
+                        $("#nickname").focus();
+                    }else {
+                        isNicknameChecked = false;
+                        const askUsingNickname = confirm("사용 가능한 닉네임입니다. 사용하시겠습니까?");
+                        if(askUsingNickname) {
+                            $("#nickname").attr("readonly", true); // 읽기만 가능
+                            isNicknameChecked = true; // 닉네임 체크 true 로 반환
+                        }else {
+                            isNicknameChecked = false;
+                            $("#nickname").val(""); // 공백으로 만듦
+                            $("#nickname").focus();
+                        }
+                    }
+                },
+                fail:function(error) {
+                    isNicknameChecked = false;
                     console.log(error);
                 }
             });
@@ -226,30 +287,40 @@
 
     // 미작성 항목 검사 함수
     function notWrittenCheck(){
-        if($("#userID").val().trim()==="") {
-            alert("id는 필수 입력사항입니다.");
-            $("#userID").focus();
+        if($("#email").val().trim()==="") {
+            alert("Email을 작성해주세요.");
+            $("#email").focus();
             return false;
         }
-        if(isIdChecked==false){
-            alert("아이디 중복체크를 해주세요.");
-            $("#userID").focus();
+        if(isEmailChecked==false){
+            alert("이메일 중복체크를 해주세요.");
+            $("#email").focus();
+            return false;
+        }
+        if($("#nickname").val().trim()==="") {
+            alert("닉네임을 작성해주세요.");
+            $("#nickname").focus();
+            return false;
+        }
+        if(isNicknameChecked==false){
+            alert("닉네임 중복체크를 해주세요.");
+            $("#nickname").focus();
             return false;
         }
         if($("#userPW").val().trim()==="") {
             alert("패스워드는 필수 입력사항입니다.");
-            $("#userID").focus();
+            $("#userPW").focus();
             return false;
         }
-        // checkPW(); // 비밀번호 유효성 검사
-        // if(isValidPW==false){
-        //     alert("올바른 비밀번호를 입력해주세요.")
-        //     $("#userPW").focus();
-        //     return false;
-        // }
+        checkPW(); // 비밀번호 유효성 검사
+        if(isValidPW==false){
+            alert("올바른 비밀번호를 입력해주세요.")
+            $("#userPW").focus();
+            return false;
+        }
         if($("#userPW02").val().trim()==="") {
             alert("패스워드 확인을 작성해주세요.");
-            $("#userID").focus();
+            $("#userPW02").focus();
             return false;
         }
         if($("#userPW02").val()!=$("#userPW").val()) {
@@ -257,6 +328,13 @@
             $("#userPW02").focus();
             return false;
         }
+        if($("#phone").val().trim()==="") {
+            alert("휴대폰 번호를 작성해주세요.");
+            $("#phone").focus();
+            return false;
+        }
+
+        /* //우편번호, 주소, 세부주소 미사용
         if($("#postCode").val().trim()==="") {
             alert("우편번호를 작성해주세요.");
             $("#postCode").focus();
@@ -272,11 +350,7 @@
             $("#detail-address").focus();
             return false;
         }
-        if($("#userEmail").val().trim()==="") {
-            alert("Email을 작성해주세요.");
-            $("#userEmail").focus();
-            return false;
-        }
+         */
     }
 
     //비밀번호 유효성 검사 함수
@@ -297,7 +371,7 @@
         }
     }
 
-    // 다음 주소찾기 함수(코드에 맞게 일부 수정)
+    /* // 다음 주소찾기 매서드 -> 미사용
     function makePostcode() {
         new daum.Postcode({
             onComplete: function(data) {
@@ -351,28 +425,40 @@
             }
         }).open();
     }
+     */
 </script>
 
 <script>
-    //ajax - jquery axios fetch
+    var isEmailChecked = false; // 이메일 중복체크를 통과했는지 확인을 위한 변수
+    var isNicknameChecked = false; // 닉네임 중복체크를 통과했는지 확인을 위한 변수
     var isValidPW = false;  // 패스워드가 유효한지를 표시
-    var isIdChecked = false; // 아이디 중복체크를 통과했는지 확인을 위한 변수
 
-    //회원가입 버튼 -> 미작성 여부 확인
+    // 회원가입 버튼 -> 미작성 여부 확인
     $("#btn-sign").on("click", notWrittenCheck);
 
-    // 아이디 중복 체크 버튼 -> 아이디 중복검사
-    $("#btn-duplicate").on("click",idDuplicateCheck);
+    // 이메일 중복 체크 버튼 -> 이메일 중복검사
+    $("#btn-duplicate-email").on("click",emailDuplicateCheck);
 
-    // 우편번호 선택 -> 다음 주소찾기 코드
-    $("#btn-postcode").on("click",makePostcode);
+    // 닉네임 중복 체크 버튼 -> 닉네임 중복검사
+    $("#btn-duplicate-nickname").on("click",nicknameDuplicateCheck);
 
-    // 아이디 수정 버튼 -> 저장된 아이디 삭제
-    $("#btn-revise").on("click",function(){
-        isIdChecked = false;
-        $("#userID").val("");
-        $("#userID").attr("readonly", false);
-        $("#userID").focus();
+    // 우편번호 선택 -> 다음 주소찾기 코드 (미사용)
+    //$("#btn-postcode").on("click",makePostcode);
+
+    // 이메일 수정 버튼 -> 저장된 이메일 삭제
+    $("#btn-revise-email").on("click",function(){
+        isEmailChecked = false;
+        $("#email").val("");
+        $("#email").attr("readonly", false);
+        $("#email").focus();
+    });
+
+    // 닉네임 수정 버튼 -> 저장된 닉네임 삭제
+    $("#btn-revise-nickname").on("click",function(){
+        isNicknameChecked = false;
+        $("#nickname").val("");
+        $("#nickname").attr("readonly", false);
+        $("#nickname").focus();
     });
 
     // 화면에 '패스워드'와 '패스워드 확인' 불일치 여부 표시

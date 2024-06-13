@@ -21,12 +21,12 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @MultipartConfig
-@WebServlet("/member/insert")
+@WebServlet("/user/insert")
 public class InsertMember extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/member/insert.jsp").forward(req,resp);
+        req.getRequestDispatcher("/WEB-INF/user/insert.jsp").forward(req,resp);
     }
 
     @Override
