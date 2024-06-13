@@ -9,6 +9,7 @@
         <tr>
             <th>PROFILE</th>
             <td>
+                <th>${infoMemberDto.email}</th>
                 <c:choose>
                     <c:when test="${not empty infoMemberDto.renameProfile}">
                         <img src="${request.contextPath}/upload/${infoMemberDto.renameProfile}" class="profile">
@@ -20,34 +21,32 @@
             </td>
         </tr>
         <tr>
-            <th>USER ID</th>
-            <th>${infoMemberDto.userID}</th>
+            <th>User EMAIL</th>
+            <th>${infoMemberDto.email}</th>
+        </tr>
+        <tr>
+            <th>USER NICKNAME</th>
+            <th>${infoMemberDto.nickname}</th>
         </tr>
         <tr>
             <th>USER NAME</th>
-            <th>${infoMemberDto.userName}</th>
+            <th>${infoMemberDto.username}</th>
         </tr>
         <tr>
-            <th>E-MAIL</th>
-            <th>${infoMemberDto.userEmail}</th>
-        </tr>
-        <tr>
-            <th>POST CODE</th>
-            <th>${infoMemberDto.postCode}</th>
-        </tr>
-        <tr>
-            <th>ADDRESS</th>
-            <td>${infoMemberDto.address} <br>${infoMemberDto.addressDetail}</td>
+            <th>USER PHONE NUMBER</th>
+            <th>${infoMemberDto.phone}</th>
         </tr>
         <tr>
             <th>USER BIRTH DATE</th>
             <th>${infoMemberDto.birth}</th>
         </tr>
     </table>
+
     <div>
         <a href="../user/password-change" class="btn btn-dark">비밀번호 변경</a>
         <%--page 만들고 기존 비밀번호, 변경할 비밀번호, 변경할 비밀번호 확인 을 입력하는 창을 만들어 비밀번호 바꾸기--%>
     </div>
+
 </div>
 
 <%@ include file="../include/footer.jsp" %>
