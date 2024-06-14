@@ -62,4 +62,19 @@ public class BoardService {
 		return totalCount;
 	}
 
+	public void delete(long boardID) {
+		BoardDAO boardDAO = new BoardDAO(false);
+		int deleteResult = boardDAO.delete(boardID);
+
+		if(deleteResult <= 0) {
+			boardDAO.rollback();
+		}
+
+		if(deleteResult > 0) {
+			boardDAO.commit();
+		}
+
+		boardDAO.close();
+	}
+
 }
