@@ -34,4 +34,8 @@
         select count(*) from board;
     </select>
 
+    <update id="delete" parameterType="long">
+        update board set view_option = 0 where id = #{id}
+    </update>
+
 </mapper>
