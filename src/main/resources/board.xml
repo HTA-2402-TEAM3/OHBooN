@@ -9,7 +9,7 @@
     </select>
 
     <select id="findByID" resultType="BoardDTO" parameterType="long">
-        SELECT * FROM board where id = #{id}
+        SELECT * FROM board where id = #{id} and not view_option = 0
     </select>
 
     <insert id="save" parameterType="BoardDTO">
@@ -23,4 +23,15 @@
         meet_date = #{meetDate}, modify_date = now()
         where id = #{id}
     </update>
+
+    <select id="findInRange" resultType="BoardDTO" parameterType="Map">
+        select * from
+        (select *, row_number() over (order by id) as num from board b1 where not view_option = 0) as b2
+        where num between #{startIndex} and #{endIndex}
+    </select>
+
+    <select id="calculateTotalCount" resultType="int">
+        select count(*) from board;
+    </select>
+
 </mapper>
