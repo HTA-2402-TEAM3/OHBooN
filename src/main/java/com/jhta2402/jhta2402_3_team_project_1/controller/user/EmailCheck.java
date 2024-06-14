@@ -13,8 +13,8 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet("/user/email-uniqueness-check")
-public class EmailUniquenessCheck extends HttpServlet {
+@WebServlet("/user/email-check")
+public class EmailCheck extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String email = req.getParameter("email");

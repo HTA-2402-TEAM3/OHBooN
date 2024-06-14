@@ -17,21 +17,18 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.File;
 import java.io.IOException;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 import static java.time.LocalDateTime.now;
 
 @MultipartConfig
-@WebServlet("/user/insert")
-public class InsertMember extends HttpServlet {
+@WebServlet("/user/signup")
+public class Signup extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/user/insert.jsp").forward(req,resp);
-
-
+        req.getRequestDispatcher("/WEB-INF/user/signup.jsp").forward(req,resp);
     }
 
     @Override
@@ -91,7 +88,7 @@ public class InsertMember extends HttpServlet {
 
         UserDao userDao = new UserDao();
         System.out.println(userDto.toString());
-        int result = userDao.insertMember(userDto);
+        int result = userDao.signup(userDto);
         if(result > 0){
             ScriptWriter.alertAndNext(resp,"계정이 생성되었습니다. 다시 로그인해주세요.", "../index/index");
         }else {

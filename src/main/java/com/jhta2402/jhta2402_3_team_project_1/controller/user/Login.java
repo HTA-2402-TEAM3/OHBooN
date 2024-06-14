@@ -40,40 +40,27 @@ public class Login extends HttpServlet {
         UserDto loginMemberDto = userDao.loginUser(userDto);
 
         // email과 password 받아서 이것을 암호화하여 PW 확인
-
-
-
         if (loginMemberDto != null) {
             String encodedPassword = loginMemberDto.getUserPW(); // 암호화된 비밀번호
             if(BCrypt.checkpw(req.getParameter("userPW"), encodedPassword)){ // BCrypt.checkpw( A, B ): 비밀번호 A와, B의 일치여부 확인
 
-                //여기가 진짜 로그인 -> 세션에서 아이디, 이름, 등급, 프로필사진 받음
+                //로그인 -> 세션에서 아이디, 이름, 등급, 프로필사진 정보를 담음
                 HttpSession session = req.getSession();
                 session.setAttribute("sessionEmail", loginMemberDto.getEmail());
                 session.setAttribute("sessionNickname", loginMemberDto.getNickname());
                 session.setAttribute("sessionGrade", loginMemberDto.getGrade());
                 session.setAttribute("profile", loginMemberDto.getProfile());
 
+                String nickname =loginMemberDto.getNickname();
 
-                ModalDto modalDto = new ModalDto("로그인", "로그인되었습니다.","show");
-
-                /*
-                // 방법1 -> 리퀘스트, 리스폰스에 싣기
-                req.setAttribute("modal", modalDto);
-                String sendMsg = URLEncoder.encode("?title=로그인되었습니다.&msg=로그인되었습니다.&isState=show");
-                resp.sendRedirect("../index/index"+sendMsg);*/
-
-
-                // 방법2 -> session에 싣기 (모달 이용)
-                HttpSession session02 = (HttpSession)req.getSession();
+                ModalDto modalDto = new ModalDto("로그인되었습니다.", nickname+"님 환영합니다~♥","show");
+                HttpSession session02 = req.getSession(); // 모달을 session02에 싣기
                 session02.setAttribute("modal", modalDto);
                 resp.sendRedirect("../index/index");
 
-
-                //ScriptWriter.alertAndNext(resp, "로그인되었습니다.", "../index/index");
             }
         }else{
-            ScriptWriter.alertAndBack(resp, "unknown error occurred");
+            ScriptWriter.alertAndBack(resp, "아이디 또는 패스워드가 일치하지 않습니다.");
         }
     }
 }

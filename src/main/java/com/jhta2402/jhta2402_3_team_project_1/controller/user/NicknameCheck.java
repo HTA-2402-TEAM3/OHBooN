@@ -13,8 +13,8 @@ import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet("/user/nickname-uniqueness-check")
-public class NicknameUniquenessCheck extends HttpServlet {
+@WebServlet("/user/nickname-check")
+public class NicknameCheck extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String nickname = req.getParameter("nickname");

@@ -35,7 +35,7 @@
             <c:when test="${sessionEmail eq null}">
                 <div class="col-md-3 text-end">
                     <a href="/user/login" class="btn btn-outline-primary me-2">Login</a>
-                    <a href="/user/insert" class="btn btn-primary">Sign-up</a>
+                    <a href="/user/signup" class="btn btn-primary">Sign-up</a>
                 </div>
             </c:when>
             <c:otherwise>

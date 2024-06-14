@@ -21,7 +21,7 @@ public class AdminStatistics extends HttpServlet {
         UserDto infoUserDto = userDao.infoUser(email);
         System.out.println(infoUserDto.toString());
         req.setAttribute("infoMemberDto", infoUserDto);
-        RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/user/admin-statistics.jsp");
+        RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/admin/admin-statistics.jsp");
         dispatcher.forward(req, resp);
 
     }
