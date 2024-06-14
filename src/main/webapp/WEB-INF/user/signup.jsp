@@ -343,19 +343,27 @@
         }
         finalCheckPW(); // 비밀번호 유효성 최종검사
 
-        if($("#birth").val()===null) {
-            alert("생년월일을 입력해주세요.");
-            $("#birth").focus();
-            return false;
-        }
         if($("#phone").val().trim()==="") {
             alert("휴대폰 번호를 작성해주세요.");
-            $("#phone").focus();
+            $("#phone").val("").focus();
             return false;
         }
         if(isValidPhoneNum === false) {
             alert("올바른 휴대폰 번호를 작성해주세요.");
             $("#phone").focus();
+            return false;
+        }
+
+        if($("#userName").val().trim()==="") {
+            alert("회원의 이름을 입력해주세요.");
+            $("#userName").focus();
+            return false;
+        }
+
+
+        if($("#birth").val()==="") {
+            alert("생년월일을 입력해주세요.");
+            $("#birth").focus();
             return false;
         }
 
@@ -383,6 +391,10 @@
         var checkPhoneNumber = /^[0-9]+$/; // 숫자만 입력 가능
 
         if (phone !== "") {
+            isValidPhoneNum = true;
+            $(".invalid-feedback.invalid-feedback-phone-number").hide();
+            $(".invalid-feedback.invalid-feedback-phone-length").hide();
+
             if (!checkPhoneNumber.test(phone)) {
                 $(".invalid-feedback.invalid-feedback-phone-number").text("휴대폰 번호는 숫자만 작성해주세요.").show();
                 isValidPhoneNum = false;
@@ -390,11 +402,6 @@
             if (!checkPhoneLength.test(phone)) {
                 $(".invalid-feedback.invalid-feedback-phone-length").text("휴대폰 번호는 9자리 이상 14자리 이하로 작성해주세요.").show();
                 isValidPhoneNum = false;
-            }
-            if (checkPhoneNumber.test(phone) && checkPhoneLength.test(phone)) {
-                $(".invalid-feedback.invalid-feedback-phone-number").hide();
-                $(".invalid-feedback.invalid-feedback-phone-length").hide();
-                isValidPhoneNum = true;
             }
         }
     }
@@ -459,6 +466,30 @@
         }
     }
 
+    // function checkUserName() {
+    //     const userName = $("#userName").val();
+    //     const check_userName = /^[A-Z\s]+$/;
+    //     isValidUserName = false;
+    //
+    //     if (userName !== "") {
+    //         isValidUserName = true;
+    //
+    //         if (!check_userName.test(userName)) {
+    //             isValidPW = false;
+    //             $(userName).text().show();
+    //         } else {
+    //             $(condition.selector).hide();
+    //         }
+    //
+    //         if (isValidPW) {
+    //             conditions.forEach(condition => {
+    //                 $(condition.selector).hide();
+    //             });
+    //         }
+    //     }
+    // }
+
+
 </script>
 
 <script>
@@ -466,6 +497,7 @@
     var isNicknameChecked = false; // 닉네임 중복체크를 실시 여부
     var isValidPW = false;  // 패스워드가 유효한지 검토
     var isValidPhoneNum = false; // 전화번호가 유효한지 검토
+    var isValidUserName = false; // 사용자 이름이 유효한지 검토
 
     // 회원가입 버튼 -> 모든 작성 항목 확인
     $("#btn-sign").on("click", allWrittenCheck);
@@ -496,6 +528,9 @@
 
     // 화면에 휴대폰 번호의 유효성 여부를 표시
     $("#phone").on("keyup", checkPhone);
+
+    // 화면에 사용자 이름의 유효성 여부를 표시
+    $("#userName").on("keyup", checkUserName);
 
 </script>
 
