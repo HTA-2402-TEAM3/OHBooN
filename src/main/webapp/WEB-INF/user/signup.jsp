@@ -152,7 +152,7 @@
                     console.log(data);
                     if(data.count>0) {
                         alert("이미 존재하는 이메일입니다. 다른 이메일을 사용해주세요.")
-                        $("#email").focus();
+                        $("#email").attr("readonly", false).val("").focus();
                         return false;
                     }else {
                         const askUsingEmail = confirm("사용 가능한 이메일입니다. 사용하시겠습니까?");
@@ -162,8 +162,7 @@
                             isEmailChecked = true; // 이메일 체크 true 로 반환
                             return isEmailChecked;
                         }else {
-                            $("#email").val(""); // 공백으로 만듦
-                            $("#email").focus();
+                            $("#email").attr("readonly", false).val("").focus();
                             return false;
                         }
                     }
@@ -184,7 +183,7 @@
 
         if(!check_email.test($("#email").val())){
             alert("오류 발생. 이메일 중복체크를 다시 해주세요.");
-            $("#email").val("").focus();
+            $("#email").attr("readonly", false).val("").focus();
         } else{
             $.ajax({
                 url:"/user/email-check",
@@ -196,7 +195,7 @@
                     console.log(data);
                     if(data.count>0) {
                         alert("이미 사용중인 이메일입니다. 다른 이메일을 입력해주세요.")
-                        $("#email").val("").focus();
+                        $("#email").attr("readonly", false).val("").focus();
                         return false;
                     }else {
                         isEmailChecked = true; // 이메일 체크 true 로 반환
@@ -218,13 +217,13 @@
 
         if(nickname === "") {
             alert ("닉네임을 입력해주세요.");
-            $("#nickname").val("").focus();
+            $("#nickname").attr("readonly", false).val("").focus();
         }else if(nickname.indexOf(" ")>0){
             alert("닉네임을 공백없이 작성해주세요");
-            $("#nickname").val("").focus();
+            $("#nickname").attr("readonly", false).val("").focus();
         }else if (!check_nickname.test(nickname)) {
             alert("닉네임은 영문 소문자와 숫자만을 사용하여 4-10자리를 입력해주세요.");
-            $("#nickname").val("").focus();
+            $("#nickname").attr("readonly", false).val("").focus();
         }else{
             $.ajax({
                 url:"/user/nickname-check",
@@ -237,7 +236,7 @@
                     if(data.count>0) {
                         isNicknameChecked = false;
                         alert("이미 존재하는 닉네임입니다. 다른 닉네임을 사용해주세요.")
-                        $("#nickname").val("").focus();
+                        $("#nickname").attr("readonly", false).val("").focus();
                     }else {
                         const askUsingNickname = confirm("사용 가능한 닉네임입니다. 사용하시겠습니까?");
                         if(askUsingNickname) {
@@ -246,7 +245,7 @@
                             isNicknameChecked = true; // 닉네임 체크 true
                         }else {
                             isNicknameChecked = false;
-                            $("#nickname").val("").focus();
+                            $("#nickname").attr("readonly", false).val("").focus();
                         }
                     }
                 },
@@ -267,7 +266,7 @@
 
         if(!check_nickname.test($("#nickname").val())){
             alert("오류 발생. 닉네임 중복체크를 다시 해주세요.");
-            $("#nickname").val("").focus();
+            $("#nickname").attr("readonly", false).val("").focus();
         } else{
             $.ajax({
                 url:"/user/nickname-check",
@@ -279,7 +278,7 @@
                     console.log(data);
                     if(data.count>0) {
                         alert("이미 사용중인 닉네임입니다. 다른 닉네임을 입력해주세요.")
-                        $("#nickname").val("").focus();
+                        $("#nickname").attr("readonly", false).val("").focus();
                         return false;
                     }else {
                         isNicknameChecked = true; // 이메일 체크 true 로 반환
@@ -298,7 +297,7 @@
     function allWrittenCheck(){
         if($("#email").val().trim()==="") {
             alert("Email을 작성해주세요.");
-            $("#email").focus();
+            $("#email").attr("readonly", false).val("").focus();
             return false;
         }
         if(isEmailChecked===false){
@@ -310,7 +309,7 @@
 
         if($("#nickname").val().trim()==="") {
             alert("닉네임을 작성해주세요.");
-            $("#nickname").focus();
+            $("#nickname").attr("readonly", false).val("").focus();
             return false;
         }
         if(isNicknameChecked===false){
@@ -322,7 +321,8 @@
 
         if($("#userPW").val().trim()==="") {
             alert("패스워드를 입력해주세요.");
-            $("#userPW").focus();
+            $("#userPW").val("").focus();
+
             return false;
         }
         if(isValidPW===false){
@@ -448,7 +448,7 @@
         }
     }
 
-    //PW 확인 일치 여부 출력
+    //PW와 PWConfirm 일치 여부 출력
     function checkPWConfirm(){
         if($("#userPW02").val() !== $("#userPW").val()){
             $(".invalid-feedback.invalid-feedback-confirm").text("password가 일치하지 않습니다.").show();
