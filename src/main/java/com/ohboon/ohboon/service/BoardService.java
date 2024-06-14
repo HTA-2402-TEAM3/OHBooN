@@ -1,5 +1,7 @@
 package com.ohboon.ohboon.service;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import com.ohboon.ohboon.dao.BoardDAO;
@@ -30,9 +32,15 @@ public class BoardService {
 		return byID.orElseThrow(() -> new IllegalStateException("해당하는 게시글이 없습니다."));
 	}
 
-	public void modify(BoardDTO boardDTO) {
-		BoardDAO boardDAO = new BoardDAO(false);
+	public List<BoardDTO> read(int startIndex, int endIndex) {
+		BoardDAO boardDAO = new BoardDAO();
+		List<BoardDTO> boardDTOS = boardDAO.findInRange(Map.of("startIndex", startIndex, "endIndex", endIndex));
+		boardDAO.close();
+		return boardDTOS;
+	}
 
+	public void modify(BoardDTO boardDTO) {
+		BoardDAO boardDAO = new BoardDAO();
 		boardDAO.findByID(boardDTO.getId());
 
 		int modifyResult = boardDAO.modify(boardDTO);
@@ -45,7 +53,13 @@ public class BoardService {
 
 		boardDAO.commit();
 		boardDAO.close();
+	}
 
+	public int calculateTotalCount() {
+		BoardDAO boardDAO = new BoardDAO();
+		int totalCount = boardDAO.calculateTotalCount();
+		boardDAO.close();
+		return totalCount;
 	}
 
 }

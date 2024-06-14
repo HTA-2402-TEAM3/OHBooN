@@ -1,5 +1,7 @@
 package com.ohboon.ohboon.dao;
 
+import java.util.List;
+import java.util.Map;
 import java.util.Optional;
 
 import org.apache.ibatis.session.SqlSession;
@@ -9,7 +11,7 @@ import com.ohboon.ohboon.util.MybatisConnectionFactory;
 
 public class BoardDAO {
 
-	private final SqlSession sqlSession;
+	private SqlSession sqlSession;
 
 	public BoardDAO() {
 		this.sqlSession = MybatisConnectionFactory.getSqlSession();
@@ -29,6 +31,18 @@ public class BoardDAO {
 
 	public int modify(BoardDTO boardDTO) {
 		return this.sqlSession.update("modify", boardDTO);
+	}
+
+	public List<BoardDTO> findInRange(Map<String, Integer> indexs) {
+		return this.sqlSession.selectList("findInRange", indexs);
+	}
+
+	public int calculateTotalCount() {
+		return this.sqlSession.selectOne("calculateTotalCount");
+	}
+
+	public int delete(long boardID) {
+		return this.sqlSession.update("delete", boardID);
 	}
 
 	public void close() {
