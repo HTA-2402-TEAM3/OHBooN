@@ -2,59 +2,92 @@ package com.ohboon.ohboon.controller.WebSocket;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.ohboon.ohboon.dto.ChatDTO;
 import com.ohboon.ohboon.dto.MsgDTO;
 import com.ohboon.ohboon.service.ChatService;
 import jakarta.servlet.http.HttpSession;
 import jakarta.websocket.*;
 import jakarta.websocket.server.ServerEndpoint;
-import util.WsHttpSessionConfig;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 @ServerEndpoint(value = "/chat", configurator = WsHttpSessionConfig.class)
 public class WsServerController {
     private ChatService chatService;
     private static List<Session> sessionList = new ArrayList<>();
-    private static Map<Session, HttpSession> sessionsMap = new HashMap<>();
+//    ws 연결된 모든 session이 들어감
+    private static Map<Session, String> sessionsMap = new HashMap<>();
+//    ws 연결된 wsSession으로 httpSession받아오는 용도 --> 닉네임 받아올거임
+    private static Map<Long, List<Session>> chatRoomSessionMap = Collections.synchronizedMap(new HashMap<>());
+//    chat_id(key) 채팅방에 저장된 user들 websocket(value) map
 
     @OnOpen
     public void onOpen(Session session, EndpointConfig config) {
         //client가 websocket에 연결되었을 때
         HttpSession httpSession = (HttpSession) config.getUserProperties().get("PRIVATE_HTTP_SESSION");
-        sessionsMap.put(session, httpSession);
+//        String userNickname = (String) config.getUserProperties().get("PRIVATE_HTTP_SESSION");
+        String userNickname = (String) httpSession.getAttribute("sessionNickname");
+
+        sessionsMap.put(session, userNickname);
         sessionList.add(session);
+
+        System.out.println(sessionList);
     }
 
     @OnMessage
     public void onMessage(String message, Session wsSession) {
 //        client가 server에 msg 보냈을 때 핸들링
         System.out.println("ws Session( " + wsSession.getId() + " ) : " + message);
-        HttpSession httpSession = sessionsMap.get(wsSession);
 
         JsonObject jsonObject = JsonParser.parseString(message).getAsJsonObject();
 
         long chat_id = jsonObject.get("chat_id").getAsLong();
         long match_id = jsonObject.get("match_id").getAsLong();
-        String sender = jsonObject.get("sender").getAsString();
+        String sender = jsonObject.get("user_id").getAsString();
         String content = jsonObject.get("content").getAsString();
-//        String timestamp = jsonObject.get("timestamp").getAsString();
 
+        System.out.println(sender);
+
+        chatRoomSessionMap = setChatUsers(chat_id, sessionsMap);
+        System.out.println("chatRoomSessionMap : "+chatRoomSessionMap);
         saveMsg(chat_id, sender, match_id, content);
 
-        for (Session session1 : sessionList) {
+        chatRoomSessionMap.get(chat_id).forEach(session1 -> {
             try {
-                session1.getBasicRemote().sendText(sender + ":" + content);
+                if (session1 == wsSession) {
+                    session1.getBasicRemote().sendText("나 :" + content);
+                } else {
+                    session1.getBasicRemote().sendText(sender + " : " + content);
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        }
+        });
     }
+
+    private Map<Long, List<Session>> setChatUsers(long chatId, Map<Session, String> sessionsMap) {
+        List<Session> userList = new ArrayList<>();
+
+        chatService = new ChatService();
+        List<String> users = chatService.findUsersByChatId(chatId);
+
+        System.out.println("users :"+users);
+        System.out.println("sessionsMap :" +sessionsMap);
+
+        for(Session key : sessionsMap.keySet()) {
+            for(String user : users) {
+                if(sessionsMap.get(key).equals(user)) {
+                    userList.add(key);
+                }
+            }
+        }
+        chatRoomSessionMap.put(chatId, userList);
+        System.out.println("userList : "+userList);
+        System.out.println("chatRoomSessionMap : "+chatRoomSessionMap);
+        return chatRoomSessionMap;
+    }
+
 
     private void saveMsg(long chatId, String sender, long match_id, String content) {
         MsgDTO msgDTO = MsgDTO.builder()
@@ -68,7 +101,7 @@ public class WsServerController {
 
         chatService = new ChatService();
         int rs = chatService.saveMsg(msgDTO);
-        if(rs > 0) {
+        if (rs > 0) {
             System.out.println(msgDTO);
         }
     }
