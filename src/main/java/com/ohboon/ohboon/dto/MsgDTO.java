@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 @Getter
 @Builder
 @AllArgsConstructor
-@NoArgsConstructor
 @RequiredArgsConstructor
 @ToString
 public class MsgDTO {
@@ -18,3 +17,4 @@ public class MsgDTO {
     private String content;
     private LocalDateTime timeStamp;
 }
+//채팅 DTO
