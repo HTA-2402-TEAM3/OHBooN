@@ -6,9 +6,11 @@ import lombok.Getter;
 @Getter
 @AllArgsConstructor
 public enum Grade {
+    STANDBY("standby"),
     MEMBER("member"),
     MANAGER("manager"),
-    ADMIN("admin");
-
+    ADMIN("admin"),
+    BANNED("banned"),
+    DELETED("deleted");
     private final String label;
 }

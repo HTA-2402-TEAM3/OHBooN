@@ -33,8 +33,16 @@
             <th>${infoUserDto.username}</th>
         </tr>
         <tr>
+            <th>BIRTH DATE</th>
+            <th>${infoUserDto.birth}</th>
+        </tr>
+        <tr>
             <th>USER PHONE NUMBER</th>
             <th>${infoUserDto.phone}</th>
+        </tr>
+        <tr>
+            <th>USER BIRTH DATE</th>
+            <th>${infoUserDto.birth}</th>
         </tr>
         <tr>
             <th>USER BIRTH DATE</th>

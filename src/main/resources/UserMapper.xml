@@ -20,7 +20,7 @@
     </select>
 
     <select id="loginUser" resultType="UserDto" parameterType="UserDto">
-        select * from user where email = #{email}
+        select * from user where email = #{email} and (grade = MEMBER or grade = MANAGER or grade = ADMIN)
     </select>
 
     <select id="infoUser" resultType="UserDto" parameterType="UserDto">
