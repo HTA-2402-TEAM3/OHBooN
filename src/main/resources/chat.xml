@@ -10,4 +10,12 @@
     <select id="getChatID" parameterType="ChatDTO" resultType="long">
         select chat_id from chatroom where sender = #{sender} and receiver = #{receiver}
     </select>
+
+    <select id="findUsersByChatId" resultType="hashmap">
+        select sender, receiver from chatroom where chat_id = #{chat_id}
+    </select>
+
+    <select id="getMatchIdByChatId" parameterType="Long" resultType="Long">
+        select match_id from chatroom where chat_id = #{chat_id}
+    </select>
 </mapper>

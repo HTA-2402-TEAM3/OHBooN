@@ -10,4 +10,5 @@
     <select id="getMatchId" parameterType="Map" resultType="long">
         select match_id from matching where board_idx=#{board_id} and email = #{boardWriterName};
     </select>
+
 </mapper>
