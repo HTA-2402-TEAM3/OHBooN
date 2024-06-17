@@ -18,4 +18,8 @@
     <select id="getMatchIdByChatId" parameterType="Long" resultType="Long">
         select match_id from chatroom where chat_id = #{chat_id}
     </select>
+
+    <select id="getChatList" resultType="ChatDTO" parameterType="String">
+        SELECT * FROM chatroom where sender = #{senderName} or receiver = #{senderName}
+    </select>
 </mapper>
