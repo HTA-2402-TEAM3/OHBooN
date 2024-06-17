@@ -61,7 +61,7 @@ public class ListController extends HttpServlet {
 
 		List<ListBoardDTO> boards = new ArrayList<>();
 
-		if (Objects.nonNull(searchOption)) {
+		if (Objects.isNull(strMeetDate)) {
 			searchOptions.put("searchOption", searchOption);
 			searchOptions.put("searchWord", searchWord);
 			boards = boardService.search(searchOptions);
