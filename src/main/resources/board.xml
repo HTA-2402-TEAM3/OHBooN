@@ -6,27 +6,27 @@
 
     <sql id="search">
         <choose>
-            <when test="search=='subject'">
+            <when test="searchOption=='subject'">
                 subject like '%'||#{searchWord}||'%'
             </when>
-            <when test="search=='content'">
+            <when test="searchOption=='content'">
                 content like '%'||#{searchWord}||'%'
             </when>
-            <when test="search=='nickName'">
+            <when test="searchOption=='nickName'">
                 userName like '%'||#{searchWord}||'%'
             </when>
-            <when test="search=='all'">
+            <when test="searchOption=='all'">
                 subject like '%'||#{searchWord}||'%' or content like '%'||#{searchWord}||'%'
             </when>
             <otherwise>
-                userName like '%%'
+                subject like '%%'
             </otherwise>
         </choose>
     </sql>
 
     <select id="findBySearchWord" resultType="com.ohboon.ohboon.dto.ListBoardDTO" parameterType="Map">
         select
-        id, nickname, evaluation, reg_date, category, subject, meet_date
+        id, nickname, evaluation, reg_date, category, subject, meet_date, location
         from
         (select *, row_number() over (order by id) as num from board natural join user b1
         where not view_option = 0 and <include refid="search"/>) as b2
@@ -40,7 +40,7 @@
 
     <select id="findWithSimple" resultType="com.ohboon.ohboon.dto.ListBoardDTO" parameterType="Map">
         select
-        id, nickname, evaluation, reg_date, category, subject, meet_date
+        id, nickname, evaluation, reg_date, category, subject, meet_date, location
         from
         (select *, row_number() over (order by id) as num from board natural join user b1
         where not view_option = 0

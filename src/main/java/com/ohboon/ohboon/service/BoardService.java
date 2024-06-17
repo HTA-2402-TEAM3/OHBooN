@@ -45,14 +45,14 @@ public class BoardService {
 
 	public List<ListBoardDTO> search(Map<String, String> searchOptions, LocalDateTime searchMeetDate) {
 		BoardDAO boardDAO = new BoardDAO();
-		List<ListBoardDTO> boardDTOS = boardDAO.findWithSimple(searchOptions);
+		List<ListBoardDTO> boards = boardDAO.findWithSimple(searchOptions);
 		boardDAO.close();
 
-		boardDTOS.sort(Comparator.comparing(
+		boards.sort(Comparator.comparing(
 			listBoardDTO -> Math.abs(listBoardDTO.getMeetDate().until(searchMeetDate, ChronoUnit.MINUTES))
 		));
 
-		return boardDTOS;
+		return boards;
 	}
 
 	public void modify(BoardDTO boardDTO) {

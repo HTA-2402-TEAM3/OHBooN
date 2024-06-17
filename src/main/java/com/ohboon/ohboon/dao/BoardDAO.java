@@ -38,8 +38,8 @@ public class BoardDAO {
 		return this.sqlSession.selectList("findWithSimple", searchOptions);
 	}
 
-	public List<ListBoardDTO> findBySearchWord(Map<String, String> indexs) {
-		return this.sqlSession.selectList("findBySearchWord", indexs);
+	public List<ListBoardDTO> findBySearchWord(Map<String, String> searchOptions) {
+		return this.sqlSession.selectList("findBySearchWord", searchOptions);
 	}
 
 	public int calculateTotalCount() {

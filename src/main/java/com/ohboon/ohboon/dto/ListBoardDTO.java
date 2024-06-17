@@ -23,4 +23,5 @@ public class ListBoardDTO {
 	private String category;
 	private String subject;
 	private LocalDateTime meetDate;
+	private String location;
 }
