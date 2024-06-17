@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.example.test.dto.ChatDTO">
+
+<select id="getChatRoom" resultType="ChatDTO">
+    select * from chatroom
+    <!-- select * from board where no = ? -->
+</select>
+    <delete id="deleteChatRoom" parameterType="ChatDTO">
+        delete from chatroom where no = #{no}
+    </delete>
+
+    <insert id="createChatRoom" parameterType="ChatDTO">
+        INSERT INTO chat_room (
+       chat_id, match_id, board_id, sender, receiver
+        ) VALUES (#{chatID}, #{matchID},
+        #{boardID}, #{sender}, #{receiver}
+        )0
+    </insert>
+    <!--chatid-->
+    <select id="getMsgList" parameterType="int" resultType="MsgDTO">
+        SELECT * FROM msg where chatroom_id = #{chatroom_id} order by chatroom_id
+        SELECT * FROM chat_rooms ORDER BY time_stamp DESC;
+    </select>
+
+    <select id="getChatList" resultType="ChatDTO" parameterType="ChatDTO">
+        SELECT * FROM chatroom where sender = #{senderName} or receiver = #{senderName}
+    </select>
+    <select id="getChatTotal" resultType="int">
+        select count(*) as total from chatroom
+    </select>
+<!--    <update id="updateChatRoom" parameterType="ChatDto">-->
+<!--        update board set-->
+<!--        relevel = relevel + 1-->
+<!--        where regroup = #{regroup} and relevel > #{relevel}-->
+<!--    </update>-->
+
+
+
+        </mapper>
