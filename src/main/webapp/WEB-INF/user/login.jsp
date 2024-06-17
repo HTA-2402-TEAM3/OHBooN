@@ -26,8 +26,7 @@
             </label>
         </div>
         <button class="btn btn-primary w-100 py-2" type="submit">LOGIN</button>
-        <a href="../user/password-search" class="btn btn-outline-secondary w-100 py-2 mt-2">CHANGE PASWORD</a>
-        <%--        <p class="mt-5 mb-3 text-body-secondary">© 2017–2024</p>--%>
+        <a href="../user/password-search" class="btn btn-outline-secondary w-100 py-2 mt-2">LOST PASSWORD</a>
     </form>
 </main>
 

@@ -20,13 +20,6 @@ public class Login extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         ModalDto modalDto = new ModalDto("", "", "");
-
-        /*
-        ModalDto modalDto = new ModalDto("로그인", "로그인해주세요.", "show");
-        req.setAttribute("modal", modalDto);
-
-         */
-
         req.getRequestDispatcher("/WEB-INF/user/login.jsp").forward(req, resp);
     }
 
@@ -60,7 +53,7 @@ public class Login extends HttpServlet {
 
             }
         }else{
-            ScriptWriter.alertAndBack(resp, "아이디 또는 패스워드가 일치하지 않습니다.");
+            ScriptWriter.alertAndBack(resp, "이메일 또는 패스워드가 일치하지 않습니다.");
         }
     }
 }

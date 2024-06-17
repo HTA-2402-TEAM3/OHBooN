@@ -70,7 +70,6 @@ public class Signup extends HttpServlet {
         }
 
 
-
         // 사용자가 입력한 정보를 이용하여 memberDto 구성
         UserDto userDto = UserDto.builder()
                 .email(req.getParameter("email"))
@@ -80,18 +79,18 @@ public class Signup extends HttpServlet {
                 .phone(req.getParameter("phone"))
                 .available(true)
                 .userPW(hashUserPW)
-                .grade(Grade.MEMBER)
+                .grade(Grade.STANDBY)
                 .evaluation(0)
                 .profile(renameProfile)
                 .createDate(now())
-                .agreeInfoOffer(Boolean.parseBoolean(req.getParameter("agreeInfoOffer")))
+                .agreeInfoOffer(Boolean.parseBoolean((req.getParameter("agreeInfoOffer"))))
                 .build();
 
         UserDao userDao = new UserDao();
-        System.out.println(userDto.toString());
+        //System.out.println(userDto.toString());
         int result = userDao.signup(userDto);
         if(result > 0){
-            ScriptWriter.alertAndNext(resp,"계정이 생성되었습니다. 다시 로그인해주세요.", "../index/index");
+            ScriptWriter.alertAndNext(resp,"계정이 생성되었습니다. 이메일 인증 후에 로그인을 해주세요.", "../index/index");
         }else {
             ScriptWriter.alertAndBack(resp, "알 수 없는 오류 발생. 다시 시도해주세요.");
         }

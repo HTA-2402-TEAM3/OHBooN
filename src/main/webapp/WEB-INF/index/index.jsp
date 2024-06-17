@@ -5,6 +5,7 @@
 
     <p>Session Email :  <%=session.getAttribute("sessionEmail")%> </p>
     <p>Session Nickname :  <%=session.getAttribute("sessionNickname")%> </p>
+    <p>Session Profile :  <%=session.getAttribute("profile")%> </p>
 
 </div>
 <%@ include file="../include/footer.jsp"%>

@@ -6,26 +6,44 @@
 
     <insert id="signup" parameterType="UserDto">
         INSERT INTO user values(
-            #{email}, #{nickname}, #{username}, #{birth},
-            #{phone}, true, #{userPW}, #{grade}, null, #{profile}, #{createDate}
+            #{email}, #{nickname}, #{username}, #{birth}, #{phone}, true,
+            #{userPW}, #{grade}, null, #{profile}, #{createDate}, #{agreeInfoOffer}, null
         )
+        commit;
     </insert>
 
     <select id="emailCheck" resultType="int" parameterType="String">
-        Select count(*) as total from user where email = #{email}
+        Select count(*) as total from user where email = #{email} and available = 1
     </select>
 
     <select id="nicknameCheck" resultType="int" parameterType="String">
-        Select count(*) as total from user where nickname = #{nickname}
+        Select count(*) as total from user where nickname = #{nickname} and available = 1
     </select>
 
     <select id="loginUser" resultType="UserDto" parameterType="UserDto">
-        select * from user where email = #{email} and (grade = MEMBER or grade = MANAGER or grade = ADMIN)
+        select * from user where email = #{email} and (grade = MEMBER or grade = MANAGER or grade = ADMIN) and available = 1
     </select>
 
     <select id="infoUser" resultType="UserDto" parameterType="UserDto">
-        select * from user where nickname = #{nickname}
+        select * from user where nickname = #{nickname} and available = 1
     </select>
+
+    <select id="findUserByEmail" resultType="UserDto" parameterType="String">
+        Select count(*) as total from user where email = #{email} and available = 1
+    </select>
+
+    <select id="findUserByToken" resultType="UserDto">
+        SELECT * FROM users WHERE reset_token = #{token}
+    </select>
+
+    <update id="updatePassword">
+        UPDATE users SET password = #{password} WHERE email = #{email}
+    </update>
+
+    <update id="deleteUser">
+        update user set requesttimefordeletion = now(), available = 0
+        where email = #{email} and available = 1
+    </update>
 
 
 </mapper>
