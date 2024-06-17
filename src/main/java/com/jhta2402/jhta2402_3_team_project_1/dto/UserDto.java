@@ -21,4 +21,5 @@ public class UserDto {
     private int evaluation;
     private String profile;
     private LocalDateTime createDate;
+    private boolean agreeInfoOffer;
 }

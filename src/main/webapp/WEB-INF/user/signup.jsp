@@ -10,7 +10,6 @@
             <div class="row g-3">
                 <div class="col-auto">
                     <label for="email" class="form-label">USER E-MAIL</label>
-                    <label for="email" class="form-label">USER E-MAIL</label>
                     <input type="email" class="form-control" id="email" placeholder="user email" name="email">
                     <button type="button" id="btn-duplicate-email" class="btn btn-dark mt-2">EMAIL CHECK</button>
                     <button type="button" id="btn-revise-email" class="btn btn-outline-primary mt-2">Modify</button>
@@ -66,6 +65,7 @@
                 <div class="col-auto">
                     <label for="userName" class="form-label">USER NAME</label>
                     <input type="text" class="form-control" id="userName" placeholder="user name" name="userName">
+                    <div class="invalid-feedback invalid-feedback-check_userName"></div>
                 </div>
             </div>
         </div>
@@ -80,12 +80,26 @@
         <div class="mb-3">
             <label for="profile" class="form-label">PROFILE</label>
             <input class="form-control" type="file" id="profile"
-                   name="profile" accept="image/gif, imgage/jpg, image/png">
+                   name="profile" accept=".gif, .jpg, .png">
         </div>
 
         <div class="mb-3">
             <div id="preview">미리보기 이미지 들어가는 곳</div>
         </div>
+
+        </br>
+
+        <div> <a href="../user/terms" class="btn btn-info" target="_blank">약관 및 개인정보 보호정책</a> </div>
+        <div>
+            <input type="checkbox" id="agreeTerms"  />
+            <label for="agreeTerms">위의 약관 및 개인정보 보호정책을 확인하였고 그 내용에 동의합니다.</label>
+        </div>
+        <div>
+            <input type="checkbox" id="agreeInfoOffer" name="agreeInfoOffer" />
+            <label for="agreeInfoOffer">(선택) 사용자 맞춤형 광고 제공을 위한 정보 수집 및 제3자 제공에 동의합니다. </label>
+        </div>
+
+        </br>
 
         <div>
             <button class="btn btn-primary" id="btn-sign">SIGN UP</button>
@@ -95,38 +109,49 @@
 </div>
 
 <script>
+
+    // 폼 제출 처리
+    $(document).ready(function() {
+        $("#btn-sign").click(function(event) {
+            event.preventDefault(); // 기본 제출 동작 방지
+
+            if (allWrittenCheck()) {
+                $("form").submit(); // 모든 검사 항목 통과 시 폼 제출
+            }
+        });
+    });
+
     //프로필 사진 넣기
     $("#profile").on("change", function(e){
-        const file = e.currentTarget.files[0]; // 예) amusic.mp3
+        const file = e.currentTarget.files[0]; // 파일 선택
 
-        if (!file) { // 파일이 선택되지 않은 경우
+        if (!file) { // 파일 선택 안 함
             $("#preview").html(""); // 미리보기 영역 비우기
             return false;
         }
 
-        const extension = file.name.substring(file.name.lastIndexOf(".")+1).toLowerCase(); // 확장자명 뽑기
+        const extension = file.name.substring(file.name.lastIndexOf(".")+1).toLowerCase(); // 확장자 확인
         // 뒤에서부터 '.' 을 찾아 그 다음에 적힌 string 을 뽑아옴 => 확장자명을 의미
         console.log(extension);
-        if (!(extension === "png" || extension === "jpg" || extension === "gif")) {
+        if (!(extension === "png" || extension === "jpg" || extension === "gif")) { // 확장자가 png, jpg, gif가 아닐 경우
             alert("이미지 파일(png, jpg, gif)만 업로드 가능합니다.");
             $(this).val("");
             $("#preview").html(""); // 미리보기 영역 비우기
             return false;
-        }else{
-            const profileReader = new FileReader();
+        }else {
+            const profileReader = new FileReader(); // FileReader 객체 생성
             profileReader.addEventListener("load", function(e){
-                const img = e.currentTarget.result;
-                $("#preview").html(`<img src="\${img}">`);
-                // 자바스크립트 안에서 사용하는 $와 EL 문법에서 사용하는 $ 가 충돌을 일으킴. 이를 방지하기 위해 백슬래시(\) 를 추가
+                const img = e.target.result; // 미리보기 이미지 설정
+                $("#preview").html(`<img src="\${img}" width="200" height="200">`);
             });
-            profileReader.readAsDataURL(file);
+            profileReader.readAsDataURL(file); // 파일 데이터를 base64 형식으로 읽음
         }
     });
 
     //이메일 중복 검사 함수
     function emailDuplicateCheck(){
         const email=$("#email").val();
-        const check_email =  RegExp(/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i);
+        const check_email = /^[a-zA-Z0-9]([-_.]?[a-zA-Z0-9])*@[a-zA-Z0-9]([-_.]?[a-zA-Z0-9])*.[a-zA-Z]{2,3}$/i; // 이메일 정규식
         isEmailChecked=false;
 
         if(email === "") {
@@ -367,6 +392,12 @@
             return false;
         }
 
+        if(!$("#agreeTerms").prop('checked')){
+            alert("약관 동의에 체크해주세요")
+            $("#agreeTerms").focus();
+            return false;
+        }
+        console.log("======================");
         return true;
     }
 
@@ -466,28 +497,22 @@
         }
     }
 
-    // function checkUserName() {
-    //     const userName = $("#userName").val();
-    //     const check_userName = /^[A-Z\s]+$/;
-    //     isValidUserName = false;
-    //
-    //     if (userName !== "") {
-    //         isValidUserName = true;
-    //
-    //         if (!check_userName.test(userName)) {
-    //             isValidPW = false;
-    //             $(userName).text().show();
-    //         } else {
-    //             $(condition.selector).hide();
-    //         }
-    //
-    //         if (isValidPW) {
-    //             conditions.forEach(condition => {
-    //                 $(condition.selector).hide();
-    //             });
-    //         }
-    //     }
-    // }
+    function checkUserName() {
+        const userName = $("#userName").val();
+        const check_userName = /^[가-힣a-zA-Z]+([가-힣a-zA-Z\s]*)$/;
+        isValidUserName = false;
+
+        if (userName !== "") {
+            isValidUserName = true;
+
+            if (!check_userName.test(userName)) {
+                isValidUserName = false;
+                $(".invalid-feedback.invalid-feedback-check_userName").text("신분증에 작성된 이름으로 2~20자로 작성해주세요. 한글, 영문 대∙소문자만 작성 가능합니다.").show();
+            } else {
+                $(".invalid-feedback.invalid-feedback-check_userName").text("").hide();
+            }
+        }
+    }
 
 
 </script>
@@ -500,7 +525,7 @@
     var isValidUserName = false; // 사용자 이름이 유효한지 검토
 
     // 회원가입 버튼 -> 모든 작성 항목 확인
-    $("#btn-sign").on("click", allWrittenCheck);
+    //$("#btn-sign").on("click", allWrittenCheck);
 
     // 이메일 중복 체크 버튼 -> 이메일 중복검사
     $("#btn-duplicate-email").on("click", emailDuplicateCheck);

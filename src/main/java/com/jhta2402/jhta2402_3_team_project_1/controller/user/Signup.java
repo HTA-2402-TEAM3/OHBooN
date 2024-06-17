@@ -84,6 +84,7 @@ public class Signup extends HttpServlet {
                 .evaluation(0)
                 .profile(renameProfile)
                 .createDate(now())
+                .agreeInfoOffer(Boolean.parseBoolean(req.getParameter("agreeInfoOffer")))
                 .build();
 
         UserDao userDao = new UserDao();

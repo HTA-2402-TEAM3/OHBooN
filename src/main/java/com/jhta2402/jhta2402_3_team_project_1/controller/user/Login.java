@@ -37,21 +37,21 @@ public class Login extends HttpServlet {
                 .email(req.getParameter("email"))
                 .build();
         UserDao userDao = new UserDao();
-        UserDto loginMemberDto = userDao.loginUser(userDto);
+        UserDto loginUserDto = userDao.loginUser(userDto);
 
         // email과 password 받아서 이것을 암호화하여 PW 확인
-        if (loginMemberDto != null) {
-            String encodedPassword = loginMemberDto.getUserPW(); // 암호화된 비밀번호
+        if (loginUserDto != null) {
+            String encodedPassword = loginUserDto.getUserPW(); // 암호화된 비밀번호
             if(BCrypt.checkpw(req.getParameter("userPW"), encodedPassword)){ // BCrypt.checkpw( A, B ): 비밀번호 A와, B의 일치여부 확인
 
                 //로그인 -> 세션에서 아이디, 이름, 등급, 프로필사진 정보를 담음
                 HttpSession session = req.getSession();
-                session.setAttribute("sessionEmail", loginMemberDto.getEmail());
-                session.setAttribute("sessionNickname", loginMemberDto.getNickname());
-                session.setAttribute("sessionGrade", loginMemberDto.getGrade());
-                session.setAttribute("profile", loginMemberDto.getProfile());
+                session.setAttribute("sessionEmail", loginUserDto.getEmail());
+                session.setAttribute("sessionNickname", loginUserDto.getNickname());
+                session.setAttribute("sessionGrade", loginUserDto.getGrade());
+                session.setAttribute("profile", loginUserDto.getProfile());
 
-                String nickname =loginMemberDto.getNickname();
+                String nickname =loginUserDto.getNickname();
 
                 ModalDto modalDto = new ModalDto("로그인되었습니다.", nickname+"님 환영합니다~♥","show");
                 HttpSession session02 = req.getSession(); // 모달을 session02에 싣기
