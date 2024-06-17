@@ -7,4 +7,5 @@ public class MatchService {
         MatchDAO matchDAO = new MatchDAO();
         return matchDAO.createMatch(board_id, boardWriterName);
     }
+
 }
