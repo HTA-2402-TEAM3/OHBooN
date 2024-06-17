@@ -31,15 +31,14 @@ public class MakeChatController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession httpSession = req.getSession();
-//        String senderName = (String) httpSession.getAttribute("sessionNickname");
-        String senderName = httpSession.getId();
+        String senderName = (String) httpSession.getAttribute("sessionNickname");
+//        String senderName = httpSession.getId();
         long board_id = Long.parseLong(req.getParameter("board_id"));
 
         BoardDAO boardDAO = new BoardDAO();
         String receiverName = boardDAO.findEmailByBoardId(board_id);
 //        이거 바꿔달라고 하기 nickname!!
-
-        ChatDTO chatRoomDto = ChatDTO.builder()
+        ChatDTO makeChatDto = ChatDTO.builder()
                 .boardID(board_id)
                 .sender(senderName)
                 .receiver(receiverName)
@@ -47,7 +46,7 @@ public class MakeChatController extends HttpServlet {
 
 // 채팅방 목록도 받아올겨
         chatService = new ChatService();
-        long chat_id = chatService.getChatId(chatRoomDto);
+        long chat_id = chatService.getChatId(makeChatDto);
 //        chatroom table 생성하고 생성된 chat_id 가져오기
         System.out.println(chat_id);
 
@@ -55,6 +54,14 @@ public class MakeChatController extends HttpServlet {
         long match_id = matchService.getMatchId(board_id, receiverName);
 //        match table 생성하고 생성된 match_id 가져오기
         System.out.println(match_id);
+
+        ChatDTO chatRoomDto = ChatDTO.builder()
+                .chatID(chat_id)
+                .matchID(match_id)
+                .boardID(board_id)
+                .sender(senderName)
+                .receiver(receiverName)
+                .build();
 
         List<ChatDTO> chatRoomList = new ArrayList<>();
         chatRoomList.add(chatRoomDto);
