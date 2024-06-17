@@ -4,15 +4,15 @@
 <%@ include file="../include/header.jsp" %>
 
 <div class="container">
-    <h2 class ="mt-5 mb-5"> 회원정보</h2>
+    <h2 class ="mt-5 mb-5"> 사용자 정보</h2>
     <table class="table table-bordered">
         <tr>
             <th>PROFILE</th>
             <td>
-                <th>${infoMemberDto.email}</th>
+                <th>${infoUserDto.email}</th>
                 <c:choose>
-                    <c:when test="${not empty infoMemberDto.renameProfile}">
-                        <img src="${request.contextPath}/upload/${infoMemberDto.renameProfile}" class="profile">
+                    <c:when test="${not empty infoUserDto.renameProfile}">
+                        <img src="${request.contextPath}/upload/${infoUserDto.renameProfile}" class="profile">
                     </c:when>
                     <c:otherwise>
                         <img src="../images/user.png" class="profile">
@@ -22,29 +22,28 @@
         </tr>
         <tr>
             <th>User EMAIL</th>
-            <th>${infoMemberDto.email}</th>
+            <th>${infoUserDto.email}</th>
         </tr>
         <tr>
             <th>USER NICKNAME</th>
-            <th>${infoMemberDto.nickname}</th>
+            <th>${infoUserDto.nickname}</th>
         </tr>
         <tr>
             <th>USER NAME</th>
-            <th>${infoMemberDto.username}</th>
+            <th>${infoUserDto.username}</th>
         </tr>
         <tr>
             <th>USER PHONE NUMBER</th>
-            <th>${infoMemberDto.phone}</th>
+            <th>${infoUserDto.phone}</th>
         </tr>
         <tr>
             <th>USER BIRTH DATE</th>
-            <th>${infoMemberDto.birth}</th>
+            <th>${infoUserDto.birth}</th>
         </tr>
     </table>
 
     <div>
-        <a href="../user/password-change" class="btn btn-dark">비밀번호 변경</a>
-        <%--page 만들고 기존 비밀번호, 변경할 비밀번호, 변경할 비밀번호 확인 을 입력하는 창을 만들어 비밀번호 바꾸기--%>
+        <a href="../user/password-confirm" class="btn btn-dark">회원정보 변경</a>
     </div>
 
 </div>

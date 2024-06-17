@@ -88,7 +88,7 @@
         </div>
 
         <div>
-            <button class="btn btn-primary" id="btn-sign">SIGN IN</button>
+            <button class="btn btn-primary" id="btn-sign">SIGN UP</button>
             <button class="btn btn-outline-primary" type="reset">RESET</button>
         </div>
     </form>
