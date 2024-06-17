@@ -37,4 +37,14 @@ public class ChatDAO {
         ss.close();
         return matchId;
     }
+
+    public List<ChatDTO> getChatList(String userId) {
+        List<ChatDTO> chatList;
+//        SqlSession sqlSession = MybatisConnectionFactory.getSqlSession();
+        chatList = ss.selectList("getChatList", userId);
+        ss.commit();
+        ss.close();
+        return chatList;
+    }
+
 }

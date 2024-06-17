@@ -4,7 +4,7 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ohboon.ohboon">
     <insert id="createChatRoom" parameterType="ChatDTO">
-        insert into chatroom values (null,null,null,#{sender},#{receiver})
+        insert into chatroom values (null,#{matchID},#{boardID},#{sender},#{receiver})
     </insert>
 
     <select id="getChatID" parameterType="ChatDTO" resultType="long">
@@ -22,4 +22,5 @@
     <select id="getChatList" resultType="ChatDTO" parameterType="String">
         SELECT * FROM chatroom where sender = #{senderName} or receiver = #{senderName}
     </select>
+
 </mapper>
