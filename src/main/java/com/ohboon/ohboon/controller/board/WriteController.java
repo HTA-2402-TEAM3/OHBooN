@@ -30,11 +30,12 @@ public class WriteController extends HttpServlet {
 			long boardID = Long.parseLong(inputBoardID);
 
 			try {
-				BoardDTO boardDTO = boardService.read(boardID);
+				BoardDTO boardDTO = boardService.search(boardID);
 				req.setAttribute("board", boardDTO);
 
 			} catch (IllegalStateException illegalStateException) {
 				resp.sendError(HttpServletResponse.SC_NOT_FOUND, illegalStateException.getMessage());
+				return;
 			}
 		}
 
@@ -48,6 +49,7 @@ public class WriteController extends HttpServlet {
 		String userEmail = (String)session.getAttribute("loginEmail");
 
 		String id = req.getParameter("boardID");
+
 		String subject = req.getParameter("subject");
 		String content = req.getParameter("content");
 		String category = req.getParameter("category");

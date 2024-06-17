@@ -22,7 +22,7 @@ public class ViewController extends HttpServlet {
 		BoardService boardService = new BoardService();
 
 		try {
-			BoardDTO board = boardService.read(boardID);
+			BoardDTO board = boardService.search(boardID);
 			req.setAttribute("board", board);
 			req.getRequestDispatcher("/WEB-INF/board/view.jsp").forward(req, resp);
 
