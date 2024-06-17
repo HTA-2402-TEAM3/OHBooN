@@ -11,15 +11,16 @@
     <title>Title</title>
 </head>
 <body>
-<div class="form-floating">
-    <input type="text" class="form-control" id="floatingInput" placeholder="User Email" name="email"
-           value="${cookie.loggedEmail.value}">
-    <label for="floatingInput">User Email </label>
-</div>
-<div class="form-floating">
-    <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="userPW">
-    <label for="floatingPassword">Password</label>
-</div>
-<button class="btn btn-primary w-100 py-2" type="submit">LOGIN</button>
+<form action="login" method="post">
+    <div class="form-floating">
+        <input type="text" class="form-control" id="floatingInput" placeholder="User Email" name="user_id">
+        <label for="floatingInput">User Email </label>
+    </div>
+    <div class="form-floating">
+        <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="userPW">
+        <label for="floatingPassword">Password</label>
+    </div>
+    <button class="btn btn-primary w-100 py-2" type="submit">LOGIN</button>
+</form>
 </body>
 </html>
