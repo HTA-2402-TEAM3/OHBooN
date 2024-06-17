@@ -1,11 +1,15 @@
 package com.ohboon.ohboon.service;
 
+import java.time.LocalDateTime;
+import java.time.temporal.ChronoUnit;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
 import com.ohboon.ohboon.dao.BoardDAO;
 import com.ohboon.ohboon.dto.BoardDTO;
+import com.ohboon.ohboon.dto.ListBoardDTO;
 
 public class BoardService {
 
@@ -23,7 +27,7 @@ public class BoardService {
 		boardDAO.close();
 	}
 
-	public BoardDTO read(long id) {
+	public BoardDTO search(long id) {
 
 		BoardDAO boardDAO = new BoardDAO();
 		Optional<BoardDTO> byID = boardDAO.findByID(id);
@@ -32,10 +36,22 @@ public class BoardService {
 		return byID.orElseThrow(() -> new IllegalStateException("해당하는 게시글이 없습니다."));
 	}
 
-	public List<BoardDTO> read(int startIndex, int endIndex) {
+	public List<ListBoardDTO> search(Map<String, String> searchOptions) {
 		BoardDAO boardDAO = new BoardDAO();
-		List<BoardDTO> boardDTOS = boardDAO.findInRange(Map.of("startIndex", startIndex, "endIndex", endIndex));
+		List<ListBoardDTO> boards = boardDAO.findBySearchWord(searchOptions);
 		boardDAO.close();
+		return boards;
+	}
+
+	public List<ListBoardDTO> search(Map<String, String> searchOptions, LocalDateTime searchMeetDate) {
+		BoardDAO boardDAO = new BoardDAO();
+		List<ListBoardDTO> boardDTOS = boardDAO.findWithSimple(searchOptions);
+		boardDAO.close();
+
+		boardDTOS.sort(Comparator.comparing(
+			listBoardDTO -> Math.abs(listBoardDTO.getMeetDate().until(searchMeetDate, ChronoUnit.MINUTES))
+		));
+
 		return boardDTOS;
 	}
 
@@ -66,11 +82,11 @@ public class BoardService {
 		BoardDAO boardDAO = new BoardDAO(false);
 		int deleteResult = boardDAO.delete(boardID);
 
-		if(deleteResult <= 0) {
+		if (deleteResult <= 0) {
 			boardDAO.rollback();
 		}
 
-		if(deleteResult > 0) {
+		if (deleteResult > 0) {
 			boardDAO.commit();
 		}
 
