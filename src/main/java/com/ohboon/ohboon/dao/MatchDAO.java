@@ -10,18 +10,16 @@ import java.util.Map;
 public class MatchDAO {
     private SqlSession ss = MybatisConnectionFactory.getSqlSession();
 
-    public long createMatch(long board_id, String boardWriterName) {
-        long match_id = 0;
-        Map<String, Object> map = new HashMap<>();
-        map.put("board_id", board_id);
-        map.put("boardWriterName", boardWriterName);
+    public int createMatch(Map<String, Object> map) {
         System.out.println(map);
         int rs = ss.insert("createMatch", map);
         ss.commit();
+        ss.close();
+        return rs;
+    }
 
-        if(rs > 0 ){
-            match_id = ss.selectOne("getMatchId", map);
-        }
+    public long getMatchId(Map<String, Object> map) {
+        long match_id = ss.selectOne("getMatchId", map);
         ss.commit();
         ss.close();
         return match_id;
