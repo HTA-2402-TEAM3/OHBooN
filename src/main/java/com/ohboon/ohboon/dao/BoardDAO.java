@@ -7,11 +7,12 @@ import java.util.Optional;
 import org.apache.ibatis.session.SqlSession;
 
 import com.ohboon.ohboon.dto.BoardDTO;
+import com.ohboon.ohboon.dto.ListBoardDTO;
 import com.ohboon.ohboon.util.MybatisConnectionFactory;
 
 public class BoardDAO {
 
-	private SqlSession sqlSession;
+	private final SqlSession sqlSession;
 
 	public BoardDAO() {
 		this.sqlSession = MybatisConnectionFactory.getSqlSession();
@@ -33,8 +34,12 @@ public class BoardDAO {
 		return this.sqlSession.update("modify", boardDTO);
 	}
 
-	public List<BoardDTO> findInRange(Map<String, Integer> indexs) {
-		return this.sqlSession.selectList("findInRange", indexs);
+	public List<ListBoardDTO> findWithSimple(Map<String, String> searchOptions) {
+		return this.sqlSession.selectList("findWithSimple", searchOptions);
+	}
+
+	public List<ListBoardDTO> findBySearchWord(Map<String, String> indexs) {
+		return this.sqlSession.selectList("findBySearchWord", indexs);
 	}
 
 	public int calculateTotalCount() {
