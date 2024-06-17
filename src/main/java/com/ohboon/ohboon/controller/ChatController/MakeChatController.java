@@ -1,4 +1,4 @@
-package com.ohboon.ohboon.controller;
+package com.ohboon.ohboon.controller.ChatController;
 
 
 import com.ohboon.ohboon.dao.BoardDAO;
