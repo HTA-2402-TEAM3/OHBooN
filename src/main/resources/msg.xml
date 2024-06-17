@@ -6,4 +6,8 @@
     <insert id="saveMsg" parameterType="MsgDTO">
         insert into msg values (null, #{chatRoomId}, #{matchId}, #{sender}, #{content}, #{timeStamp})
     </insert>
+
+    <select id="getMsgList" parameterType="Long" resultType="MsgDTO">
+        select * from msg where chatroom_id = #{chatroom_id}
+    </select>
 </mapper>
