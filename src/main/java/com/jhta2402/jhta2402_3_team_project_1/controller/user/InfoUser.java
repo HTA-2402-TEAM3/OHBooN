@@ -12,14 +12,14 @@ import jakarta.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
 @WebServlet("/user/info")
-public class InfoMember extends HttpServlet {
+public class InfoUser extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String email = req.getParameter("email");
         UserDao userDao = new UserDao();
         UserDto infoUserDto = userDao.infoUser(email);
         System.out.println(infoUserDto.toString());
-        req.setAttribute("infoMemberDto", infoUserDto);
+        req.setAttribute("infoUserDto", infoUserDto);
         RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/user/info-member.jsp");
         dispatcher.forward(req, resp);
     }

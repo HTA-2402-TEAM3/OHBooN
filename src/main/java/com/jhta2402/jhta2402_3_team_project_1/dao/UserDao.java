@@ -59,4 +59,14 @@ public class UserDao {
         }
         return infoUserDto;
     }
+
+    public UserDto adminUser(String grade) {
+        UserDto adminUserDto = null;
+        try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
+            adminUserDto = sqlSession.selectOne("adminUser", grade);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return adminUserDto;
+    }
 }

@@ -16,13 +16,12 @@ import java.io.IOException;
 public class AdminHome extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String email = req.getParameter("email");
+        String grade = req.getParameter("grade");
         UserDao userDao = new UserDao();
-        UserDto infoUserDto = userDao.infoUser(email);
-        System.out.println(infoUserDto.toString());
-        req.setAttribute("infoMemberDto", infoUserDto);
+        UserDto adminUserDto = userDao.adminUser(grade);
+        System.out.println(adminUserDto.toString());
+        req.setAttribute("adminUserDto", adminUserDto);
         RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/admin/admin-home.jsp");
         dispatcher.forward(req, resp);
-
     }
 }
