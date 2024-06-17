@@ -1,5 +1,6 @@
 package com.ohboon.ohboon.controller.ChatController;
 
+import com.ohboon.ohboon.dao.ChatDAO;
 import com.ohboon.ohboon.dto.ChatDTO;
 import com.ohboon.ohboon.dto.MsgDTO;
 import com.ohboon.ohboon.service.ChatService;
@@ -17,16 +18,11 @@ import java.util.List;
 
 @WebServlet("/enterChat")
 public class ChatController extends HttpServlet {
-    MatchService matchService;
-
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         long chat_id;
         String user_id = (String) req.getSession().getAttribute("sessionNickname");
 
-//        String user_id = req.getParameter("user_id");
-        HttpSession session = req.getSession();
-        session.setAttribute("sessionNickname", user_id);
 
         if (req.getParameter("chat_id") != null) {
             chat_id = Long.parseLong(req.getParameter("chat_id"));
@@ -49,7 +45,14 @@ public class ChatController extends HttpServlet {
 
                 long match_id = 1;
 
-                req.setAttribute("user_id",user_id);
+                ChatDAO chatRoomDAO = new ChatDAO();
+                List<ChatDTO> chatList = chatRoomDAO.getChatList(user_id);
+//      ChatRoomDAO의 getChatList() 메서드를 호출하여 현재 세션의 ID를 전달
+
+                System.out.println(chatList);
+
+                req.setAttribute("chatList", chatList);
+                req.setAttribute("user_id", user_id);
                 req.setAttribute("chat_id", chat_id);
                 req.setAttribute("match_id", match_id);
                 req.setAttribute("msgList", msgList);
