@@ -4,11 +4,10 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ohboon.ohboon">
     <insert id="createMatch" parameterType="Map">
-        insert into matching(match_id, board_idx, email) values (null, #{board_id}, #{boardWriterName})
+        insert into matching(match_id, board_idx, email, sender) values (null, #{board_id}, #{boardWriterName}, #{senderName})
     </insert>
 
     <select id="getMatchId" parameterType="Map" resultType="long">
-        select match_id from matching where board_idx=#{board_id} and email = #{boardWriterName};
+        select match_id from matching where board_idx=#{board_id} and sender = #{senderName};
     </select>
-
 </mapper>
