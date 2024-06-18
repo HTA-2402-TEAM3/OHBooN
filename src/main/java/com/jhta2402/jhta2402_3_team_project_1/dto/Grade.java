@@ -10,6 +10,8 @@ public enum Grade {
     MEMBER("member"),
     MANAGER("manager"),
     ADMIN("admin"),
+    RESTRICTED1("restricted1"),
+    RESTRICTED2("restricted2"),
     BANNED("banned"),
     DELETED("deleted");
     private final String label;
