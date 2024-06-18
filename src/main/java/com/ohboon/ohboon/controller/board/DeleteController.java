@@ -20,6 +20,8 @@ public class DeleteController extends HttpServlet {
 		BoardService boardService = new BoardService();
 		boardService.delete(boardID);
 
+		resp.setStatus(HttpServletResponse.SC_OK);
 		resp.sendRedirect("/board/list");
+
 	}
 }
