@@ -34,6 +34,8 @@ public class MakeChatController extends HttpServlet {
         String senderName = (String) httpSession.getAttribute("sessionNickname");
         long board_id = Long.parseLong(req.getParameter("board_id"));
 
+        System.out.println(senderName);
+
         BoardDAO boardDAO = new BoardDAO();
         String receiverName = boardDAO.findEmailByBoardId(board_id);
 
@@ -45,6 +47,7 @@ public class MakeChatController extends HttpServlet {
                 .receiver(receiverName)
                 .build();
 
+        System.out.println("makeChatDto: "+makeChatDto);
 
         chatService = new ChatService();
         long chat_id = chatService.getChatId(makeChatDto);
@@ -52,8 +55,11 @@ public class MakeChatController extends HttpServlet {
         System.out.println(chat_id);
 
         MatchService matchService = new MatchService();
-        long match_id = matchService.getMatchId(board_id, receiverName);
+        long match_id = matchService.getMatchId(board_id, receiverName, senderName);
 //        match table 생성하고 생성된 match_id 가져오기
+
+        chatService = new ChatService();
+        chatService.insertMatchId(match_id, chat_id);
 
         ChatDTO chatRoomDto = ChatDTO.builder()
                 .chatID(chat_id)

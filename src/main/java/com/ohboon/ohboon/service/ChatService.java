@@ -5,10 +5,12 @@ import com.ohboon.ohboon.dao.MatchDAO;
 import com.ohboon.ohboon.dao.MsgDAO;
 import com.ohboon.ohboon.dto.ChatDTO;
 import com.ohboon.ohboon.dto.MsgDTO;
+import org.eclipse.tags.shaded.org.apache.xalan.xsltc.compiler.util.MultiHashtable;
 
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class ChatService {
     ChatDAO chatDAO;
@@ -40,4 +42,12 @@ public class ChatService {
         return users;
     }
 
+    public void insertMatchId(long matchId, long chatId) {
+        Map<String, Long> map = new HashMap<>();
+        map.put("match_id", matchId);
+        map.put("chat_id", chatId);
+
+        ChatDAO chatDAO1 = new ChatDAO();
+        int rs = chatDAO1.insertMatchId(map);
+    }
 }
