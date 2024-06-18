@@ -8,6 +8,7 @@ import java.util.Objects;
 
 import com.ohboon.ohboon.dto.BoardDTO;
 import com.ohboon.ohboon.service.BoardService;
+import com.ohboon.ohboon.util.CommonValidation;
 
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -55,6 +56,14 @@ public class WriteController extends HttpServlet {
 		String category = req.getParameter("category");
 		String location = req.getParameter("location");
 		String inputMeetDate = req.getParameter("meetDate");
+
+		try {
+			CommonValidation.validateNull(subject, content, category, location, inputMeetDate);
+			CommonValidation.validateBlank(subject, content, inputMeetDate);
+		} catch (IllegalStateException illegalStateException) {
+			resp.sendError(HttpServletResponse.SC_BAD_REQUEST, illegalStateException.getMessage());
+			return;
+		}
 
 		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
 		LocalDateTime meetDate = LocalDateTime.parse(inputMeetDate, formatter);
