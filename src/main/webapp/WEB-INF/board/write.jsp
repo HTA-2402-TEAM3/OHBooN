@@ -4,7 +4,43 @@
 <html>
 <head>
     <title>JSP - Hello World</title>
-    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" rel="stylesheet">
+    <script src="../js/jquery-3.7.1.min.js"></script>
+    <script>
+        function validateForm(event) {
+            let keyword = document.getElementById('keyword').value;
+            let timeInput = document.getElementById('timeInput').value;
+            let subject = document.getElementById('subject').value;
+            let content = document.getElementById('content').value;
+            let isValid = true;
+            let message = "";
+
+            if (!keyword) {
+                isValid = false;
+                message += "검색할 장소를 입력하세요.\n";
+            }
+            if (!timeInput) {
+                isValid = false;
+                message += "희망 날짜 및 시간을 입력하세요.\n";
+            }
+            if (!subject) {
+                isValid = false;
+                message += "제목을 입력하세요.\n";
+            }
+            if (!content) {
+                isValid = false;
+                message += "내용을 입력하세요.\n";
+            }
+
+            if (!isValid) {
+                alert(message);
+                event.preventDefault();
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            document.querySelector('form').addEventListener('submit', validateForm);
+        });
+    </script>
 </head>
 <body>
 <div class="container">
@@ -67,6 +103,7 @@
         </form>
     </div>
 </div>
+
 <script>
     // 현재 URL의 쿼리스트링을 가져옵니다.
     const queryString = window.location.search;
