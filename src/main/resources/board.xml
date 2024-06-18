@@ -6,17 +6,17 @@
 
     <sql id="search">
         <choose>
-            <when test="searchOption=='subject'">
-                subject like '%'||#{searchWord}||'%'
+            <when test="searchOption == 'subject'">
+                subject like CONCAT('%', #{searchWord}, '%')
             </when>
-            <when test="searchOption=='content'">
-                content like '%'||#{searchWord}||'%'
+            <when test="searchOption == 'content'">
+                content like CONCAT('%', #{searchWord}, '%')
             </when>
-            <when test="searchOption=='nickName'">
-                userName like '%'||#{searchWord}||'%'
+            <when test="searchOption == 'nickname'">
+                nickname like CONCAT('%', #{searchWord}, '%')
             </when>
-            <when test="searchOption=='all'">
-                subject like '%'||#{searchWord}||'%' or content like '%'||#{searchWord}||'%'
+            <when test="searchOption == 'all'">
+                subject like CONCAT('%', #{searchWord}, '%') OR content like CONCAT('%', #{searchWord}, '%')
             </when>
             <otherwise>
                 subject like '%%'
@@ -33,8 +33,9 @@
         where num between #{startIndex} and #{endIndex}
     </select>
 
-    <select id="searchBoardCount" resultType="int" parameterType="Map">
-        select count(*) from board where
+    <select id="calculateWordSearchBoardCount" resultType="int" parameterType="Map">
+        select count(*) from board natural join user b1
+        where not view_option = 0 and
         <include refid="search"/>
     </select>
 
@@ -50,6 +51,13 @@
         where
         num between #{startIndex} and #{endIndex}
     </select>
+
+    <select id="calculateSimpleSearchBoardCount" resultType="int" parameterType="Map">
+        select count(*) from board natural join user b1
+        where not view_option = 0
+        and location like '%'||#{location}||'%' and between #{minTime} and #{maxTime} and category = #{category}
+    </select>
+
 
     <select id="findAll" resultType="BoardDTO">
         select * from board
@@ -71,10 +79,6 @@
         where id = #{id}
     </update>
 
-
-    <select id="calculateTotalCount" resultType="int">
-        select count(*) from board;
-    </select>
 
     <update id="delete" parameterType="long">
         update board set view_option = 0 where id = #{id}
