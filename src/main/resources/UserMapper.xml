@@ -9,7 +9,7 @@
             #{email}, #{nickname}, #{username}, #{birth}, #{phone}, true,
             #{userPW}, #{grade}, null, #{profile}, #{createDate}, #{agreeInfoOffer}, null
         )
-        commit;
+
     </insert>
 
     <select id="emailCheck" resultType="int" parameterType="String">
@@ -21,7 +21,7 @@
     </select>
 
     <select id="loginUser" resultType="UserDto" parameterType="UserDto">
-        select * from user where email = #{email} and (grade = MEMBER or grade = MANAGER or grade = ADMIN) and available = 1
+        select * from user where email = #{email} and available = 1
     </select>
 
     <select id="infoUser" resultType="UserDto" parameterType="UserDto">
@@ -29,7 +29,7 @@
     </select>
 
     <select id="findUserByEmail" resultType="UserDto" parameterType="String">
-        Select count(*) as total from user where email = #{email} and available = 1
+        Select count(*) as total from user where email = #{email} and available = 1 and grade=
     </select>
 
     <select id="findUserByToken" resultType="UserDto">

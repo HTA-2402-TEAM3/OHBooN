@@ -22,4 +22,5 @@ public class UserDto {
     private String profile;
     private LocalDateTime createDate;
     private boolean agreeInfoOffer;
+    private LocalDateTime requesttimefordeletion;
 }

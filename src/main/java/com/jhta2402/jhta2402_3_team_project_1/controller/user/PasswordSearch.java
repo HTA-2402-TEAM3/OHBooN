@@ -24,18 +24,6 @@ public class PasswordSearch extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String email = req.getParameter("email");
-        System.out.println(email);
-        UserDao userDao = new UserDao();
-        int result = userDao.emailCheck(email);
-
-        // 결과값을 json으로 변경해서 프론트에 전달해야 함.
-        Gson gson = new Gson();
-        Map<String, Integer> resultMap = new HashMap<>();
-        resultMap.put("count",result);
-        String resultJson = gson.toJson(resultMap);
-        resp.setContentType("application/json; charset=utf-8");
-        PrintWriter out = resp.getWriter();
-        out.println(resultJson);
+        super.doPost(req, resp);
     }
 }
