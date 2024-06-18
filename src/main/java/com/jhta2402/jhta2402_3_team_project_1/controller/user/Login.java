@@ -54,6 +54,7 @@ public class Login extends HttpServlet {
 
                 if(grade==STANDBY){
                     modalDto = new ModalDto("이메일 인증 안내", nickname+"님 환영합니다. 이메일 인증 후에 다시 로그인해주세요.","show");
+                    session.invalidate();
                 }else if(grade==MEMBER){
                     modalDto = new ModalDto("로그인되었습니다.", nickname+"님 환영합니다~♥","show");
                 }else if(grade==MANAGER){

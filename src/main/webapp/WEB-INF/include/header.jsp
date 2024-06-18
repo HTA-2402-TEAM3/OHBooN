@@ -26,6 +26,12 @@
             </a>
         </div>
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
+            <c:choose>
+                <c:when test="${sessionEmail eq not null}">
+                    <li><a href="../admin/home" class="nav-link px-2 link-secondary">Home</a></li>
+                </c:when>
+            </c:choose>
+
             <li><a href="../index/index" class="nav-link px-2 link-secondary">Home</a></li>
             <li><a href="../user/list" class="nav-link px-2">List</a></li>
             <li><a href="../board/list?page=1" class="nav-link px-2">Board</a></li>

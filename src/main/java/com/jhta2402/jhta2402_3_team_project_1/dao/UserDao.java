@@ -58,6 +58,12 @@ public class UserDao {
         UserDto infoUserDto = null;
         try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
             infoUserDto = sqlSession.selectOne("infoUser", nickname);
+
+//            UserMapper userMapper = sqlSession.getMapper(UserMapper.class);
+//            infoUserDto = userMapper.findUserByNickname(nickname);
+
+            //디버깅 로그
+            System.out.println("User found: " + (infoUserDto != null ? infoUserDto.toString() : "null"));
         } catch (Exception e) {
             e.printStackTrace();
         }

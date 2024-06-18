@@ -31,13 +31,7 @@ public class AdminFilter implements Filter {
 
         Grade grade = (Grade) session.getAttribute("grade");
 
-        if(grade == null){
-            ModalDto modalDto = new ModalDto("알림", "잘못된 접근입니다.", "show");
-            //session.setAttribute("modal", modalDto);
-            req.setAttribute("modal", modalDto);
-            resp.sendRedirect( req.getContextPath() + "/index/index");
-            //ScriptWriter.alertAndNext(resp, "로그인 페이지로 이동합니다.", req.getContextPath() + "/member/login");
-        }else if(grade.equals(Grade.ADMIN)) {
+        if(grade.equals(Grade.ADMIN) || grade.equals(Grade.MANAGER)) {
             System.out.println("grade admin true");
             chain.doFilter(request, response);
         }else {

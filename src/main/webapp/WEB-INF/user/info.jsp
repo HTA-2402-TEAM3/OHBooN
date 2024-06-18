@@ -21,6 +21,10 @@
             </td>
         </tr>
         <tr>
+            <th>MEMBER GRADE</th>
+            <th>${infoUserDto.grade}</th>
+        </tr>
+        <tr>
             <th>User EMAIL</th>
             <th>${infoUserDto.email}</th>
         </tr>
@@ -45,8 +49,12 @@
             <th>${infoUserDto.birth}</th>
         </tr>
         <tr>
-            <th>USER BIRTH DATE</th>
-            <th>${infoUserDto.birth}</th>
+            <th>EVALUATION</th>
+            <th>${infoUserDto.evaluation}</th>
+        </tr>
+        <tr>
+            <th>AGREEMENT OF OFFERING INFORMATION</th>
+            <th>${infoUserDto.agreeinfooffer}</th>
         </tr>
     </table>
 

@@ -6,6 +6,8 @@
 
     <form action="../user/signup" method="post" enctype="multipart/form-data">
 
+        <input type="hidden" id="agreeInfoOfferValue" name="agreeInfoOfferValue" value="false">
+
         <div class="mb-3">
             <div class="row g-3">
                 <div class="col-auto">
@@ -109,11 +111,13 @@
 </div>
 
 <script>
-
     // 폼 제출 처리
     $(document).ready(function() {
         $("#btn-sign").click(function(event) {
             event.preventDefault(); // 기본 제출 동작 방지
+
+            // 선택약관 체크박스 체크 여부 갱신
+            $("#agreeInfoOfferValue").val($("#agreeInfoOffer").prop('checked'));
 
             if (allWrittenCheck()) {
                 $("form").submit(); // 모든 검사 항목 통과 시 폼 제출
@@ -148,7 +152,7 @@
         }
     });
 
-    //이메일 중복 검사 함수
+    //이메일 유효성 및 중복 검사
     function emailDuplicateCheck(){
         const email=$("#email").val();
         const check_email = /^[a-zA-Z0-9]([-_.]?[a-zA-Z0-9])*@[a-zA-Z0-9]([-_.]?[a-zA-Z0-9])*.[a-zA-Z]{2,3}$/i; // 이메일 정규식
@@ -320,6 +324,7 @@
 
     // 모든 항목 검사 함수
     function allWrittenCheck(){
+
         if($("#email").val().trim()==="") {
             alert("Email을 작성해주세요.");
             $("#email").attr("readonly", false).val("").focus();
@@ -397,6 +402,7 @@
             $("#agreeTerms").focus();
             return false;
         }
+
         console.log("======================");
         return true;
     }
@@ -437,6 +443,7 @@
         }
     }
 
+    // 패스워드 유효성 검사
     function checkPW() {
         const userPW = $("#userPW").val();
         const conditions = [
@@ -497,6 +504,7 @@
         }
     }
 
+    // 사용자 이름 유효성 검사
     function checkUserName() {
         const userName = $("#userName").val();
         const check_userName = /^[가-힣a-zA-Z]+([가-힣a-zA-Z\s]*)$/;
@@ -514,15 +522,16 @@
         }
     }
 
-
 </script>
 
 <script>
+
     var isEmailChecked = false; // 이메일 중복체크 실시 여부
     var isNicknameChecked = false; // 닉네임 중복체크를 실시 여부
     var isValidPW = false;  // 패스워드가 유효한지 검토
     var isValidPhoneNum = false; // 전화번호가 유효한지 검토
     var isValidUserName = false; // 사용자 이름이 유효한지 검토
+
 
     // 회원가입 버튼 -> 모든 작성 항목 확인
     //$("#btn-sign").on("click", allWrittenCheck);

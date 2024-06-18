@@ -18,4 +18,7 @@ public interface UserMapper {
     UserDto infoUser(@Param("nickname") String nickname);
 
     UserDto findUserByEmail(String email);
+
+
+    UserDto findUserByNickname(String nickname);
 }

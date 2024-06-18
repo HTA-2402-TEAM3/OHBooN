@@ -25,11 +25,15 @@
     </select>
 
     <select id="infoUser" resultType="UserDto" parameterType="UserDto">
-        select * from user where nickname = #{nickname} and available = 1
+        select * from user where nickname = #{nickName} and available = 1
     </select>
 
     <select id="findUserByEmail" resultType="UserDto" parameterType="String">
         Select count(*) as total from user where email = #{email} and available = 1 and grade=
+    </select>
+
+    <select id="findUserByNickname" parameterType="String" resultType="UserDto">
+        SELECT * FROM user WHERE nickname = #{nickname} and available = 1
     </select>
 
     <select id="findUserByToken" resultType="UserDto">
