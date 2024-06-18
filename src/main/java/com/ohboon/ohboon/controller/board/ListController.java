@@ -35,20 +35,11 @@ public class ListController extends HttpServlet {
 		if (strPage != null && !strPage.isBlank()) {
 			page = Integer.parseInt(strPage);
 		}
+
 		BoardService boardService = new BoardService();
-		int totalCount = boardService.calculateTotalCount();
-
-		int totalPage = totalCount / 10;
-
-		if (totalCount > 10 && totalCount % 10 != 0) {
-			totalPage++;
-		}
 
 		int startPage = (page / 10) * 10;
 		int endPage = startPage + 9;
-		if (endPage > totalPage) {
-			endPage = totalPage;
-		}
 
 		int startIndex = page * 10 + 1;
 		int endIndex = startIndex + 9;
@@ -59,12 +50,19 @@ public class ListController extends HttpServlet {
 			"startIndex", Objects.toString(startIndex),
 			"endIndex", Objects.toString(endIndex)));
 
+		int totalCount = 0;
 		List<ListBoardDTO> boards = new ArrayList<>();
 
 		if (Objects.isNull(strMeetDate)) {
+
 			searchOptions.put("searchOption", searchOption);
 			searchOptions.put("searchWord", searchWord);
+
 			boards = boardService.search(searchOptions);
+			totalCount = boardService.calculateWordSearchBoardCount(searchOptions);
+
+			req.setAttribute("searchOption", searchOption);
+			req.setAttribute("searchWord", searchWord);
 		}
 
 		if (Objects.nonNull(strMeetDate)) {
@@ -80,15 +78,29 @@ public class ListController extends HttpServlet {
 			searchOptions.put("category", category);
 
 			boards = boardService.search(searchOptions, searchMeetDate);
+			totalCount = boardService.calculateSimpleSearchBoardCount(searchOptions);
+
+			req.setAttribute("location", location);
+			req.setAttribute("category", category);
+			req.setAttribute("meetDate", searchMeetDate);
 		}
 
-		System.out.println(boards);
+		int totalPage = totalCount / 10;
+
+		if (totalCount > 10 && totalCount % 10 == 0) {
+			totalPage--;
+		}
+
+		if (endPage >= totalPage) {
+			endPage = totalPage;
+		}
 
 		req.setAttribute("boards", boards);
 		req.setAttribute("startPage", startPage);
 		req.setAttribute("endPage", endPage);
 		req.setAttribute("totalPage", totalPage);
 		req.setAttribute("totalCount", totalCount);
+
 		RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/board/list.jsp");
 		requestDispatcher.forward(req, resp);
 	}
