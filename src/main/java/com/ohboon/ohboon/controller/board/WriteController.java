@@ -87,6 +87,7 @@ public class WriteController extends HttpServlet {
 
 			resp.setContentType("application/json");
 			resp.setCharacterEncoding("UTF-8");
+			resp.setStatus(HttpServletResponse.SC_OK);
 			PrintWriter writer = resp.getWriter();
 			writer.println("{\"writeMessage\": \"" + writeMessage + "\"}");
 			writer.flush();
