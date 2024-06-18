@@ -10,10 +10,10 @@
 <div class="container">
     <div class="container">
         <h2 class="mt-5 mb-5">글쓰기</h2>
-            <div >
-                <input type="text" id="keyword" placeholder="검색할 장소를 입력하세요">
-                <button onclick="searchPlaces()">검색</button>
-            </div>
+        <div>
+            <input type="text" id="keyword" placeholder="검색할 장소를 입력하세요">
+            <button onclick="searchPlaces()">검색</button>
+        </div>
         <form action="../board/write" method="post">
             <div id="place"></div>
             <div id="map" style="width:50%;height:300px;"></div>
@@ -21,6 +21,37 @@
                 <label for="timeInput" class="form-label">희망 날짜 및 시간</label>
                 <input type="datetime-local" id="timeInput" placeholder="날짜를 입력해 주세요" name="timeInput">
             </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="category" id="flexRadioDefault1" value="커리어 상담" checked>
+                <label class="form-check-label" for="flexRadioDefault1">
+                    커리어 상담
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="category" id="flexRadioDefault2" value="학업 및 교육" >
+                <label class="form-check-label" for="flexRadioDefault2">
+                    학업 및 교육
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="category" id="flexRadioDefault3" value="창업 및 비즈니스">
+                <label class="form-check-label" for="flexRadioDefault3">
+                    창업 및 비즈니스
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="category" id="flexRadioDefault4" value="기술 및 개발" >
+                <label class="form-check-label" for="flexRadioDefault4">
+                    기술 및 개발
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="category" id="flexRadioDefault5" value="가벼운 대화" >
+                <label class="form-check-label" for="flexRadioDefault5">
+                    가벼운 대화
+                </label>
+            </div>
+
             <div class="mb-3">
                 <label for="subject" class="form-label">제목</label>
                 <input type="text" class="form-control" id="subject" placeholder="제목을 쓰세요" name="subject">
@@ -161,8 +192,6 @@
             map.setBounds(bounds);
         }
     }
-
-
 </script>
 </body>
 </html>
