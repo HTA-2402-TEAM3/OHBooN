@@ -10,7 +10,8 @@ public class CommonValidation {
 		Arrays.stream(input)
 			.forEach(each -> {
 				if (Objects.isNull(each)) {
-					throw new IllegalStateException(each + "에 null 값은 입력할 수 없습니다.");
+
+					throw new IllegalStateException("null 값은 입력할 수 없습니다.");
 				}
 			});
 	}

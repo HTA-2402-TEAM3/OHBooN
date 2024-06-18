@@ -7,8 +7,8 @@
 <body>
 <h1><%= "Hello World!" %></h1>
 <br/>
-<a href="hello-servlet">Hello Servlet</a>
 
+<meta http-equiv="refresh" content="0; url=index/index" >
 
 </body>
 </html>

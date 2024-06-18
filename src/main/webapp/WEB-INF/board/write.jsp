@@ -7,18 +7,14 @@
     <script src="../js/jquery-3.7.1.min.js"></script>
     <script>
         function validateForm(event) {
-            let keyword = document.getElementById('keyword').value;
-            let timeInput = document.getElementById('timeInput').value;
+            let meetDate = document.getElementById('meetDate').value;
             let subject = document.getElementById('subject').value;
             let content = document.getElementById('content').value;
             let isValid = true;
             let message = "";
 
-            if (!keyword) {
-                isValid = false;
-                message += "검색할 장소를 입력하세요.\n";
-            }
-            if (!timeInput) {
+
+            if (!meetDate) {
                 isValid = false;
                 message += "희망 날짜 및 시간을 입력하세요.\n";
             }
@@ -51,11 +47,12 @@
             <button onclick="searchPlaces()">검색</button>
         </div>
         <form action="../board/write" method="post">
+
             <div id="place"></div>
             <div id="map" style="width:50%;height:300px;"></div>
             <div class="mb-3">
-                <label for="timeInput" class="form-label">희망 날짜 및 시간</label>
-                <input type="datetime-local" id="timeInput" placeholder="날짜를 입력해 주세요" name="timeInput">
+                <label for="meetDate" class="form-label">희망 날짜 및 시간</label>
+                <input type="datetime-local" id="meetDate" placeholder="날짜를 입력해 주세요" name="meetDate">
             </div>
             <div class="form-check">
                 <input class="form-check-input" type="radio" name="category" id="flexRadioDefault1" value="커리어 상담" checked>
@@ -112,14 +109,20 @@
     const urlParams = new URLSearchParams(queryString);
 
     // 특정 파라미터의 값을 가져옵니다.
-    const BoardID = urlParams.get('boardID');  // 'param' 대신 원하는 파라미터 이름을 사용합니다.
+    let BoardID = urlParams.get('boardID');  // 'param' 대신 원하는 파라미터 이름을 사용합니다.
+
+    console.log(!BoardID);
+    // "null" 문자열을 실제 null로 변환합니다.
+    if (BoardID === "null") {
+        BoardID = null;
+    }
 
     // 가져온 값을 콘솔에 출력합니다.
     console.log('param 값:', BoardID);
 
     // HTML 요소에 값을 표시합니다.
     const boardIdDiv = document.getElementById('confirm');
-    boardIdDiv.innerHTML += '<input type="hidden" name="boardID" value="' + BoardID + '">';
+    boardIdDiv.innerHTML += '<input type="hidden" name="boardID" value="' + (BoardID !== null ? BoardID : '') + '">';
 </script>
 <script type="text/javascript"
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=787689d01ab967ba84d8c08bc1dc540c&libraries=services"></script>

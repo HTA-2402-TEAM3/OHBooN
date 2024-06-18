@@ -65,7 +65,8 @@ public class WriteController extends HttpServlet {
 			return;
 		}
 
-		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+		inputMeetDate = inputMeetDate.replace("T", " ");
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 		LocalDateTime meetDate = LocalDateTime.parse(inputMeetDate, formatter);
 
 		BoardDTO boardDTO = BoardDTO.builder()
