@@ -42,8 +42,12 @@ public class BoardDAO {
 		return this.sqlSession.selectList("findBySearchWord", searchOptions);
 	}
 
-	public int calculateTotalCount() {
-		return this.sqlSession.selectOne("calculateTotalCount");
+	public int calculateWordSearchBoardCount(Map<String, String> searchOptions) {
+		return this.sqlSession.selectOne("calculateWordSearchBoardCount", searchOptions);
+	}
+
+	public int calculateSimpleSearchBoardCount(Map<String, String> searchOptions) {
+		return this.sqlSession.selectOne("calculateSimpleSearchBoardCount", searchOptions);
 	}
 
 	public int delete(long boardID) {

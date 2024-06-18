@@ -71,9 +71,16 @@ public class BoardService {
 		boardDAO.close();
 	}
 
-	public int calculateTotalCount() {
+	public int calculateWordSearchBoardCount(Map<String, String> searchOptions) {
 		BoardDAO boardDAO = new BoardDAO();
-		int totalCount = boardDAO.calculateTotalCount();
+		int totalCount = boardDAO.calculateWordSearchBoardCount(searchOptions);
+		boardDAO.close();
+		return totalCount;
+	}
+
+	public int calculateSimpleSearchBoardCount(Map<String, String> searchOptions) {
+		BoardDAO boardDAO = new BoardDAO();
+		int totalCount = boardDAO.calculateSimpleSearchBoardCount(searchOptions);
 		boardDAO.close();
 		return totalCount;
 	}
