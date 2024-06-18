@@ -15,15 +15,14 @@ import lombok.ToString;
 @AllArgsConstructor
 @Builder
 @ToString
-public class BoardDTO {
+public class ListBoardDTO {
 	private long id;
-	private String email;
-	private String subject;
-	private String content;
+	private String nickName;
+	private int evaluation;
 	private LocalDateTime regDate;
-	private int viewOption;
 	private String category;
-	private String location;
+	private String subject;
 	private LocalDateTime meetDate;
-	private LocalDateTime modifyDate;
+	private String location;
+	private int viewOption;
 }

@@ -8,7 +8,6 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@RequiredArgsConstructor
 @ToString
 public class MsgDTO {
     private int messageId;
