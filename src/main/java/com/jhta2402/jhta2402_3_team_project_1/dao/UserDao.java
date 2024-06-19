@@ -203,15 +203,14 @@ public class UserDao {
         sendMailInfo.put("subject", "비밀번호 재설정 링크");
         sendMailInfo.put("content", "PW 재설정 링크: "+ link);
         sendMailInfo.put("format", "text/plain; charset=utf-8");
-        try{
+        try {
             NaverMail naverMail = new NaverMail();
             naverMail.sendMail(sendMailInfo);
-            System.out.println("success to send e-mail");
-        }catch (Exception e){
+            return true;
+        } catch (Exception e) {
             e.printStackTrace();
-            System.out.println("fail to send e-mail");
+            return false;
         }
-        return true;
     }
 
     public int updatePassword(String email, String newPassword) {
@@ -235,21 +234,23 @@ public class UserDao {
         return result;
     }
 
-    public void savePasswordResetToken(String email, String token) {
+    public boolean savePasswordResetToken(String email, String token) {
+        int result;
         try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
             Map<String, Object> params = new HashMap<>();
             params.put("email", email);
             params.put("token", token);
-            sqlSession.update("com.jhta2402.mybatis.UserMapper.savePasswordResetToken", params);
-            sqlSession.commit();
+            result = sqlSession.update("savePasswordResetToken", params);
+            if(result>0) return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return false;
     }
 
     public boolean isTokenValid(String token) {
         try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
-            int count = sqlSession.selectOne("com.jhta2402.mybatis.UserMapper.isTokenValid", token);
+            int count = sqlSession.selectOne("isTokenValid", token);
             return count > 0;
         } catch (Exception e) {
             e.printStackTrace();
@@ -257,15 +258,18 @@ public class UserDao {
         }
     }
 
-    public void updatePasswordByToken(String token, String newPassword) {
+    public int updatePasswordByToken(String token, String hashedPassword) {
+        int result = 0;
         try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
             Map<String, Object> params = new HashMap<>();
             params.put("token", token);
-            params.put("password", BCrypt.hashpw(newPassword, BCrypt.gensalt()));
-            sqlSession.update("com.jhta2402.mybatis.UserMapper.updatePasswordByToken", params);
+            params.put("hashedPassword", hashedPassword);
+            result = sqlSession.update("updatePasswordByToken", params);
+            sqlSession.commit();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        return result;
     }
 
     // 이메일 인증
@@ -317,5 +321,17 @@ public class UserDao {
         }
         return result;
     }
+
+    public int updateUserInfo(UserDto userDto) {
+        int result = 0;
+        try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
+            result = sqlSession.update("com.jhta2402.mybatis.UserMapper.updateUserInfo", userDto);
+            sqlSession.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 
 }

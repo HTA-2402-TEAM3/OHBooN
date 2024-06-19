@@ -56,8 +56,8 @@
             <td></td>
         </tr>
         <tr>
-            <th>USER BIRTH DATE</th>
-            <td>${infoUserDto.birth}</td>
+            <th>USER ACCOUNT CREATED DATE</th>
+            <td>${infoUserDto.createDate}</td>
             <td></td>
         </tr>
         <tr>

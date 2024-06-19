@@ -36,8 +36,13 @@ public class Login extends HttpServlet {
         UserDao userDao = new UserDao();
         UserDto loginUserDto = userDao.loginUser(userDto);
 
+        if (loginUserDto == null){
+            // 아이디가 없는 경우
+            System.out.println("email doesnot exist");
+            ScriptWriter.alertAndBack(resp, "이메일 또는 패스워드가 일치하지 않습니다.");
+        }
         // email과 password 받아서 이것을 암호화하여 PW 확인
-        if (loginUserDto != null) {
+        else {
             String encodedPassword = loginUserDto.getUserPW(); // 암호화된 비밀번호
             if(BCrypt.checkpw(req.getParameter("userPW"), encodedPassword)){ // BCrypt.checkpw( A, B ): 비밀번호 A와, B의 일치여부 확인
 
@@ -46,7 +51,13 @@ public class Login extends HttpServlet {
                 session.setAttribute("sessionEmail", loginUserDto.getEmail());
                 session.setAttribute("sessionNickname", loginUserDto.getNickname());
                 session.setAttribute("sessionGrade", loginUserDto.getGrade());
-                session.setAttribute("profile", loginUserDto.getProfile());
+                session.setAttribute("sessionProfile", loginUserDto.getProfile());
+                session.setAttribute("sessionUserName", loginUserDto.getUsername());
+                session.setAttribute("sessionBirth", loginUserDto.getBirth());
+                session.setAttribute("sessionPhone", loginUserDto.getPhone());
+                session.setAttribute("sessionEvaluation", loginUserDto.getEvaluation());
+                session.setAttribute("sessionCreateDate", loginUserDto.getCreateDate());
+                session.setAttribute("sessionAgreeInfoOffer", loginUserDto.isAgreeInfoOffer());
 
                 String nickname = loginUserDto.getNickname();
                 Grade grade = loginUserDto.getGrade();
@@ -87,10 +98,11 @@ public class Login extends HttpServlet {
                 HttpSession session02 = req.getSession(); // 모달을 session02에 싣기
                 session02.setAttribute("modal", modalDto);
                 resp.sendRedirect("../index/index");
-
+            }else {
+                // 비밀번호가 일치하지 않는 경우
+                System.out.println("password is not matching");
+                ScriptWriter.alertAndBack(resp, "이메일 또는 패스워드가 일치하지 않습니다.");
             }
-        }else{
-            ScriptWriter.alertAndBack(resp, "이메일 또는 패스워드가 일치하지 않습니다.");
         }
     }
 }

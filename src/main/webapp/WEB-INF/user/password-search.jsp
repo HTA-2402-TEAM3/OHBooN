@@ -3,12 +3,12 @@
 <%@ include file="../include/header.jsp" %>
 
 <main class="form-signin w-100 m-auto">
-    <form action="../user/login/password-search" method="post">
+    <form action="${pageContext.request.contextPath}/user/login/password-search" method="post">
         <div class="mb-3">
             <div class="row g-3">
                 <div class="col-auto">
                     <label for="email" class="form-label">사용자 E-MAIL 입력 </label>
-                    <input type="email" class="form-control" id="email" placeholder="user email" name="email">
+                    <input type="email" class="form-control" id="email" placeholder="user email" name="email" required>
                     <button type="button" id="btn-search-email" class="btn btn-dark mt-2">이메일 검색</button>
                     <button type="button" id="btn-modify-email" class="btn btn-secondary mt-2">이메일 수정</button>
 
@@ -45,7 +45,7 @@
                 const ask = confirm($("#email").val()+" 계정의 PW를 변경하시겠습니까?");
                 if(ask) {
                     $("form").submit();
-                    alert($("#email").val()+"로 변경된 PW를 발송하였습니다.")
+                    alert($("#email").val()+"로 PW 변경 링크를 발송하였습니다.")
                 }else {
                     $("#email").attr("readonly", false).val("").focus();
                     return false;
@@ -68,7 +68,7 @@
             $("#email").attr("readonly", false).val("").focus();
         } else{
             $.ajax({
-                url:"/user/email-check",
+                url: "${pageContext.request.contextPath}/user/email-check",
                 data: {
                     email:$("#email").val()
                 },

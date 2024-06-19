@@ -13,8 +13,12 @@ import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
 
-@WebServlet("/user/password-confirm")
+@WebServlet("/user/info/password-confirm")
 public class PasswordConfirm extends HttpServlet {
+    @Override
+    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        req.getRequestDispatcher("/WEB-INF/user/password-confirm.jsp").forward(req, resp);
+    }
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String password = req.getParameter("password");
@@ -32,4 +36,6 @@ public class PasswordConfirm extends HttpServlet {
             ScriptWriter.alertAndBack(resp, "비밀번호가 일치하지 않습니다.");
         }
     }
+
+
 }
