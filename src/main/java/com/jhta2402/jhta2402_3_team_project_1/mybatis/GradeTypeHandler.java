@@ -22,12 +22,22 @@ public class GradeTypeHandler implements TypeHandler<Grade> {
     public Grade getResult(ResultSet rs, String columnName) throws SQLException {
         String grade = rs.getString(columnName); // member, manager, admin
         Grade result = null;
-        if(grade.equalsIgnoreCase("member")){
+        if(grade.equalsIgnoreCase("standby")){
+            result = Grade.STANDBY;
+        }else if(grade.equalsIgnoreCase("member")){
             result = Grade.MEMBER;
         }else if(grade.equalsIgnoreCase("manager")){
             result = Grade.MANAGER;
         }else if(grade.equalsIgnoreCase("admin")){
             result = Grade.ADMIN;
+        }else if(grade.equalsIgnoreCase("restricted1")){
+            result = Grade.RESTRICTED1;
+        }else if(grade.equalsIgnoreCase("restricted2")){
+            result = Grade.RESTRICTED2;
+        }else if(grade.equalsIgnoreCase("banned")){
+            result = Grade.BANNED;
+        }else if(grade.equalsIgnoreCase("deleted")){
+            result = Grade.DELETED;
         }
         return result;
     }
@@ -36,12 +46,22 @@ public class GradeTypeHandler implements TypeHandler<Grade> {
     public Grade getResult(ResultSet rs, int columnIndex) throws SQLException {
         String grade = rs.getString(columnIndex); // member, manager, admin
         Grade result = null;
-        if(grade.equalsIgnoreCase("member")){
+        if(grade.equalsIgnoreCase("standby")){
+            result = Grade.STANDBY;
+        }else if(grade.equalsIgnoreCase("member")){
             result = Grade.MEMBER;
         }else if(grade.equalsIgnoreCase("manager")){
             result = Grade.MANAGER;
         }else if(grade.equalsIgnoreCase("admin")){
             result = Grade.ADMIN;
+        }else if(grade.equalsIgnoreCase("restricted1")){
+            result = Grade.RESTRICTED1;
+        }else if(grade.equalsIgnoreCase("restricted2")){
+            result = Grade.RESTRICTED2;
+        }else if(grade.equalsIgnoreCase("banned")){
+            result = Grade.BANNED;
+        }else if(grade.equalsIgnoreCase("deleted")){
+            result = Grade.DELETED;
         }
         return result;
     }
@@ -50,12 +70,22 @@ public class GradeTypeHandler implements TypeHandler<Grade> {
     public Grade getResult(CallableStatement cs, int columnIndex) throws SQLException {
         String grade = cs.getString(columnIndex); // member, manager, admin
         Grade result = null;
-        if(grade.equalsIgnoreCase("member")){
+        if(grade.equalsIgnoreCase("standby")){
+            result = Grade.STANDBY;
+        }else if(grade.equalsIgnoreCase("member")){
             result = Grade.MEMBER;
         }else if(grade.equalsIgnoreCase("manager")){
             result = Grade.MANAGER;
         }else if(grade.equalsIgnoreCase("admin")){
             result = Grade.ADMIN;
+        }else if(grade.equalsIgnoreCase("restricted1")){
+            result = Grade.RESTRICTED1;
+        }else if(grade.equalsIgnoreCase("restricted2")){
+            result = Grade.RESTRICTED2;
+        }else if(grade.equalsIgnoreCase("banned")){
+            result = Grade.BANNED;
+        }else if(grade.equalsIgnoreCase("deleted")){
+            result = Grade.DELETED;
         }
         return result;
     }

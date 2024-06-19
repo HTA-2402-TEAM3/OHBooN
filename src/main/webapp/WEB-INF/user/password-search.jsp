@@ -2,22 +2,38 @@
 
 <%@ include file="../include/header.jsp" %>
 
-<form action="../user/password-search" method="post">
+<main class="form-signin w-100 m-auto">
+    <form action="../user/login/password-search" method="post">
+        <div class="mb-3">
+            <div class="row g-3">
+                <div class="col-auto">
+                    <label for="email" class="form-label">사용자 E-MAIL 입력 </label>
+                    <input type="email" class="form-control" id="email" placeholder="user email" name="email">
+                    <button type="button" id="btn-search-email" class="btn btn-dark mt-2">이메일 검색</button>
+                    <button type="button" id="btn-modify-email" class="btn btn-secondary mt-2">이메일 수정</button>
 
-    <div class="mb-3">
-        <div class="row g-3">
-            <div class="col-auto">
-                <label for="email" class="form-label">USER E-MAIL: </label>
-                <input type="email" class="form-control" id="email" placeholder="user email" name="email">
-                <button type="button" id="btn-duplicate-email" class="btn btn-dark mt-2">이메일 검색</button>
-                <button type="submit" id="btn-send-email" class="btn btn-outline-primary mt-2" value="비밀번호 재설정 링크 보내기">비밀번호 변경 메일 보내기</button>
+                    <button type="submit" id="btn-send-email" class="btn btn-outline-primary mt-2">비밀번호 변경 메일 보내기</button>
+                </div>
             </div>
         </div>
-    </div>
-</form>
+    </form>
+</main>
 
 <script>
 
+    // 이메일 검색 여부 체크하는 변수
+    var isEmailChecked = false;
+
+    //이메일 검색
+    $("#btn-search-email").on("click", searchEmail);
+
+    //이메일 수정
+    $("#btn-modify-email").on("click", function(){
+        isEmailChecked = false;
+        $("#email").val("").attr("readonly", false).focus();
+    });
+
+    // PW 변경을 위한 메일 발송 단계
     $(document).ready(function() {
         $("#btn-send-email").click(function(event) {
             event.preventDefault(); // 기본 제출 동작 방지
@@ -38,13 +54,16 @@
         });
     });
 
-    var isEmailChecked;
-
+    // 이메일 유효성 검사 후 DB에서 이메일 검색
     function searchEmail(){
         const check_email =  RegExp(/^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i);
         isEmailChecked=false;
 
-        if(!check_email.test($("#email").val())){
+        if($("#email").val()===""){
+            alert("이메일을 입력해주세요.");
+            $("#email").attr("readonly", false).val("").focus();
+        }
+        else if(!check_email.test($("#email").val())){
             alert("이메일 양식에 맞지 않습니다. 이메일 확인 후에 이메일 검색 버튼을 다시 눌러주세요.");
             $("#email").attr("readonly", false).val("").focus();
         } else{
@@ -68,13 +87,11 @@
                             return isEmailChecked;
                         }else {
                             $("#email").attr("readonly", false).val("").focus();
-                            return false;
                         }
                     }
                 },
                 fail:function(error) {
                     console.log(error);
-                    return false;
                 }
             });
         }

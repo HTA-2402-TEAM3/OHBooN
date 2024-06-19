@@ -28,13 +28,9 @@ public class InfoUser extends HttpServlet {
 
         if (infoUserDto == null) {
             ScriptWriter.alertAndBack(resp,"오류: 사용자 정보를 가져올 수 없음");
-            /*
-            req.setAttribute("error", "User not found.");
-            RequestDispatcher dispatcher = req.getRequestDispatcher("error.jsp");
-            dispatcher.forward(req, resp);
-             */
+
         } else {
-            req.setAttribute("user", infoUserDto);
+            req.setAttribute("infoUserDto", infoUserDto);
             RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/user/info.jsp");
             dispatcher.forward(req, resp);
         }

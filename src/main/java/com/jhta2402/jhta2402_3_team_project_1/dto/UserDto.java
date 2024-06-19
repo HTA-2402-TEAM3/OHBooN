@@ -9,6 +9,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@ToString
 public class UserDto {
     private String email;
     private String nickname;
@@ -22,5 +23,6 @@ public class UserDto {
     private String profile;
     private LocalDateTime createDate;
     private boolean agreeInfoOffer;
-    private LocalDateTime requesttimefordeletion;
+    private LocalDateTime requestTimeForDeletion;
+    private String verificationCode;
 }

@@ -13,11 +13,7 @@ import java.io.IOException;
 public class AdminStatistics extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String grade = req.getParameter("grade");
-
-        if(grade.equals("MANAGER") || grade.equals("ADMIN")){
-            RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/admin/admin-statistics.jsp");
-            dispatcher.forward(req, resp);
-        }
+        RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/admin/admin-statistics.jsp");
+        dispatcher.forward(req, resp);
     }
 }

@@ -27,13 +27,15 @@
         </div>
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
             <c:choose>
-                <c:when test="${sessionEmail eq not null}">
-                    <li><a href="../admin/home" class="nav-link px-2 link-secondary">Home</a></li>
+                <c:when test="${sessionGrade eq 'ADMIN' or sessionGrade eq 'MANAGER'}">
+                    <li><a href="../admin/home" class="btn btn-outline-info">ADMIN HOME</a></li>
+                    <li><a href="../admin/userList" class="btn btn-outline-info">USER LIST</a></li>
                 </c:when>
             </c:choose>
 
             <li><a href="../index/index" class="nav-link px-2 link-secondary">Home</a></li>
-            <li><a href="../user/list" class="nav-link px-2">List</a></li>
+
+
             <li><a href="../board/list?page=1" class="nav-link px-2">Board</a></li>
             <li><a href="" class="nav-link px-2">FAQs</a></li>
         </ul>
@@ -50,7 +52,7 @@
 
                         <div class="col-md-3 text-end d-flex align-items-center">
                             <c:choose>
-                                <c:when test="${not empty infoUserDto.renameProfile}">
+                                <c:when test="${not empty infoUserDto.profile}">
                                     <a href="../user/info?nickname=${sessionNickname}" class="d-block">
                                         <img src="${request.contextPath}/upload/${profile}">
                                     </a>

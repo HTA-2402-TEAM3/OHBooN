@@ -21,4 +21,6 @@ public interface UserMapper {
 
 
     UserDto findUserByNickname(String nickname);
+
+    //int updatePassword(String email, String newPassword);
 }

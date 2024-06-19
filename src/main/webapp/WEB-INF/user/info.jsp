@@ -11,8 +11,8 @@
             <td>
                 <th>${infoUserDto.email}</th>
                 <c:choose>
-                    <c:when test="${not empty infoUserDto.renameProfile}">
-                        <img src="${request.contextPath}/upload/${infoUserDto.renameProfile}" class="profile">
+                    <c:when test="${not empty infoUserDto.profile}">
+                        <img src="${request.contextPath}/upload/${infoUserDto.profile}" class="profile">
                     </c:when>
                     <c:otherwise>
                         <img src="../images/user.png" class="profile">
@@ -54,7 +54,7 @@
         </tr>
         <tr>
             <th>AGREEMENT OF OFFERING INFORMATION</th>
-            <th>${infoUserDto.agreeinfooffer}</th>
+            <th>${infoUserDto.agreeInfoOffer?"동의":"미동의"}</th>
         </tr>
     </table>
 

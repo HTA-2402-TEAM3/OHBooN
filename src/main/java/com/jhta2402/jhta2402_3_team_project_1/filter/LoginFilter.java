@@ -46,7 +46,7 @@ public class LoginFilter implements Filter {
 
  */
 
-@WebFilter("/user/login/*")
+@WebFilter({"/user/login/*", "/user/signup/*"})
 public class LoginFilter implements Filter {
 
     public LoginFilter() {
@@ -59,10 +59,10 @@ public class LoginFilter implements Filter {
         HttpServletResponse resp = (HttpServletResponse) response;
         HttpSession session = req.getSession(); // 세션 생성
 
-        if(session.getAttribute("sessionID")!=null){
+        if(session.getAttribute("sessionEmail")!=null){
             // 모달 메시지 생성 및 전달
-            ModalDto modalDto = new ModalDto("알림", "잘못된 접근", "show");
-            req.setAttribute("modal", modalDto);
+//            ModalDto modalDto = new ModalDto("알림", "잘못된 접근", "show");
+//            req.setAttribute("modal", modalDto);
             resp.sendRedirect(req.getContextPath() + "/index/index");
 
         }else {

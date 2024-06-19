@@ -1,8 +1,9 @@
 package com.jhta2402.jhta2402_3_team_project_1.mail;
 
-import javax.mail.*;
-import javax.mail.internet.InternetAddress;
-import javax.mail.internet.MimeMessage;
+import jakarta.mail.*;
+import jakarta.mail.internet.InternetAddress;
+import jakarta.mail.internet.MimeMessage;
+
 import java.util.Map;
 import java.util.Properties;
 
@@ -11,8 +12,8 @@ public class NaverMail {
     private final Authenticator authenticator;
 
     public NaverMail() {
-        String naverID = "userID";
-        String naverPW = "userPW";
+        String naverID = "mgrtest";
+        String naverPW = "Ujm1357!@";
 
         mailServerInfo = new Properties();
         mailServerInfo.put("mail.smtp.host","smtp.naver.com");
@@ -26,7 +27,6 @@ public class NaverMail {
         authenticator = new Authenticator() {
             @Override
             protected PasswordAuthentication getPasswordAuthentication() {
-                //return new PasswordAuthentication("jjang051hta","QWERASDFzxcv2242");
                 return new PasswordAuthentication(naverID, naverPW);
             }
         };
