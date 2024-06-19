@@ -1,5 +1,6 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ include file="../include/header.jsp" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <html>
 <head>
     <title>JSP - Hello World</title>
@@ -51,97 +52,164 @@
     </aside>
 
     <!-- 메인 콘텐츠 -->
-    <main class="col-md-9 py-3">
-        <h2>Main Content</h2>
-        <p>This is the main content area. You can add your content here.</p>
-        <div class="container">
-            <h2 class="mt-5 mb-5">LIST</h2>
-            <form action="../board/delete-all" method="post">
+    <div class="container">
+        <h2 class="mt-5 mb-5">LIST</h2>
+
+        <c:choose>
+            <c:when test="${boards.size() le 0}">
+                <p>게시글이 없습니다.</p>
+            </c:when>
+
+            <c:otherwise>
+
+
                 <table class="table table-striped">
-                    <colgroup>
-                        <col style="width:80px">
-                        <col>
-                        <col style="width:150px">
-                        <col style="width:80px">
-                        <col style="width:250px">
-                        <c:if test="${sessionGrade.label eq 'admin'}">
-                            <col style="width:80px">
-                        </c:if>
-                    </colgroup>
-                    <thead>
-                    <tr>
-                        <th>NO</th>
-                        <th>SUBJECT</th>
-                        <th>WRITER</th>
-                        <th>HIT</th>
-                        <th>DATE</th>
-                        <c:if test="${sessionGrade.label eq 'admin'}">
-                            <td><input type="checkbox" id="check-all"></td>
-                        </c:if>
-                    </tr>
-                    </thead>
                     <tbody>
-                    <c:forEach items="${boardList}" var="boardDto" varStatus="loop">
+
+                    <c:forEach var="board" items="${requestScope.boards}" varStatus="status">
                         <tr>
-                                <%--<td>${total - (param.page - 1)*10 - loop.index}</td>--%>
-                            <td>${total - boardDto.num + 1}</td>
-                            <td><a href="../board/view?no=${boardDto.no}">${boardDto.subject}</a></td>
-                            <td>${boardDto.userName}</td>
-                            <td>${boardDto.hit}</td>
-                            <td>${boardDto.regDate}</td>
-                            <c:if test="${sessionGrade.label eq 'admin'}">
-                                <td><input type="checkbox" name="check" class="check" value="${boardDto.no}"></td>
-                            </c:if>
+                            <td>${status.count}</td>
+                            <td>${totalCount - param.page * 10 - status.index}</td>
+                            <td>
+
+                                <div>
+                                    <span>${board.nickName}</span>
+                                    <span> ${board.evaluation}</span>
+                                    <span> ${board.regDate}</span>
+                                </div>
+
+                                <div>
+                                    <c:choose>
+                                        <c:when test="${board.viewOption eq 1}">
+                                            <a href="../board/view?boardID=${board.id}">
+                                                <c:if test="${not empty board.category}">[${board.category}]</c:if> ${board.subject} ${board.regDate}
+                                            </a>
+                                        </c:when>
+
+                                        <c:otherwise>
+                                        <span>
+                                            <c:if test="${not empty board.category}">[${board.category}]</c:if> ${board.subject} ${board.regDate}
+                                        </span>
+                                        </c:otherwise>
+                                    </c:choose>
+
+                                </div>
+
+                                <div>
+                                    <span>만남 희망 날짜 : ${board.meetDate}</span>
+                                    <span> 희망 지역 : ${board.location}</span>
+                                </div>
+
+                            </td>
                         </tr>
+
+                        <%--                    <td>--%>
+                        <%--                        <f:parseDate var="regdate" value="${board.regDate}" pattern="yyyy-MM-dd"></f:parseDate>--%>
+                        <%--                        <f:formatDate value="${regdate}" pattern="yyyy/MM/dd"></f:formatDate>--%>
+                        <%--                    </td>--%>
+
                     </c:forEach>
+
                     </tbody>
                 </table>
-                <c:if test="${sessionGrade.label eq 'admin'}">
-                    <div class="mt-5 mb-5 d-flex justify-content-end">
-                        <button class="btn btn-danger">DELETE-ALL</button>
-                    </div>
-                </c:if>
-            </form>
-            <form action="../board/search" class="mt-5 mb-5">
-                <div class="row g-3 align-items-center">
-                    <div class="col-3">
-                        <button class="btn btn-primary">SEARCH</button>
-                    </div>
-                    <div class="col-2">
-                        <select class="form-select" aria-label="Default select example" name="search">
-                            <option value="subject"  ${search eq "subject"?"selected":""}>제목</option>
-                            <option value="username" ${search eq "username"?"selected":""}>글쓴이</option>
-                            <option value="content"  ${search eq "content"?"selected":""}>내용</option>
-                            <option value="all"      ${search eq "all"?"selected":""}>제목 + 내용</option>
-                        </select>
-                    </div>
-                    <div class="col-7">
-                        <input type="text" name="searchWord" class="form-control" value="${searchWord}">
-                    </div>
+
+
+                <c:set var="link" value=""/>
+
+                <c:choose>
+                    <c:when test="${not empty meetDate}">
+                        <c:set var="link" value="&meetDate=${meetDate}&location=${location}&category${category}"/>
+                    </c:when>
+
+                    <c:otherwise>
+                        <c:set var="link" value="&searchOption=${searchOption}&searchWord=${searchWord}"/>
+                    </c:otherwise>
+
+                </c:choose>
+
+                <div class="container">
+                    <nav aria-label="Page navigation example">
+                        <ul class="pagination d-flex justify-content-center">
+
+                            <c:if test="${startPage > 0}">
+                                <li class="page-item"><a class="page-link"
+                                                         href="/board/list?page=${startPage - 1}${link}">Previous</a>
+                                </li>
+                            </c:if>
+
+                            <c:forEach begin="${startPage}" end="${endPage}" var="i">
+                                <c:choose>
+                                    <c:when test="${param.page == i}">
+                                        <li class="page-item active"><a class="page-link"
+                                                                        href="/board/list?page=${i}${link}">${i + 1}</a>
+                                        </li>
+                                    </c:when>
+
+                                    <c:otherwise>
+
+                                        <c:choose>
+                                            <c:when test="${empty param.page && i == 0}">
+                                                <li class="page-item active"><a class="page-link"
+                                                                                href="/board/list?page=${i}${link}">${i + 1}</a>
+                                                </li>
+                                            </c:when>
+
+                                            <c:otherwise>
+
+                                                <li class="page-item"><a class="page-link"
+                                                                         href="/board/list?page=${i}${link}">${i + 1}</a>
+                                                </li>
+                                            </c:otherwise>
+
+                                        </c:choose>
+
+                                    </c:otherwise>
+                                </c:choose>
+                            </c:forEach>
+
+                            <c:if test="${endPage != totalPage}">
+                                <li class="page-item"><a class="page-link"
+                                                         href="/board/list?page=${endPage + 1}${link}">Next</a>
+                                </li>
+
+                            </c:if>
+                        </ul>
+                    </nav>
                 </div>
-            </form>
-            <div class="mt-5 mb-5">
-                <a href="../board/write" class="btn btn-primary">WRITE</a>
+
+
+            </c:otherwise>
+        </c:choose>
+
+        <form action="../board/list" method="get">
+
+            <div class="row g-3 align-items-center">
+
+                <div class="col-2">
+                    <select class="form-select" aria-label="Default select example" name="searchOption">
+                        <option value="subject" ${searchOption eq "subject" ? "selected" : ""}>제목</option>
+                        <option value="nickname" ${searchOption eq "nickname" ? "selected" : ""}>글쓴이</option>
+                        <option value="content" ${searchOption eq "content" ? "selected" : ""}>내용</option>
+                        <option value="all" ${searchOption eq "all" ? "selected" : ""}>제목 + 내용</option>
+                    </select>
+                </div>
+
+                <div class="col-3">
+                    <label>
+                        <input type="text" name="searchWord" class="form-control" value="${searchWord}">
+                    </label>
+                </div>
+
+                <div class="col-2">
+                    <button type="submit" class="btn btn-primary">검색</button>
+                </div>
             </div>
-        </div>
-    </main>
-</div>
-<script>
-    $("#check-all").on("change", function () {
-        //  속성의 값을 체크할때
-        console.log($(this).prop("checked"));
-        if ($(this).prop("checked")) {
-            $(".check").prop("checked", true);
-        } else {
-            $(".check").prop("checked", false);
-        }
-        /*
-        if($(this).is(":checked")) {
-            $(".check").prop("checked",true);
-        } else {
-            $(".check").prop("checked",false);
-        }
-       */
-    })
-</script>
+
+        </form>
+
+
+        <div class="mt-5 mb-5"><a href="../board/write" class="btn btn-primary">WRITE</a></div>
+    </div>
+
+
 <%@ include file="../include/footer.jsp" %>

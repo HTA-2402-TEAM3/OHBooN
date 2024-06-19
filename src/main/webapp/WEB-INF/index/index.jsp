@@ -8,9 +8,7 @@
 <body class="bg-orange">
 <div>
   <h2>Index Page</h2>
-  <form action="../board" method="get">
-    <button type="submit" class="btn btn-light">패스트 매칭 하러 가기 >>></button>
-  </form>
+    <button type="submit" class="btn btn-light" onclick="local.href='/board/list'">패스트 매칭 하러 가기 >>></button>
 </div>
 </body>
 </html>
