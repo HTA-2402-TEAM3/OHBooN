@@ -1,23 +1,33 @@
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<!DOCTYPE html>
+
 <html>
 <head>
     <title>WebSocket Test</title>
 </head>
 <body>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+<script src="https://code.jquery.com/jquery-latest.min.js"></script>
 
 <h2>WebSocket test</h2>
 <%--<button onclick="openSocket();">Open Socket</button>--%>
-<button onclick="sendMessage();">Send Message</button>
-<button onclick="closeSocket();">Close Socket</button>
+<button id="sendBtn" onclick="sendMessage();">Send Message</button>
+<button id="closeBtn" onclick="closeSocket();">Close Socket</button>
 <br/>
 <input type="text" id="messageInput" placeholder="Enter message" name="sendMsg">
-<div id="messages"></div>
-
+<br/>
+<%--<c:if test="${user_id eq match_email}">--%>
+<%--    <button onclick="matching(${match_id});">matching</button>--%>
+<%--</c:if>--%>
+<br/>
 <span>
+
     ${msgList}
 </span>
+
+<div id="messages"></div>
+
+
 </body>
 <script type="text/javascript">
     var websocket;
@@ -65,7 +75,6 @@
     function sendMessage() {
         var text = document.getElementById("messageInput").value;
         //ws 객체에 session id랑 msg보냄
-
         var message = {
             match_id: "${match_id}",
             chat_id: "${chat_id}",
@@ -88,5 +97,25 @@
         messages.innerHTML += "<br/>" + text;
     }
 
+    function matching() {
+        $.ajax({
+            method: 'post',
+            url: '../match',
+            data: {
+                match_id: "${match_id}"
+            },
+            success : function (data) {
+                alert(JSON.stringify(data));
+                if(data.isMatch > 0) {
+                    alert("매칭 확정 되었습니다.");
+                } else {
+                    alert("err");
+                }
+            },
+            error:function (e) {
+                console.log(e);
+            }
+        })
+    }
 </script>
 </html>
