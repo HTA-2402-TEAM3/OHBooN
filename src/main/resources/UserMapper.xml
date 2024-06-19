@@ -46,8 +46,9 @@
         select * from user where nickname = #{nickName} and available = 1
     </select>
 
-    <select id="findUserByEmail" resultType="UserDto" parameterType="String">
-        Select count(*) as total from user where email = #{email} and available = 1
+
+    <select id="findUserByEmail" parameterType="String" resultType="UserDto">
+        SELECT * FROM user WHERE email = #{email} and available = 1
     </select>
 
     <select id="findUserByNickname" parameterType="String" resultType="UserDto">
@@ -64,11 +65,12 @@
         SELECT COUNT(*) FROM user WHERE verificationcode = #{token}
     </select>
 
+    <!--유저 정보 변경-->
+    <update id="updateUserInfo" parameterType="UserDto">
+        UPDATE user SET nickname = #{nickname}, phone = #{phone} WHERE email = #{email} --쿼리수정 필요
+    </update>
 
-    <select id="findUserByToken" resultType="UserDto">
-        SELECT * FROM users WHERE reset_token = #{token}
-    </select>
-
+    <!--패스워드 변경-->
     <update id="updatePassword">
         UPDATE users SET password = #{password} WHERE email = #{email}
     </update>

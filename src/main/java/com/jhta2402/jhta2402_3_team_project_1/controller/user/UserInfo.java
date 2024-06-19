@@ -14,14 +14,13 @@ import jakarta.servlet.http.HttpSession;
 import java.io.IOException;
 
 @WebServlet("/user/info")
-public class InfoUser extends HttpServlet {
+public class UserInfo extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         HttpSession session = req.getSession();
         String nickname = (String) session.getAttribute("sessionNickname");
 
-        System.out.println("Nickname from session: " + nickname);
 
         UserDao userDao = new UserDao();
         UserDto infoUserDto = userDao.infoUser(nickname);

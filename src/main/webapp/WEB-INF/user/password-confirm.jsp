@@ -1,16 +1,16 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: user
-  Date: 2024-06-17
-  Time: 오전 9:38
-  To change this template use File | Settings | File Templates.
---%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
-<head>
-    <title>Title</title>
-</head>
-<body>
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
 
-</body>
-</html>
+<%@ include file="../include/header.jsp" %>
+
+<div class="container">
+    <h2>비밀번호 확인</h2>
+    <form action="${pageContext.request.contextPath}/user/password-check" method="post">
+        <div class="mb-3">
+            <label for="password" class="form-label">비밀번호</label>
+            <input type="password" class="form-control" id="password" name="password" required>
+        </div>
+        <button type="submit" class="btn btn-primary">확인</button>
+    </form>
+</div>
+
+<%@ include file="../include/footer.jsp" %>

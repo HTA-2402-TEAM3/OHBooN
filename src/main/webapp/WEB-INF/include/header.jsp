@@ -52,14 +52,14 @@
 
                         <div class="col-md-3 text-end d-flex align-items-center">
                             <c:choose>
-                                <c:when test="${not empty infoUserDto.profile}">
+                                <c:when test="${not empty sessionScope.profile}">
                                     <a href="../user/info?nickname=${sessionNickname}" class="d-block">
-                                        <img src="${request.contextPath}/upload/${profile}">
+                                        <img src="${request.contextPath}/upload/${profile}" class="profile">
                                     </a>
                                 </c:when>
                                 <c:otherwise>
                                     <a href="../user/info?nickname=${sessionNickname}" class="d-block">
-                                        <img src="../images/user.png" class="profile">
+                                        <img src="../images/user.png" class="profile" class="profile">
                                     </a>
                                 </c:otherwise>
                             </c:choose>

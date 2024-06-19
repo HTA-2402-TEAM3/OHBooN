@@ -291,4 +291,31 @@ public class UserDao {
         }
         return grade;
     }
+
+    public UserDto findUserByEmail(String email) {
+        UserDto user = null;
+        try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
+            user = sqlSession.selectOne("findUserByEmail", email);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return user;
+    }
+
+    public int updateUserInfo(String email, String nickname, String phone) {
+        int result = 0;
+        try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
+            UserDto userDto = new UserDto();
+
+            userDto.setEmail(email);
+            userDto.setNickname(nickname);
+            userDto.setPhone(phone);
+
+            result = sqlSession.update("updateUserInfo", userDto);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return result;
+    }
+
 }
