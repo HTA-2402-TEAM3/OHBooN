@@ -50,4 +50,22 @@ public class ChatService {
         ChatDAO chatDAO1 = new ChatDAO();
         int rs = chatDAO1.insertMatchId(map);
     }
+
+    public Map<Long, Map<String, Object>> getMsgMap(long chatId) {
+        MsgDAO msgDAO = new MsgDAO();
+        List<MsgDTO> list = msgDAO.getMsgList(chatId);
+
+        Map<String, Object> msgDtoMap = new HashMap<>();
+
+        Map<Long, Map<String, Object>> MsgMap = new HashMap<>();
+        for (MsgDTO msgDTO : list) {
+            msgDtoMap.put("chatroom_id", msgDTO.getChatRoomId());
+            msgDtoMap.put("match_id", msgDTO.getMatchId());
+            msgDtoMap.put("sender", msgDTO.getSender());
+            msgDtoMap.put("content", msgDTO.getContent());
+            msgDtoMap.put("time_stamp", msgDTO.getTimeStamp());
+            MsgMap.put(msgDTO.getMessageId(), msgDtoMap);
+        }
+        return MsgMap;
+    }
 }

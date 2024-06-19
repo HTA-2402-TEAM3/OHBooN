@@ -12,13 +12,13 @@ import java.util.Map;
 public class ChatDAO {
     private SqlSession ss = MybatisConnectionFactory.getSqlSession();
 
-    public long CreateChatRoom(ChatDTO ChatDTO) {
+    public long CreateChatRoom(ChatDTO chatDTO) {
         long chat_id = 0;
         int result = 0;
-        result = ss.insert("createChatRoom", ChatDTO);
+        result = ss.insert("createChatRoom", chatDTO);
         ss.commit();
         if (result > 0) {
-            chat_id = ss.selectOne("getChatID", ChatDTO);
+            chat_id = ss.selectOne("getChatID", chatDTO);
         }
         ss.close();
         return chat_id;
@@ -32,7 +32,15 @@ public class ChatDAO {
     }
 
     public long getMatchIdByChatId(long chatId) {
-        long matchId = ss.selectOne("getMatchIdByChatId", chatId);
+        long matchId = 0;
+        long match = ss.selectOne("getCountMatchByChatId", chatId);
+        if(match!=0) {
+            try {
+                ss.selectOne("getMatchIdByChatId", chatId);
+            } catch (NullPointerException e) {
+                throw new NullPointerException();
+            }
+        }
         ss.commit();
         ss.close();
         return matchId;
@@ -47,4 +55,10 @@ public class ChatDAO {
         return chatList;
     }
 
+    public int insertMatchId(Map<String, Long> map) {
+        int rs = ss.update("insertMatchId", map);
+        ss.commit();
+        ss.close();
+        return rs;
+    }
 }
