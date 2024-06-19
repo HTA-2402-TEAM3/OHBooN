@@ -1,5 +1,7 @@
 <%@ page contentType="text/html; charset=UTF-8" pageEncoding="UTF-8" %>
 <%@ include file="../include/header.jsp" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -46,7 +48,12 @@
             <input type="text" id="keyword" placeholder="검색할 장소를 입력하세요">
             <button onclick="searchPlaces()">검색</button>
         </div>
-        <form action="../board/write" method="post">
+
+        <form id="boardForm" action="../board/write" method="post">
+
+            <c:if test="${not empty param.boardID}">
+                <input type="hidden" name="boardID" value="${param.boardID}">
+            </c:if>
 
             <div id="place"></div>
             <div id="map" style="width:50%;height:300px;"></div>
@@ -55,13 +62,14 @@
                 <input type="datetime-local" id="meetDate" placeholder="날짜를 입력해 주세요" name="meetDate">
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="category" id="flexRadioDefault1" value="커리어 상담" checked>
+                <input class="form-check-input" type="radio" name="category" id="flexRadioDefault1" value="커리어 상담"
+                       checked>
                 <label class="form-check-label" for="flexRadioDefault1">
                     커리어 상담
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="category" id="flexRadioDefault2" value="학업 및 교육" >
+                <input class="form-check-input" type="radio" name="category" id="flexRadioDefault2" value="학업 및 교육">
                 <label class="form-check-label" for="flexRadioDefault2">
                     학업 및 교육
                 </label>
@@ -73,13 +81,13 @@
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="category" id="flexRadioDefault4" value="기술 및 개발" >
+                <input class="form-check-input" type="radio" name="category" id="flexRadioDefault4" value="기술 및 개발">
                 <label class="form-check-label" for="flexRadioDefault4">
                     기술 및 개발
                 </label>
             </div>
             <div class="form-check">
-                <input class="form-check-input" type="radio" name="category" id="flexRadioDefault5" value="가벼운 대화" >
+                <input class="form-check-input" type="radio" name="category" id="flexRadioDefault5" value="가벼운 대화">
                 <label class="form-check-label" for="flexRadioDefault5">
                     가벼운 대화
                 </label>
@@ -101,29 +109,6 @@
     </div>
 </div>
 
-<script>
-    // 현재 URL의 쿼리스트링을 가져옵니다.
-    const queryString = window.location.search;
-
-    // URLSearchParams 객체를 생성합니다.
-    const urlParams = new URLSearchParams(queryString);
-
-    // 특정 파라미터의 값을 가져옵니다.
-    let BoardID = urlParams.get('boardID');  // 'param' 대신 원하는 파라미터 이름을 사용합니다.
-
-    console.log(!BoardID);
-    // "null" 문자열을 실제 null로 변환합니다.
-    if (BoardID === "null") {
-        BoardID = null;
-    }
-
-    // 가져온 값을 콘솔에 출력합니다.
-    console.log('param 값:', BoardID);
-
-    // HTML 요소에 값을 표시합니다.
-    const boardIdDiv = document.getElementById('confirm');
-    boardIdDiv.innerHTML += '<input type="hidden" name="boardID" value="' + (BoardID !== null ? BoardID : '') + '">';
-</script>
 <script type="text/javascript"
         src="//dapi.kakao.com/v2/maps/sdk.js?appkey=787689d01ab967ba84d8c08bc1dc540c&libraries=services"></script>
 <script>
