@@ -4,7 +4,6 @@
 <html>
 <head>
     <title>JSP - Hello World</title>
-    <script src="../js/jquery-3.7.1.min.js"></script>
     <script>
         function validateForm(event) {
             let meetDate = document.getElementById('meetDate').value;

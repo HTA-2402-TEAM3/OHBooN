@@ -27,7 +27,6 @@ public class ListController extends HttpServlet {
 		String strPage = req.getParameter("page");
 		String searchOption = req.getParameter("searchOption");
 		String searchWord = req.getParameter("searchWord");
-		String location = req.getParameter("location");
 		String strMeetDate = req.getParameter("meetDate");
 		String category = req.getParameter("category");
 
@@ -67,7 +66,14 @@ public class ListController extends HttpServlet {
 
 		if (Objects.nonNull(strMeetDate)) {
 
-			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
+			String firstSelect = req.getParameter("firstSelect");
+			String secondSelect = req.getParameter("secondSelect");
+			String location = firstSelect + " " + secondSelect;
+
+
+			strMeetDate = strMeetDate.replace("T", " ");
+
+			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
 			LocalDateTime searchMeetDate = LocalDateTime.parse(strMeetDate, formatter);
 			LocalDateTime minTime = LocalDateTime.parse(strMeetDate, formatter).minusHours(2);
 			LocalDateTime maxTime = LocalDateTime.parse(strMeetDate, formatter).plusHours(2);
