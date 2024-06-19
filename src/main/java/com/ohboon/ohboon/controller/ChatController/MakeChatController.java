@@ -1,6 +1,7 @@
 package com.ohboon.ohboon.controller.ChatController;
 
 
+import com.google.gson.Gson;
 import com.ohboon.ohboon.dao.BoardDAO;
 import com.ohboon.ohboon.dto.ChatDTO;
 import com.ohboon.ohboon.service.MatchService;
@@ -14,7 +15,9 @@ import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.ohboon.ohboon.service.BoardService;
 import com.ohboon.ohboon.service.ChatService;
@@ -23,60 +26,88 @@ import com.ohboon.ohboon.service.ChatService;
 @WebServlet("/makeChat")
 public class MakeChatController extends HttpServlet {
     private ChatService chatService;
-    private BoardService boardService;
-    @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-    }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession httpSession = req.getSession();
         String senderName = (String) httpSession.getAttribute("sessionNickname");
-        long board_id = Long.parseLong(req.getParameter("board_id"));
+        long board_id;
+        long match_id;
+        long chat_id;
+        String receiverName;
+        ChatDTO makeChatDto = null;
+        ChatDTO chatRoomDto = null;
+        Map<String, Object> reqMap = new HashMap<>();
 
-        System.out.println(senderName);
+        if(req.getParameter("board_id")==null) {
+            receiverName = req.getParameter("receiverName");
 
-        BoardDAO boardDAO = new BoardDAO();
-        String receiverName = boardDAO.findEmailByBoardId(board_id);
+            chatRoomDto = ChatDTO.builder()
+                    .sender(senderName)
+                    .receiver(receiverName)
+                    .build();
 
+            chatService = new ChatService();
+            chat_id = chatService.getChatId(chatRoomDto);
+            System.out.println(chat_id);
+        } else {
+            board_id = Long.parseLong(req.getParameter("board_id"));
 
+            BoardDAO boardDAO = new BoardDAO();
+            receiverName = boardDAO.findEmailByBoardId(board_id);
 
-        ChatDTO makeChatDto = ChatDTO.builder()
-                .boardID(board_id)
-                .sender(senderName)
-                .receiver(receiverName)
-                .build();
+            makeChatDto = ChatDTO.builder()
+                    .boardID(board_id)
+                    .sender(senderName)
+                    .receiver(receiverName)
+                    .build();
 
-        System.out.println("makeChatDto: "+makeChatDto);
+            MatchService matchService = new MatchService();
+            match_id = matchService.getMatchId(board_id, receiverName, senderName);
 
-        chatService = new ChatService();
-        long chat_id = chatService.getChatId(makeChatDto);
-//        chatroom table 생성하고 생성된 chat_id 가져오기
-        System.out.println(chat_id);
+            chatService = new ChatService();
+            chat_id = chatService.getChatId(makeChatDto);
+            System.out.println(chat_id);
 
-        MatchService matchService = new MatchService();
-        long match_id = matchService.getMatchId(board_id, receiverName, senderName);
-//        match table 생성하고 생성된 match_id 가져오기
+            chatService = new ChatService();
+            chatService.insertMatchId(match_id, chat_id);
 
-        chatService = new ChatService();
-        chatService.insertMatchId(match_id, chat_id);
+            System.out.println("makeChatDto: "+makeChatDto);
 
-        ChatDTO chatRoomDto = ChatDTO.builder()
-                .chatID(chat_id)
-                .matchID(match_id)
-                .boardID(board_id)
-                .sender(senderName)
-                .receiver(receiverName)
-                .build();
+            chatRoomDto = ChatDTO.builder()
+                    .chatID(chat_id)
+                    .matchID(match_id)
+                    .boardID(board_id)
+                    .sender(senderName)
+                    .receiver(receiverName)
+                    .build();
+            reqMap.put("match_id", match_id);
 
-        List<ChatDTO> chatRoomList = new ArrayList<>();
-        chatRoomList.add(chatRoomDto);
+            req.setAttribute("match_id", match_id);
+        }
+        Map<String, Object> chatRoomDtoMap = setChatRoomDto(chatRoomDto);
+
+        reqMap.put("chat_id", chat_id);
+        reqMap.put("chatRoomDto", chatRoomDtoMap);
+
+        Gson gson = new Gson();
+        String json = gson.toJson(reqMap);
+        System.out.println(json);
 
         req.setAttribute("chatRoomDto", chatRoomDto);
-        req.setAttribute("chatRoomList", chatRoomList);
-        req.setAttribute("match_id", match_id);
         req.setAttribute("chat_id", chat_id);
 
-        req.getRequestDispatcher("/chatTest.jsp").forward(req,resp);
+        req.getRequestDispatcher("/chatList.jsp").forward(req,resp);
+    }
+
+    private Map<String, Object> setChatRoomDto(ChatDTO chatDTO) {
+        Map<String, Object> map = new HashMap<>();
+        map.put("chat_id", chatDTO.getChatID());
+        map.put("match_id", chatDTO.getMatchID());
+        map.put("board_id", chatDTO.getBoardID());
+        map.put("sender", chatDTO.getSender());
+        map.put("receiver", chatDTO.getReceiver());
+
+        return map;
     }
 }
