@@ -236,12 +236,12 @@
                 </tbody>
             </table>
 
-
                 <c:set var="link" value=""/>
 
             <c:choose>
             <c:when test="${not empty meetDate}">
-                <c:set var="link" value="&meetDate=${meetDate}&location=${location}&category${category}"/>
+                <c:set var="link"
+                       value="&meetDate=${meetDate}&firstSelect=${firstSelect.value}&secondSelect=${secondSelect.value}&category${category}"/>
             </c:when>
 
             <c:otherwise>
@@ -249,6 +249,7 @@
             </c:otherwise>
 
             </c:choose>
+
             <div class="container mt-4">
                 <nav aria-label="Page navigation example">
                     <ul class="pagination d-flex justify-content-center">
@@ -315,9 +316,10 @@
                         </select>
                     </div>
 
-                    <div class="col-8" >
+                    <div class="col-8">
                         <label>
-                            <input type="text" name="searchWord" class="form-control" value="${searchWord}" style="width: 100%;">
+                            <input type="text" name="searchWord" class="form-control" value="${searchWord}"
+                                   style="width: 100%;">
                         </label>
                     </div>
 
@@ -333,7 +335,6 @@
     </div>
     </main>
 </div>
-
 
 
 <%@ include file="../include/footer.jsp" %>

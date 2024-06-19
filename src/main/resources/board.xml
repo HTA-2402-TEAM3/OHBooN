@@ -45,9 +45,8 @@
         from
         (select *, row_number() over (order by id) as num from board natural join user b1
         where not view_option = 0
-        and location like '%'||#{location}||'%' and between #{minTime} and #{maxTime} and category = #{category}
-        ) as
-        b2
+        and location like CONCAT('%', #{location}, '%') and meet_date between #{minTime} and #{maxTime} and category = #{category}
+        ) as b2
         where
         num between #{startIndex} and #{endIndex}
     </select>
@@ -55,7 +54,7 @@
     <select id="calculateSimpleSearchBoardCount" resultType="int" parameterType="Map">
         select count(*) from board natural join user b1
         where not view_option = 0
-        and location like '%'||#{location}||'%' and between #{minTime} and #{maxTime} and category = #{category}
+        and location like '%'||#{location}||'%' and meet_date between #{minTime} and #{maxTime} and category = #{category}
     </select>
 
 

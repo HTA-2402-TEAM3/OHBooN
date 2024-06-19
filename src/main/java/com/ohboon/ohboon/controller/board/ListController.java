@@ -70,7 +70,6 @@ public class ListController extends HttpServlet {
 			String secondSelect = req.getParameter("secondSelect");
 			String location = firstSelect + " " + secondSelect;
 
-
 			strMeetDate = strMeetDate.replace("T", " ");
 
 			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
@@ -86,7 +85,8 @@ public class ListController extends HttpServlet {
 			boards = boardService.search(searchOptions, searchMeetDate);
 			totalCount = boardService.calculateSimpleSearchBoardCount(searchOptions);
 
-			req.setAttribute("location", location);
+			req.setAttribute("firstSelect", firstSelect);
+			req.setAttribute("secondSelect", secondSelect);
 			req.setAttribute("category", category);
 			req.setAttribute("meetDate", searchMeetDate);
 		}
