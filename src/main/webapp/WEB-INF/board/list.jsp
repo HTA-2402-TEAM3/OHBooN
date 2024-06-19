@@ -241,7 +241,7 @@
             <c:choose>
             <c:when test="${not empty meetDate}">
                 <c:set var="link"
-                       value="&meetDate=${meetDate}&firstSelect=${firstSelect.value}&secondSelect=${secondSelect.value}&category${category}"/>
+                       value="&meetDate=${meetDate}&firstSelect=${firstSelect}&secondSelect=${secondSelect}&category=${category}"/>
             </c:when>
 
             <c:otherwise>

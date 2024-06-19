@@ -54,7 +54,7 @@
     <select id="calculateSimpleSearchBoardCount" resultType="int" parameterType="Map">
         select count(*) from board natural join user b1
         where not view_option = 0
-        and location like '%'||#{location}||'%' and meet_date between #{minTime} and #{maxTime} and category = #{category}
+        and location like CONCAT('%', #{location}, '%') and meet_date between #{minTime} and #{maxTime} and category = #{category}
     </select>
 
 
