@@ -11,12 +11,14 @@ import com.ohboon.ohboon.service.BoardService;
 import com.ohboon.ohboon.util.CommonValidation;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+@MultipartConfig
 @WebServlet("/board/write")
 public class WriteController extends HttpServlet {
 
@@ -51,11 +53,18 @@ public class WriteController extends HttpServlet {
 
 		String id = req.getParameter("boardID");
 
+		req.setCharacterEncoding("UTF-8");
 		String subject = req.getParameter("subject");
 		String content = req.getParameter("content");
 		String category = req.getParameter("category");
 		String location = req.getParameter("location");
 		String inputMeetDate = req.getParameter("meetDate");
+
+		System.out.println("subject = " + subject);
+		System.out.println("content = " + content);
+		System.out.println("category = " + category);
+		System.out.println("location = " + location);
+		System.out.println("inputMeetDate = " + inputMeetDate);
 
 		try {
 			CommonValidation.validateNull(subject, content, category, location, inputMeetDate);
@@ -103,7 +112,10 @@ public class WriteController extends HttpServlet {
 			writer.flush();
 
 		} catch (IllegalStateException illegalStateException) {
-			resp.sendError(HttpServletResponse.SC_BAD_REQUEST, illegalStateException.getMessage());
+			resp.setContentType("application/json");
+			resp.setCharacterEncoding("UTF-8");
+			resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			resp.getWriter().write("{\"message\": \"" + illegalStateException.getMessage() + "\"}");
 		}
 
 	}

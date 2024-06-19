@@ -35,8 +35,65 @@
             }
         }
 
-        document.addEventListener('DOMContentLoaded', (event) => {
-            document.querySelector('form').addEventListener('submit', validateForm);
+        document.addEventListener('DOMContentLoaded', function () {
+            document.getElementById("btn-sign").addEventListener('click', function () {
+
+                console.log("btn click!!!!!");
+
+                let meetDate = document.getElementById('meetDate').value;
+                let subject = document.getElementById('subject').value;
+                let content = document.getElementById('content').value;
+                let isValid = true;
+                let message = "";
+
+
+                if (!meetDate) {
+                    isValid = false;
+                    message += "희망 날짜 및 시간을 입력하세요.\n";
+                }
+                if (!subject) {
+                    isValid = false;
+                    message += "제목을 입력하세요.\n";
+                }
+                if (!content) {
+                    isValid = false;
+                    message += "내용을 입력하세요.\n";
+                }
+
+                if (!isValid) {
+                    alert(message);
+                    return;
+                }
+
+                let boardForm = document.getElementById("boardForm");
+                let boardData = new FormData(boardForm);
+
+                boardData.forEach((value, key) => {
+                    console.log(key, value);
+                });
+
+                fetch('/board/write', {
+                    method: 'POST',
+                    body: boardData
+                })
+                    .then(resp => {
+                        if (!resp.ok) {
+                            return resp.json().then(error => {
+                                throw new Error(error.message);
+                            });
+                        }
+                        return resp.json();
+                    })
+                    .then(data => {
+                        console.log(data.message);
+                        alert(data.writeMessage)
+                        location.href = "/board/list"
+                    })
+                    .catch(error => {
+                        console.log(error);
+                        alert(error.message);
+                    })
+            });
         });
     </script>
 </head>
@@ -101,8 +158,11 @@
                 <label for="content" class="form-label">내용</label>
                 <textarea name="content" id="content" placeholder="내용을 입력하세요." rows="8" class="form-control"></textarea>
             </div>
+            <div>
+                <input type="hidden" class="form-control" id="location" name="location" value="">
+            </div>
             <div id="confirm">
-                <button type="submit" class="btn btn-primary" id="btn-sign">CONFIRM</button>
+                <button type="button" class="btn btn-primary" id="btn-sign">CONFIRM</button>
                 <button class="btn btn-secondary" type="reset">RESET</button>
             </div>
         </form>
@@ -155,8 +215,8 @@
                 infowindow.setContent(content);
                 infowindow.open(map, marker);
 
-                var contentDiv = document.getElementById('confirm');
-                contentDiv.innerHTML += '<input type="hidden" name="location" value="' + address + '">';
+                var contentDiv = document.getElementById('location');
+                contentDiv.value = address;
             }
         });
     });
@@ -218,5 +278,6 @@
         }
     }
 </script>
+
 </body>
 </html>

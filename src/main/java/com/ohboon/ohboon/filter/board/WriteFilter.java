@@ -30,24 +30,34 @@ public class WriteFilter implements Filter {
 		String subject = httpServletRequest.getParameter("subject");
 		String content = httpServletRequest.getParameter("content");
 
+		httpServletResponse.setContentType("application/json");
+		httpServletResponse.setCharacterEncoding("UTF-8");
+
 		if (Objects.isNull(loginEmail)) {
-			httpServletResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "로그인 후 이용가능한 기능입니다.");
+			httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			httpServletResponse.getWriter().write("{\"message\": \"로그인 후 이용가능한 기능입니다.\"}");
+
 			return;
 		}
 
 		if (Objects.nonNull(boardID) && !boardID.matches("^[\\d]+$")) {
-			httpServletResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "게시글 id가 숫자형이 아닙니다.");
+			httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			httpServletResponse.getWriter().write("{\"message\": \"게시글 id가 숫자형이 아닙니다.\"}");
 			return;
 		}
 
 		if (Objects.nonNull(subject)) {
 
 			if (subject.isBlank()) {
-				httpServletResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "제목을 입력해주세요.");
+
+				httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				httpServletResponse.getWriter().write("{\"message\": \"제목을 입력해주세요.\"}");
 				return;
 
 			} else if (subject.length() > 100) {
-				httpServletResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "제목은 100자를 넘길 수 없습니다..");
+
+				httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				httpServletResponse.getWriter().write("{\"message\": \"제목은 100자를 넘길 수 없습니다.\"}");
 				return;
 			}
 		}
@@ -55,11 +65,15 @@ public class WriteFilter implements Filter {
 		if (Objects.nonNull(content)) {
 
 			if (content.isBlank()) {
-				httpServletResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "내용을 입력해주세요.");
+
+				httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				httpServletResponse.getWriter().write("{\"message\": \"내용을 입력해주세요.\"}");
 				return;
 
 			} else if (content.length() > 500) {
-				httpServletResponse.sendError(HttpServletResponse.SC_BAD_REQUEST, "내용은 500자를 넘길 수 없습니다.");
+
+				httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+				httpServletResponse.getWriter().write("{\"message\": \"내용은 500자를 넘길 수 없습니다.\"}");
 				return;
 			}
 		}
