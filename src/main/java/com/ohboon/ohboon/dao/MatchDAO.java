@@ -24,4 +24,12 @@ public class MatchDAO {
         ss.close();
         return match_id;
     }
+
+
+    public String getMatchEmail(long matchId) {
+        String match_email = ss.selectOne("getMatchEmail", matchId);
+        ss.commit();
+        ss.close();
+        return match_email;
+    }
 }

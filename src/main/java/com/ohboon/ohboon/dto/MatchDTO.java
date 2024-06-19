@@ -10,6 +10,7 @@ import lombok.*;
 public class MatchDTO {
     private long id;
     private long boardId;
-    private boolean isMath;
-//    private String boardWriter;
+    private boolean isMatch;
+    private String email;
+    private String sender;
 }
