@@ -33,6 +33,10 @@
         where num between #{startIndex} and #{endIndex}
     </select>
 
+    <select id="findEmailByBoardId" resultType="String" parameterType="long">
+        SELECT email FROM board WHERE id = #{id}
+    </select>
+
     <select id="calculateWordSearchBoardCount" resultType="int" parameterType="Map">
         select count(*) from board natural join user b1
         where not view_option = 0 and
@@ -82,5 +86,4 @@
     <update id="delete" parameterType="long">
         update board set view_option = 0 where id = #{id}
     </update>
-
 </mapper>

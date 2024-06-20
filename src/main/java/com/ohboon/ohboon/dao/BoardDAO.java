@@ -49,6 +49,14 @@ public class BoardDAO {
 	public int calculateSimpleSearchBoardCount(Map<String, String> searchOptions) {
 		return this.sqlSession.selectOne("calculateSimpleSearchBoardCount", searchOptions);
 	}
+  
+  public String findEmailByBoardId(long id){
+        SqlSession sqlSession = MybatisConnectionFactory.getSqlSession();
+        String userEmail = sqlSession.selectOne("findEmailByBoardId", id);
+        sqlSession.commit();
+        sqlSession.close();
+        return userEmail;
+    }
 
 	public int delete(long boardID) {
 		return this.sqlSession.update("delete", boardID);

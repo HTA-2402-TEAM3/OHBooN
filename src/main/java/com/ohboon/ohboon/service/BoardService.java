@@ -100,5 +100,13 @@ public class BoardService {
 
 		boardDAO.close();
 	}
+  
+  public String findEmailByBoardId(long id){
+        SqlSession sqlSession = MybatisConnectionFactory.getSqlSession();
+        String userEmail = sqlSession.selectOne("findEmailByBoardId", id);
+        sqlSession.commit();
+        sqlSession.close();
+        return userEmail;
+    }
 
 }

@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ohboon.ohboon">
+    <insert id="createChatRoom" parameterType="ChatDTO">
+        <choose>
+            <when test="boardID == 0">
+                insert into chatroom(sender, receiver) values (#{sender},#{receiver})
+            </when>
+            <when test="boardID != 0">
+                insert into chatroom(board_idx, sender, receiver) values (#{boardID}, #{sender},#{receiver})
+            </when>
+        </choose>
+    </insert>
+
+    <select id="getChatID" parameterType="ChatDTO" resultType="long">
+        select chat_id from chatroom where sender = #{sender} and receiver = #{receiver}
+    </select>
+
+    <select id="findUsersByChatId" resultType="hashmap">
+        select sender, receiver from chatroom where chat_id = #{chat_id}
+    </select>
+
+    <select id="getMatchIdByChatId" parameterType="Long" resultType="Long">
+        select match_id from chatroom where chat_id = #{chat_id}
+    </select>
+    <select id="getCountMatchByChatId" parameterType="Long" resultType="Long">
+        select count(match_id) from chatroom where chat_id = #{chat_id}
+    </select>
+    <select id="getChatList" resultType="ChatDTO" parameterType="String">
+<!--        SELECT * FROM chatroom where sender = #{senderName} or receiver = #{senderName}-->
+        SELECT c.*
+        FROM chatroom c
+        RIGHT OUTER JOIN (
+        SELECT chatroom_id, time_stamp
+        FROM (
+        SELECT chatroom_id, time_stamp, row_number() OVER (PARTITION BY chatroom_id ORDER BY time_stamp DESC) AS rn
+        FROM msg
+        ) subquery
+        WHERE rn = 1
+        ) m ON c.chat_id = m.chatroom_id
+        WHERE c.sender = #{senderName} OR c.receiver = #{senderName}
+        ORDER BY m.time_stamp DESC
+    </select>
+    <update id="insertMatchId" parameterType="hashmap">
+        update chatroom set match_id = #{match_id} where chat_id = #{chat_id}
+    </update>
+
+    <select id="getMsg" resultType="MsgDTO" parameterType="long">
+        select * from msg where chatroom_id = #{chatID}
+    </select>
+</mapper>

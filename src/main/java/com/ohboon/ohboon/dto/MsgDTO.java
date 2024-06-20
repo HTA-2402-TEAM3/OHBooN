@@ -10,10 +10,10 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @ToString
 public class MsgDTO {
-    private int messageId;
-    private int boardId;
-    private int matchId;
-    private String userName;
+    private long messageId;
+    private long chatRoomId;
+    private long matchId;
+    private String sender;
     private String content;
     private LocalDateTime timeStamp;
 }
