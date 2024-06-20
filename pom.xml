@@ -83,7 +83,6 @@
             <version>0.4.20</version>
         </dependency>
 
-
         <dependency>
             <groupId>com.sun.mail</groupId>
             <artifactId>jakarta.mail</artifactId>
