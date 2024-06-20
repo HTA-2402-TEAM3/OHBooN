@@ -14,10 +14,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 import com.ohboon.ohboon.service.BoardService;
 import com.ohboon.ohboon.service.ChatService;
@@ -39,7 +36,7 @@ public class MakeChatController extends HttpServlet {
         ChatDTO chatRoomDto = null;
         Map<String, Object> reqMap = new HashMap<>();
 
-        if(req.getParameter("board_id")==null) {
+        if(Objects.equals(req.getParameter("board_id"), "")) {
             receiverName = req.getParameter("receiverName");
 
             chatRoomDto = ChatDTO.builder()
@@ -97,7 +94,9 @@ public class MakeChatController extends HttpServlet {
         req.setAttribute("chatRoomDto", chatRoomDto);
         req.setAttribute("chat_id", chat_id);
 
-        req.getRequestDispatcher("/chatList.jsp").forward(req,resp);
+        req.getRequestDispatcher("/Test2.jsp").forward(req,resp);
+
+//        resp.sendRedirect("/enterChat?chat_id="+chat_id);
     }
 
     private Map<String, Object> setChatRoomDto(ChatDTO chatDTO) {
