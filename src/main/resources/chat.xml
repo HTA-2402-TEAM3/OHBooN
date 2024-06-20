@@ -29,8 +29,19 @@
         select count(match_id) from chatroom where chat_id = #{chat_id}
     </select>
     <select id="getChatList" resultType="ChatDTO" parameterType="String">
-        SELECT * FROM chatroom where sender = #{senderName} or receiver = #{senderName}
-<!--        조인 써서 최근 채팅 한 순서대로 가져오기 !!!!! -->
+<!--        SELECT * FROM chatroom where sender = #{senderName} or receiver = #{senderName}-->
+        SELECT c.*
+        FROM chatroom c
+        RIGHT OUTER JOIN (
+        SELECT chatroom_id, time_stamp
+        FROM (
+        SELECT chatroom_id, time_stamp, row_number() OVER (PARTITION BY chatroom_id ORDER BY time_stamp DESC) AS rn
+        FROM msg
+        ) subquery
+        WHERE rn = 1
+        ) m ON c.chat_id = m.chatroom_id
+        WHERE c.sender = #{senderName} OR c.receiver = #{senderName}
+        ORDER BY m.time_stamp DESC
     </select>
     <update id="insertMatchId" parameterType="hashmap">
         update chatroom set match_id = #{match_id} where chat_id = #{chat_id}

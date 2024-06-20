@@ -72,7 +72,7 @@ public class ChatService {
         List<ChatDTO> chatList = chatRoomDAO.getChatList(userID);
         System.out.println("chatList: "+chatList);
 
-        Map<Long, Map<String, Object>> roomMap = new HashMap<>();
+        Map<Long, Map<String, Object>> roomMap = new LinkedHashMap<>();
         for (ChatDTO chatDTO : chatList) {
             userDAO = new UserDAO();
             msgDAO = new MsgDAO();
