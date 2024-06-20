@@ -9,10 +9,7 @@ import com.ohboon.ohboon.dto.MsgDTO;
 import org.eclipse.tags.shaded.org.apache.xalan.xsltc.compiler.util.MultiHashtable;
 
 import java.time.LocalDateTime;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ChatService {
     ChatDAO chatDAO;
@@ -56,9 +53,8 @@ public class ChatService {
     public Map<LocalDateTime, Map<String, Object>> getMsgMap(long chatId) {
         MsgDAO msgDAO = new MsgDAO();
         List<MsgDTO> list = msgDAO.getMsgList(chatId);
-        System.out.println("list : " + list);
 
-        Map<LocalDateTime, Map<String, Object>> MsgMap = new HashMap<>();
+        Map<LocalDateTime, Map<String, Object>> MsgMap = new LinkedHashMap<>();
 
         for (MsgDTO msgDTO : list) {
             Map<String, Object> msg = new HashMap<>();

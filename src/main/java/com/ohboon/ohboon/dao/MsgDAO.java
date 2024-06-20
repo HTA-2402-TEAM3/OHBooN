@@ -18,8 +18,6 @@ public class MsgDAO {
         List<MsgDTO> msgList = ss.selectList("getMsgList",chat_id);
         ss.commit();
         ss.close();
-
-        System.out.println(msgList);
         return msgList;
     }
 

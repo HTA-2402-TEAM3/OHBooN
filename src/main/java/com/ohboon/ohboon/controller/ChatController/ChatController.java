@@ -62,7 +62,6 @@ public class ChatController extends HttpServlet {
                 Map<String, Object> reqMap = reqMapSet(match_email, user_id, chat_id, match_id, msgMap);
 
 
-                System.out.println("reqMap : " + reqMap);
                 GsonBuilder gsonBuilder = new GsonBuilder();
                 gsonBuilder.registerTypeAdapter(LocalDateTime.class, new LocalDateTimeAdapter());
                 Gson gson = gsonBuilder.create();
@@ -72,7 +71,6 @@ public class ChatController extends HttpServlet {
                 resp.setCharacterEncoding("utf-8");
                 PrintWriter out = resp.getWriter();
                 out.println(json);
-                System.out.println("json : " + json);
                 return;
             }
         }

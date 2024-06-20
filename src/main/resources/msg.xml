@@ -8,7 +8,7 @@
     </insert>
 
     <select id="getMsgList" parameterType="Long" resultType="MsgDTO">
-        select * from msg where chatroom_id = #{chatroom_id}
+        select * from msg where chatroom_id = #{chatroom_id} order by time_stamp asc
     </select>
 
     <select id="getRecentMsg" parameterType="Long" resultType="String">

@@ -10,6 +10,7 @@ import jakarta.websocket.server.ServerEndpoint;
 
 import java.io.IOException;
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.*;
 
 @ServerEndpoint(value = "/chat", configurator = WsHttpSessionConfig.class)
@@ -28,6 +29,8 @@ public class WsServerController {
 //        HttpSession httpSession = (HttpSession) config.getUserProperties().get("PRIVATE_HTTP_SESSION");
         String userNickname = (String) config.getUserProperties().get("PRIVATE_HTTP_SESSION");
 //        String userNickname = (String) httpSession.getAttribute("sessionNickname");
+        System.out.println("userNickname"+userNickname);
+
 
         sessionsMap.put(session, userNickname);
         sessionList.add(session);
@@ -46,6 +49,9 @@ public class WsServerController {
         long match_id = jsonObject.get("match_id").getAsLong();
         String sender = jsonObject.get("user_id").getAsString();
         String content = jsonObject.get("content").getAsString();
+        LocalDateTime now = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm:ss");
+        String formattedNow = now.format(formatter);
 
 
         System.out.println(sender);
@@ -57,9 +63,9 @@ public class WsServerController {
         chatRoomSessionMap.get(chat_id).forEach(session1 -> {
             try {
                 if (session1 == wsSession) {
-                    session1.getBasicRemote().sendText("나|" + content +"|"+LocalDateTime.now());
+                    session1.getBasicRemote().sendText("나|" + content +"|"+formattedNow);
                 } else {
-                    session1.getBasicRemote().sendText(sender + "|" + content+"|"+LocalDateTime.now());
+                    session1.getBasicRemote().sendText(sender + "|" + content+"|"+formattedNow);
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
