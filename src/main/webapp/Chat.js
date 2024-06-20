@@ -202,30 +202,31 @@ async function ChatRoomList() {
         const data = await resp.json();
         console.log(data);
         // recentRoom = Object.key(data[0]);
-        recentRoom = Object.keys(data)[0];
+
         chatRoomListObj = data;
 
-
-        Object.entries(chatRoomListObj).forEach(([chatID, chatList]) => {
+        chatRoomListObj.forEach(item => {
             var li = document.createElement('li');
             var a = document.createElement('a');
             var div = document.createElement('div');
             var img = document.createElement("img");
             chatUl.appendChild(li);
             a.onclick = function () {
-                enterChat(chatID);
+                enterChat(item.key);
             };
-            console.log(chatList);
-            if (chatList.profile === undefined) {
+            console.log("item", item);
+            console.log("item", item.value.subject);
+
+            if (item.value.profile === undefined) {
                 img.setAttribute("src", "/image/defaultImage.png");
                 img.setAttribute("alt", "");
             } else {
-                img.setAttribute("src", chatList.profile);
+                img.setAttribute("src", item.value.profile);
             }
             a.appendChild(img);
 
-            div.innerHTML = `  <h2>${chatList.subject}</h2>
-                            <p>${chatList.recentContent}</p>`;
+            div.innerHTML = `  <h2>${item.value.subject}</h2>
+                            <p>${item.value.recentContent}</p>`;
             li.appendChild(a);
             a.appendChild(div);
         })
@@ -237,9 +238,9 @@ async function ChatRoomList() {
 function fetchingChatRoomList() {
     setInterval(async () => {
         try {
-                ChatRoomList().then(chatRoomListObj_tmp = chatRoomListObj);
-                console.log("채팅방 목록 : ", chatRoomListObj_tmp);
-             // 채팅방 목록 출력
+            ChatRoomList().then(chatRoomListObj_tmp = chatRoomListObj);
+            console.log("채팅방 목록 : ", chatRoomListObj_tmp);
+            // 채팅방 목록 출력
         } catch (error) {
             console.error("fetchingChatRoomList : ", error);
         }
