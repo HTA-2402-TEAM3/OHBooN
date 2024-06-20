@@ -2,7 +2,7 @@
     box-sizing:border-box;
 }
 body{
-    background-color:#abd9e9;
+    background-color:#ffc0cb;
     font-family:Arial;
 }
 #container{
@@ -19,7 +19,7 @@ aside{
     flex-shrink: 0;
     width:320px;
     height:800px;
-    background-color:#3b3e49;
+    background-color:#808080;
     display:inline-block;
     font-size:15px;
     vertical-align:top;
@@ -102,7 +102,7 @@ aside li h3{
 }
 aside li p{
     font-size:12px;
-    color:#7e818a;
+    color:#000000;
     font-weight:normal;
 }
 
@@ -150,10 +150,10 @@ main header{
     text-align:right;
 }
 #messages .you .message{
-    background-color:#58b666;
+    background-color:#808080;
 }
 #messages .me .message{
-    background-color:#6fbced;
+    background-color:#ffc0cb;
 }
 
 
@@ -189,8 +189,9 @@ main footer button{
     display: flex;
     text-transform:uppercase;
     font-weight:bold;
-    color:#6fbced;
-    background:transparent;
-    border: none;
+    color:#ffffff;
+    /*background:transparent;*/
+    background-color: #808080;
+    /*border: none;*/
     cursor: pointer;
 }
