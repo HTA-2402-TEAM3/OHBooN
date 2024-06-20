@@ -1,7 +1,7 @@
 package com.ohboon.ohboon.controller.user;
 
 
-import com.ohboon.ohboon.dao.UserDao;
+import com.ohboon.ohboon.dao.UserDAO;
 import com.ohboon.ohboon.dto.UserDto;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -21,7 +21,7 @@ public class UserInfo extends HttpServlet {
         HttpSession session = req.getSession();
         String nickname = (String) session.getAttribute("sessionNickname");
 
-        UserDao userDao = new UserDao();
+        UserDAO userDao = new UserDAO();
         UserDto infoUserDto = userDao.infoUser(nickname);
 
         if (infoUserDto == null) {

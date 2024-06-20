@@ -1,7 +1,7 @@
 package com.ohboon.ohboon.controller.user;
 
 
-import com.ohboon.ohboon.dao.UserDao;
+import com.ohboon.ohboon.dao.UserDAO;
 import com.ohboon.ohboon.utils.ScriptWriter;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -28,7 +28,7 @@ public class PasswordReset extends HttpServlet {
         String token = req.getParameter("token");
         String newPassword = req.getParameter("newPW");
 
-        UserDao userDao = new UserDao();
+        UserDAO userDao = new UserDAO();
         if (userDao.isTokenValid(token)) {
             String hashedPassword = BCrypt.hashpw(newPassword, BCrypt.gensalt());
             userDao.updatePasswordByToken(token, hashedPassword);
