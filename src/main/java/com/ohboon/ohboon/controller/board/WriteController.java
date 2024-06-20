@@ -115,7 +115,7 @@ public class WriteController extends HttpServlet {
 			writer.println("{\"writeMessage\":\"" + writeMessage + "\"}");
 			writer.flush();
 
-		} catch (Exception e) {
+		} catch (IllegalStateException e) {
 
 			resp.setContentType("application/json");
 			resp.setCharacterEncoding("UTF-8");
