@@ -4,7 +4,7 @@
 
 <div class="container">
     <h2>비밀번호 확인</h2>
-    <form action="${pageContext.request.contextPath}/user/password-confirm" method="post">
+    <form action="${pageContext.request.contextPath}/user/info/password-confirm" method="post">
         <div class="mb-3">
             <label for="password" class="form-label">비밀번호</label>
             <input type="password" class="form-control" id="password" name="password" required>

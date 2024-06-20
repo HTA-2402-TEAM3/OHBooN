@@ -325,7 +325,7 @@ public class UserDao {
     public int updateUserInfo(UserDto userDto) {
         int result = 0;
         try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
-            result = sqlSession.update("com.jhta2402.mybatis.UserMapper.updateUserInfo", userDto);
+            result = sqlSession.update("updateUserInfo", userDto);
             sqlSession.commit();
         } catch (Exception e) {
             e.printStackTrace();

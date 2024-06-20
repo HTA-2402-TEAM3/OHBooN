@@ -19,6 +19,7 @@ public class PasswordConfirm extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         req.getRequestDispatcher("/WEB-INF/user/password-confirm.jsp").forward(req, resp);
     }
+
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String password = req.getParameter("password");
@@ -31,11 +32,9 @@ public class PasswordConfirm extends HttpServlet {
 
         if (userDto != null && BCrypt.checkpw(password, userDto.getUserPW())) {
             session.setAttribute("passwordVerified", true);
-            resp.sendRedirect(req.getContextPath() + "/user/info-update"); // 정보 수정 페이지로 리디렉션
+            resp.sendRedirect(req.getContextPath() + "/user/info/update"); // 정보 수정 페이지로 리디렉션
         } else {
             ScriptWriter.alertAndBack(resp, "비밀번호가 일치하지 않습니다.");
         }
     }
-
-
 }

@@ -29,6 +29,9 @@ public class Login extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+        String email = req.getParameter("email");
+        String userPW = req.getParameter("userPW");
+
         UserDto userDto = UserDto
                 .builder()
                 .email(req.getParameter("email"))
@@ -89,7 +92,6 @@ public class Login extends HttpServlet {
                 String saveID = req.getParameter("saveID");
                 if (saveID != null && saveID.equals("yes")) {
                     // 이메일 정보를 쿠키에 저장
-                    String email = loginUserDto.getEmail();
                     CookieManager.createEmailCookie(resp, "emailCookie", email, 60*60*24*30); // 30일 유효
                 } else {
                     CookieManager.deleteEmailCookie(resp, "emailCookie");

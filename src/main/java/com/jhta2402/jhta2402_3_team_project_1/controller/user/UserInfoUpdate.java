@@ -17,7 +17,19 @@ import java.time.format.DateTimeFormatter;
 public class UserInfoUpdate extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        req.getRequestDispatcher("/WEB-INF/user/info-update.jsp").forward(req,resp);
+        HttpSession session = req.getSession();
+        String nickname = (String) session.getAttribute("sessionNickname");
+
+        UserDao userDao = new UserDao();
+        UserDto infoUserDto = userDao.infoUser(nickname);
+
+        if (infoUserDto == null) {
+            resp.sendRedirect("../index/index");
+        } else {
+            req.setAttribute("infoUserDto", infoUserDto);
+            RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/user/info-update.jsp");
+            dispatcher.forward(req, resp);
+        }
     }
 
     @Override

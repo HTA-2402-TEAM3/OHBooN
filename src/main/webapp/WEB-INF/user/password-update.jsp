@@ -2,7 +2,7 @@
 <%@ include file="../include/header.jsp" %>
 
 <main class="form-signin w-100 m-auto">
-    <form action="${pageContext.request.contextPath}/user/password-update" method="post">
+    <form action="${pageContext.request.contextPath}/user/info/password-update" method="post">
         <div class="mb-3">
             <div class="row g-3">
                 <div class="col-auto">

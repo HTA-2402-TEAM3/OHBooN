@@ -21,12 +21,11 @@ public class UserInfo extends HttpServlet {
         HttpSession session = req.getSession();
         String nickname = (String) session.getAttribute("sessionNickname");
 
-
         UserDao userDao = new UserDao();
         UserDto infoUserDto = userDao.infoUser(nickname);
 
         if (infoUserDto == null) {
-            ScriptWriter.alertAndBack(resp,"오류: 사용자 정보를 가져올 수 없음");
+            resp.sendRedirect("../index/index");
 
         } else {
             req.setAttribute("infoUserDto", infoUserDto);

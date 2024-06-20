@@ -1,10 +1,8 @@
-
 <%@ page contentType="text/html; charset=UTF-8" language="java" %>
-
 <%@ include file="../include/header.jsp" %>
 
 <div class="container">
-    <h2 class ="mt-5 mb-5"> 사용자 정보</h2>
+    <h2 class="mt-5 mb-5"> 사용자 정보</h2>
     <form action="${pageContext.request.contextPath}/user/info/update" method="post" enctype="multipart/form-data">
         <table class="table table-bordered">
             <tr>
@@ -24,12 +22,10 @@
                         </c:otherwise>
                     </c:choose>
                 </td>
-
                 <td>
                     <label for="profile" class="form-label">PROFILE</label>
                     <input class="form-control" type="file" id="profile" name="profile" accept=".gif, .jpg, .png">
                 </td>
-
             </tr>
             <tr>
                 <th>MEMBER GRADE</th>
@@ -78,17 +74,11 @@
             </tr>
         </table>
 
-        <<div>
-            <a href="../user/password-update" class="btn btn-dark">비밀번호 변경</a>
+        <div>
+            <a href="${pageContext.request.contextPath}/user/info/password-update" class="btn btn-dark">비밀번호 변경</a>
             <button type="submit" class="btn btn-primary">변경사항 저장</button>
         </div>
-
     </form>
 </div>
-
-
-<script>
-    console.log(${infoUserDto.agreeInfoOffer})
-</script>
 
 <%@ include file="../include/footer.jsp" %>

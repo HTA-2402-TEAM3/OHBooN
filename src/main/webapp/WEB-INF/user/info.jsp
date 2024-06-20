@@ -73,12 +73,9 @@
     </table>
 
     <div>
-        <a href="../user/password-confirm" class="btn btn-dark">회원정보 변경</a>
+        <a href="${pageContext.request.contextPath}/user/info/password-confirm" class="btn btn-dark">회원정보 변경</a>
     </div>
 </div>
 
-<script>
-    console.log(${infoUserDto.agreeInfoOffer})
-</script>
 
 <%@ include file="../include/footer.jsp" %>
