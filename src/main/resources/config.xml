@@ -1,16 +1,13 @@
-<?xml version="1.0" encoding="UTF-8" ?>
-<!DOCTYPE configuration
-        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE configuration        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
     <properties resource="db.properties"></properties>
-
     <settings>
         <!-- 스네이크 케이스를 CamelCase로 자동 변환 -->
         <setting name="mapUnderscoreToCamelCase" value="true"/>
     </settings>
-
     <typeAliases>
+        <typeAlias alias="BoardDTO" type="com.ohboon.ohboon.dto.BoardDTO"/>
         <typeAlias alias="ModalDto" type="com.ohboon.ohboon.dto.ModalDto"/>
         <typeAlias alias="UserDto" type="com.ohboon.ohboon.dto.UserDto"/>
     </typeAliases>
@@ -26,6 +23,7 @@
         </environment>
     </environments>
     <mappers>
+        <mapper resource="board.xml"/>
         <mapper resource="UserMapper.xml"/>
     </mappers>
 </configuration>

@@ -46,8 +46,8 @@ public class ListController extends HttpServlet {
 		HashMap<String, String> searchOptions = new HashMap<>(Map.of(
 			"searchOption", "",
 			"searchWord", "",
-			"startIndex", Objects.toString(startIndex),
-			"endIndex", Objects.toString(endIndex)));
+			"startIndex", String.valueOf(startIndex),
+			"endIndex", String.valueOf(endIndex)));
 
 		int totalCount = 0;
 		List<ListBoardDTO> boards = new ArrayList<>();
@@ -102,10 +102,10 @@ public class ListController extends HttpServlet {
 		}
 
 		req.setAttribute("boards", boards);
-		req.setAttribute("startPage", startPage);
-		req.setAttribute("endPage", endPage);
-		req.setAttribute("totalPage", totalPage);
-		req.setAttribute("totalCount", totalCount);
+		req.setAttribute("startPage", String.valueOf(startPage));
+		req.setAttribute("endPage", String.valueOf(endPage));
+		req.setAttribute("totalPage", String.valueOf(totalPage));
+		req.setAttribute("totalCount", String.valueOf(totalCount));
 
 		RequestDispatcher requestDispatcher = req.getRequestDispatcher("/WEB-INF/board/list.jsp");
 		requestDispatcher.forward(req, resp);

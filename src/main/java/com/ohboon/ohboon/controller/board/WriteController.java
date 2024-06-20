@@ -49,7 +49,7 @@ public class WriteController extends HttpServlet {
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
 		HttpSession session = req.getSession();
-		String userEmail = (String)session.getAttribute("loginEmail");
+		String userEmail = (String)session.getAttribute("sessionEmail");
 
 		String id = req.getParameter("boardID");
 

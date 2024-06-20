@@ -26,7 +26,7 @@ public class WriteFilter implements Filter {
 		HttpServletResponse httpServletResponse = (HttpServletResponse)servletResponse;
 		HttpSession session = httpServletRequest.getSession();
 
-		Object loginEmail = session.getAttribute("loginEmail");
+		Object loginEmail = session.getAttribute("sessionEmail");
 		String boardID = httpServletRequest.getParameter("boardID");
 		String subject = httpServletRequest.getParameter("subject");
 		String content = httpServletRequest.getParameter("content");
