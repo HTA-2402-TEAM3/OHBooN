@@ -50,12 +50,12 @@ public class ChatController extends HttpServlet {
 
                 ChatService chatService = new ChatService();
 //                List<MsgDTO> msgList = chatService.getMsgList(chat_id);
-                Map<Long, Map<String, Object>> msgMap = chatService.getMsgMap(chat_id);
+                Map<LocalDateTime, Map<String, Object>> msgMap = chatService.getMsgMap(chat_id);
 
                 ChatDAO chatRoomDAO = new ChatDAO();
                 String match_email = "null";
                 long match_id = chatRoomDAO.getMatchIdByChatId(chat_id);
-                if(match_id !=0) {
+                if (match_id != 0) {
                     MatchDAO matchDAO = new MatchDAO();
                     match_email = matchDAO.getMatchEmail(match_id);
                 }
@@ -78,7 +78,7 @@ public class ChatController extends HttpServlet {
         }
     }
 
-    private Map<String, Object> reqMapSet(String matchEmail, String userId, long chatId, long matchId, Map<Long, Map<String, Object>> msgMap) {
+    private Map<String, Object> reqMapSet(String matchEmail, String userId, long chatId, long matchId, Map<LocalDateTime, Map<String, Object>> msgMap) {
         Map<String, Object> reqMap = new HashMap<>();
         reqMap.put("match_email", matchEmail);
         reqMap.put("user_id", userId);
