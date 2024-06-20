@@ -29,8 +29,8 @@ public class LoginController extends HttpServlet {
 //      ChatRoomDAO의 getChatList() 메서드를 호출하여 현재 세션의 ID를 전달
 
         System.out.println(chatList);
-        req.setAttribute("chatList", chatList);
+//        req.setAttribute("chatList", chatList);
         ss.setAttribute("sessionNickname", userID);
-        req.getRequestDispatcher("chatList.jsp").forward(req,resp);
+        req.getRequestDispatcher("Test2.jsp").forward(req,resp);
     }
 }
