@@ -8,19 +8,16 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <title>Title</title>
+
+    <title>OHBOON - Hello Programmers</title>
+    <meta http-equiv="refresh" content="0;url=/index/index"> <%--0초 후에 index 페이지로 이동--%>
 </head>
 <body>
-<form action="login" method="post">
-    <div class="form-floating">
-        <input type="text" class="form-control" id="floatingInput" placeholder="User Email" name="user_id">
-        <label for="floatingInput">User Email </label>
-    </div>
-    <div class="form-floating">
-        <input type="password" class="form-control" id="floatingPassword" placeholder="Password" name="userPW">
-        <label for="floatingPassword">Password</label>
-    </div>
-    <button class="btn btn-primary w-100 py-2" type="submit">LOGIN</button>
-</form>
+<h1><%= "Hello World!" %>
+</h1>
+<br/>
+
+<meta http-equiv="refresh" content="0; url=index/index" >
+
 </body>
 </html>

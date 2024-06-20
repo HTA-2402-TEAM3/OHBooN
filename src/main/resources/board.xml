@@ -3,10 +3,87 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ohboon.ohboon.dto.BoardDTO">
-    <select id="getBoardList" resultType="BoardDTO">
-        SELECT * FROM board
+
+    <sql id="search">
+        <choose>
+            <when test="searchOption == 'subject'">
+                subject like CONCAT('%', #{searchWord}, '%')
+            </when>
+            <when test="searchOption == 'content'">
+                content like CONCAT('%', #{searchWord}, '%')
+            </when>
+            <when test="searchOption == 'nickname'">
+                nickname like CONCAT('%', #{searchWord}, '%')
+            </when>
+            <when test="searchOption == 'all'">
+                subject like CONCAT('%', #{searchWord}, '%') OR content like CONCAT('%', #{searchWord}, '%')
+            </when>
+            <otherwise>
+                subject like '%%'
+            </otherwise>
+        </choose>
+    </sql>
+
+    <select id="findBySearchWord" resultType="com.ohboon.ohboon.dto.ListBoardDTO" parameterType="Map">
+        select
+        id, nickname, evaluation, reg_date, category, subject, meet_date, location, view_option
+        from
+        (select *, row_number() over (order by id) as num from board natural join user b1
+        where not view_option = 0 and <include refid="search"/>) as b2
+        where num between #{startIndex} and #{endIndex}
     </select>
+
     <select id="findEmailByBoardId" resultType="String" parameterType="long">
         SELECT email FROM board WHERE id = #{id}
     </select>
+
+    <select id="calculateWordSearchBoardCount" resultType="int" parameterType="Map">
+        select count(*) from board natural join user b1
+        where not view_option = 0 and
+        <include refid="search"/>
+    </select>
+
+    <select id="findWithSimple" resultType="com.ohboon.ohboon.dto.ListBoardDTO" parameterType="Map">
+        select
+        id, nickname, evaluation, reg_date, category, subject, meet_date, location, view_option
+        from
+        (select *, row_number() over (order by id) as num from board natural join user b1
+        where not view_option = 0
+        and location like CONCAT('%', #{location}, '%') and meet_date between #{minTime} and #{maxTime} and category = #{category}
+        ) as b2
+        where
+        num between #{startIndex} and #{endIndex}
+    </select>
+
+    <select id="calculateSimpleSearchBoardCount" resultType="int" parameterType="Map">
+        select count(*) from board natural join user b1
+        where not view_option = 0
+        and location like CONCAT('%', #{location}, '%') and meet_date between #{minTime} and #{maxTime} and category = #{category}
+    </select>
+
+
+    <select id="findAll" resultType="BoardDTO">
+        select * from board
+    </select>
+
+    <select id="findByID" resultType="BoardDTO" parameterType="long">
+        SELECT * FROM board where id = #{id} and not view_option = 0
+    </select>
+
+    <insert id="save" parameterType="BoardDTO">
+        insert into board(email, subject, content, reg_date, view_option, category, location, meet_date, modify_date)
+        values(#{email}, #{subject}, #{content}, now(), #{viewOption}, #{category}, #{location}, #{meetDate}, now())
+    </insert>
+
+    <update id="modify" parameterType="BoardDTO">
+        update board set
+        subject = #{subject}, content = #{content}, category = #{category}, location = #{location},
+        meet_date = #{meetDate}, modify_date = now()
+        where id = #{id}
+    </update>
+
+
+    <update id="delete" parameterType="long">
+        update board set view_option = 0 where id = #{id}
+    </update>
 </mapper>
