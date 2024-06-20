@@ -12,8 +12,8 @@ public class WsHttpSessionConfig extends Configurator {
     public void modifyHandshake(ServerEndpointConfig sec, HandshakeRequest request, HandshakeResponse response) {
         HttpSession httpSession = (HttpSession) request.getHttpSession();
         if(httpSession!=null) {
-//            String userNickname =(String) httpSession.getAttribute("sessionNickname");
-            sec.getUserProperties().put("PRIVATE_HTTP_SESSION",httpSession);
+            String userNickname =(String) httpSession.getAttribute("sessionNickname");
+            sec.getUserProperties().put("PRIVATE_HTTP_SESSION",userNickname);
 //            httpSession값 저장
         }
     }

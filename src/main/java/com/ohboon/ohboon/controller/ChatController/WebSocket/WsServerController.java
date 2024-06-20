@@ -25,9 +25,9 @@ public class WsServerController {
     @OnOpen
     public void onOpen(Session session, EndpointConfig config) {
         //client가 websocket에 연결되었을 때
-        HttpSession httpSession = (HttpSession) config.getUserProperties().get("PRIVATE_HTTP_SESSION");
-//        String userNickname = (String) config.getUserProperties().get("PRIVATE_HTTP_SESSION");
-        String userNickname = (String) httpSession.getAttribute("sessionNickname");
+//        HttpSession httpSession = (HttpSession) config.getUserProperties().get("PRIVATE_HTTP_SESSION");
+        String userNickname = (String) config.getUserProperties().get("PRIVATE_HTTP_SESSION");
+//        String userNickname = (String) httpSession.getAttribute("sessionNickname");
 
         sessionsMap.put(session, userNickname);
         sessionList.add(session);
@@ -47,6 +47,7 @@ public class WsServerController {
         String sender = jsonObject.get("user_id").getAsString();
         String content = jsonObject.get("content").getAsString();
 
+
         System.out.println(sender);
 
         chatRoomSessionMap = setChatUsers(chat_id, sessionsMap);
@@ -56,9 +57,9 @@ public class WsServerController {
         chatRoomSessionMap.get(chat_id).forEach(session1 -> {
             try {
                 if (session1 == wsSession) {
-                    session1.getBasicRemote().sendText("나 :" + content);
+                    session1.getBasicRemote().sendText("나|" + content +"|"+LocalDateTime.now());
                 } else {
-                    session1.getBasicRemote().sendText(sender + " : " + content);
+                    session1.getBasicRemote().sendText(sender + "|" + content+"|"+LocalDateTime.now());
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
