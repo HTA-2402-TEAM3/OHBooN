@@ -11,8 +11,8 @@
     </settings>
 
     <typeAliases>
-        <typeAlias alias="ModalDto" type="com.jhta2402.jhta2402_3_team_project_1.dto.ModalDto"/>
-        <typeAlias alias="UserDto" type="com.jhta2402.jhta2402_3_team_project_1.dto.UserDto"/>
+        <typeAlias alias="ModalDto" type="com.ohboon.ohboon.dto.ModalDto"/>
+        <typeAlias alias="UserDto" type="com.ohboon.ohboon.dto.UserDto"/>
     </typeAliases>
     <environments default="development">
         <environment id="development">

@@ -5,7 +5,7 @@
          version="5.0">
     <filter>
         <filter-name>EncodingFilter</filter-name>
-        <filter-class>com.jhta2402.jhta2402_3_team_project_1.filter.BasicFilter</filter-class>
+        <filter-class>com.ohboon.ohboon.filter.BasicFilter</filter-class>
 
         <init-param>
             <param-name>FILTER_INIT_PARAM</param-name>
