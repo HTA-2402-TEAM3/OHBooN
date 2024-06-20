@@ -11,12 +11,14 @@ import com.ohboon.ohboon.service.BoardService;
 import com.ohboon.ohboon.util.CommonValidation;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
+@MultipartConfig
 @WebServlet("/board/write")
 public class WriteController extends HttpServlet {
 
@@ -57,11 +59,22 @@ public class WriteController extends HttpServlet {
 		String location = req.getParameter("location");
 		String inputMeetDate = req.getParameter("meetDate");
 
+		System.out.println("subject = " + subject);
+		System.out.println("content = " + content);
+		System.out.println("inputMeetDate = " + inputMeetDate);
+		System.out.println("location = " + location);
+		System.out.println("category = " + category);
+
 		try {
 			CommonValidation.validateNull(subject, content, category, location, inputMeetDate);
 			CommonValidation.validateBlank(subject, content, inputMeetDate);
 		} catch (IllegalStateException illegalStateException) {
-			resp.sendError(HttpServletResponse.SC_BAD_REQUEST, illegalStateException.getMessage());
+			resp.setContentType("application/json");
+			resp.setCharacterEncoding("UTF-8");
+			resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			PrintWriter writer = resp.getWriter();
+			writer.write("{\"message\":\"" + illegalStateException.getMessage() + "\"}");
+			writer.flush();
 			return;
 		}
 
@@ -97,13 +110,19 @@ public class WriteController extends HttpServlet {
 
 			resp.setContentType("application/json");
 			resp.setCharacterEncoding("UTF-8");
-			resp.setStatus(HttpServletResponse.SC_OK);
 			PrintWriter writer = resp.getWriter();
-			writer.println("{\"writeMessage\": \"" + writeMessage + "\"}");
+			resp.setStatus(HttpServletResponse.SC_OK);
+			writer.println("{\"writeMessage\":\"" + writeMessage + "\"}");
 			writer.flush();
 
-		} catch (IllegalStateException illegalStateException) {
-			resp.sendError(HttpServletResponse.SC_BAD_REQUEST, illegalStateException.getMessage());
+		} catch (Exception e) {
+
+			resp.setContentType("application/json");
+			resp.setCharacterEncoding("UTF-8");
+			resp.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+			PrintWriter writer = resp.getWriter();
+			writer.write("{\"message\":\"" + e.getMessage() + "\"}");
+			writer.flush();
 		}
 
 	}
