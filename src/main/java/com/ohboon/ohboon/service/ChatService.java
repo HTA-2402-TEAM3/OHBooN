@@ -3,10 +3,12 @@ package com.ohboon.ohboon.service;
 import com.ohboon.ohboon.dao.ChatDAO;
 import com.ohboon.ohboon.dao.MatchDAO;
 import com.ohboon.ohboon.dao.MsgDAO;
+import com.ohboon.ohboon.dao.UserDAO;
 import com.ohboon.ohboon.dto.ChatDTO;
 import com.ohboon.ohboon.dto.MsgDTO;
 import org.eclipse.tags.shaded.org.apache.xalan.xsltc.compiler.util.MultiHashtable;
 
+import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -19,11 +21,11 @@ public class ChatService {
         MsgDAO msgDAO = new MsgDAO();
         return msgDAO.saveMsg(msgDTO);
     }
+//    public List<MsgDTO> getMsgList(long chat_id) {
+//        MsgDAO msgDAO = new MsgDAO();
+//        return msgDAO.getMsgList(chat_id);
+//    }
 
-    public List<MsgDTO> getMsgList(long chat_id) {
-        MsgDAO msgDAO = new MsgDAO();
-        return msgDAO.getMsgList(chat_id);
-    }
     public long getChatId(ChatDTO chatRoomDto) {
         ChatDAO chatDAO = new ChatDAO();
         return chatDAO.CreateChatRoom(chatRoomDto);
@@ -34,7 +36,7 @@ public class ChatService {
         List<HashMap<String, String>> results = chatDAO.findUsersByChatId(chatId);
         List<String> users = new ArrayList<>();
 
-        for(HashMap<String, String> result : results) {
+        for (HashMap<String, String> result : results) {
             users.add(result.get("sender"));
             users.add(result.get("receiver"));
         }
@@ -51,21 +53,50 @@ public class ChatService {
         int rs = chatDAO1.insertMatchId(map);
     }
 
-    public Map<Long, Map<String, Object>> getMsgMap(long chatId) {
+    public Map<LocalDateTime, Map<String, Object>> getMsgMap(long chatId) {
         MsgDAO msgDAO = new MsgDAO();
         List<MsgDTO> list = msgDAO.getMsgList(chatId);
+        System.out.println("list : " + list);
 
-        Map<String, Object> msgDtoMap = new HashMap<>();
+        Map<LocalDateTime, Map<String, Object>> MsgMap = new HashMap<>();
 
-        Map<Long, Map<String, Object>> MsgMap = new HashMap<>();
         for (MsgDTO msgDTO : list) {
-            msgDtoMap.put("chatroom_id", msgDTO.getChatRoomId());
-            msgDtoMap.put("match_id", msgDTO.getMatchId());
-            msgDtoMap.put("sender", msgDTO.getSender());
-            msgDtoMap.put("content", msgDTO.getContent());
-            msgDtoMap.put("time_stamp", msgDTO.getTimeStamp());
-            MsgMap.put(msgDTO.getMessageId(), msgDtoMap);
+            Map<String, Object> msg = new HashMap<>();
+            msg.put("sender", msgDTO.getSender());
+            msg.put("content", msgDTO.getContent());
+            MsgMap.put(msgDTO.getTimeStamp(), msg);
         }
         return MsgMap;
+    }
+
+    public Map<Long, Map<String, Object>> getChatList(String userID) {
+        ChatDAO chatRoomDAO = new ChatDAO();
+        UserDAO userDAO;
+        MsgDAO msgDAO;
+        List<ChatDTO> chatList = chatRoomDAO.getChatList(userID);
+        System.out.println("chatList: "+chatList);
+
+        Map<Long, Map<String, Object>> roomMap = new HashMap<>();
+        for (ChatDTO chatDTO : chatList) {
+            userDAO = new UserDAO();
+            msgDAO = new MsgDAO();
+            Map<String, Object> map = new HashMap<>();
+//            map.put("match_id", chatDTO.getMatchID());
+//            map.put("board_id", chatDTO.getBoardID());
+//            map.put("sender", chatDTO.getSender());
+//            map.put("receiver", chatDTO.getReceiver());
+            if (chatDTO.getSender().equals(userID)) {
+                map.put("subject", chatDTO.getReceiver());
+//                map.put("profile", userDAO.getProfile(chatDTO.getReceiver()));
+            } else {
+                map.put("subject", chatDTO.getSender());
+//                map.put("profile", userDAO.getProfile(chatDTO.getSender()));
+            }
+            map.put("profile", null);
+            map.put("recentContent", msgDAO.getRecentMsg(chatDTO.getChatID()));
+            roomMap.put(chatDTO.getChatID(), map);
+        }
+        System.out.println("roomMap: "+roomMap);
+        return roomMap;
     }
 }

@@ -30,6 +30,7 @@
     </select>
     <select id="getChatList" resultType="ChatDTO" parameterType="String">
         SELECT * FROM chatroom where sender = #{senderName} or receiver = #{senderName}
+<!--        조인 써서 최근 채팅 한 순서대로 가져오기 !!!!! -->
     </select>
     <update id="insertMatchId" parameterType="hashmap">
         update chatroom set match_id = #{match_id} where chat_id = #{chat_id}

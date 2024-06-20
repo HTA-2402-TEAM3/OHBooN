@@ -22,4 +22,11 @@ public class MsgDAO {
         System.out.println(msgList);
         return msgList;
     }
+
+    public String getRecentMsg(long chatID) {
+        String msg = ss.selectOne("getRecentMsg", chatID);
+        ss.commit();
+        ss.close();
+        return msg;
+    }
 }
