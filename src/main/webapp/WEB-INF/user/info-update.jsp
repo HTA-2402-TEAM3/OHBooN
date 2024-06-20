@@ -70,7 +70,15 @@
             <tr>
                 <th>AGREEMENT OF OFFERING INFORMATION</th>
                 <td>${infoUserDto.agreeInfoOffer?"동의":"미동의"}</td>
-                <td><input type="checkbox" class="form-check" name="agreeInfoOffer" ${infoUserDto.agreeInfoOffer?"checked":""}></td>
+                <td>
+                    <div>
+                        <label>
+                            <input type="checkbox" class="form-check" name="agreeInfoOffer" ${infoUserDto.agreeInfoOffer ? "checked" : ""}>
+                            <span>동의시 체크</span>
+                        </label>
+                    </div>
+                </td>
+
             </tr>
         </table>
 
