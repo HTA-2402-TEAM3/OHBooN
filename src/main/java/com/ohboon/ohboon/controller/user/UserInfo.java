@@ -1,7 +1,7 @@
 package com.ohboon.ohboon.controller.user;
 
 
-import com.ohboon.ohboon.dao.UserDAO;
+import com.ohboon.ohboon.dao.UserDao;
 import com.ohboon.ohboon.dto.UserDto;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -19,10 +19,10 @@ public class UserInfo extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         HttpSession session = req.getSession();
-        String nickname = (String) session.getAttribute("sessionNickname");
+        String email = (String) session.getAttribute("sessionEmail");
 
-        UserDAO userDao = new UserDAO();
-        UserDto infoUserDto = userDao.infoUser(nickname);
+        UserDao userDao = new UserDao();
+        UserDto infoUserDto = userDao.findUserByEmail(email);
 
         if (infoUserDto == null) {
             resp.sendRedirect("../index/index");

@@ -65,7 +65,7 @@ public class PasswordSearch extends HttpServlet {
 
         if (saveTokenResult) {
             // 비밀번호 변경 링크 생성
-            String resetLink = "http://localhost:8080/user/login/password-reset?token=" + token;
+            String resetLink = "http://localhost:8080/user/login/password-reset?token=" + token + "&email=" + email;
 
             // 비밀번호 변경 링크를 이메일로 전송
             boolean emailSent = userDao.sendPasswordByEmail(email, resetLink);

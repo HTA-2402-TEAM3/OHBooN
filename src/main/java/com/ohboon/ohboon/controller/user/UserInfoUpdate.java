@@ -1,11 +1,12 @@
 package com.ohboon.ohboon.controller.user;
 
 
-import com.ohboon.ohboon.dao.UserDAO;
+import com.ohboon.ohboon.dao.UserDao;
 import com.ohboon.ohboon.dto.UserDto;
 import com.ohboon.ohboon.utils.ScriptWriter;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.*;
 
@@ -15,17 +16,20 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 @WebServlet("/user/info/update")
+@MultipartConfig //multipart로 데이터 보낼 때 반드시 필요
+
 public class UserInfoUpdate extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
-        String nickname = (String) session.getAttribute("sessionNickname");
+        String email = (String) session.getAttribute("sessionEmail");
 
-        UserDAO userDao = new UserDAO();
-        UserDto infoUserDto = userDao.infoUser(nickname);
+        UserDao userDao = new UserDao();
+        UserDto infoUserDto = userDao.findUserByEmail(email);
 
         if (infoUserDto == null) {
-            resp.sendRedirect("../index/index");
+            ScriptWriter.alert(resp,"사용자 메일 정보를 찾을 수 없습니다.");
+            resp.sendRedirect("/index/index");
         } else {
             req.setAttribute("infoUserDto", infoUserDto);
             RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/user/info-update.jsp");
@@ -50,7 +54,13 @@ public class UserInfoUpdate extends HttpServlet {
         Part profilePart = req.getPart("profile");
         String profile = uploadProfileImage(profilePart, req);
 
-        UserDAO userDao = new UserDAO();
+
+        if (phone == null || phone.trim().isEmpty()) {
+            ScriptWriter.alertAndBack(resp, "전화번호를 입력해주세요.");
+            return;
+        }
+
+        UserDao userDao = new UserDao();
         UserDto userDto = userDao.findUserByEmail(email);
 
         if (userDto != null) {
@@ -62,7 +72,14 @@ public class UserInfoUpdate extends HttpServlet {
 
             int result = userDao.updateUserInfo(userDto);
             if (result > 0) {
-                ScriptWriter.alertAndNext(resp, "정보가 성공적으로 변경되었습니다.", "../user/info");
+                // 세션 정보 갱신
+                session.setAttribute("sessionPhone", userDto.getPhone());
+                session.setAttribute("sessionAgreeInfoOffer", userDto.isAgreeInfoOffer());
+                if (profile != null) {
+                    session.setAttribute("sessionProfile", userDto.getProfile());
+                }
+
+                ScriptWriter.alertAndNext(resp, "정보가 성공적으로 변경되었습니다.", "/user/info");
             } else {
                 ScriptWriter.alertAndBack(resp, "정보 변경에 실패했습니다.");
             }
