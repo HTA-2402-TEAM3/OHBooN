@@ -12,6 +12,17 @@
             <p class="card-text"><strong>글쓴이:</strong>${board.email}</p>
             <p class="card-text"><strong>작성일:</strong>${board.modifyDate}</p>
             <p class="card-text"><strong>위치 정보:</strong> ${board.location}</p>
+
+
+            <c:if test="${sessionScope.sessionEmail ne board.email}">
+
+                <form id="myForm" action="/makeChat" method="POST">
+
+                    <input type="hidden" name="board_id" value="${board.id}">
+                    <button> 채팅하기</button>
+                </form>
+            </c:if>
+
         </div>
     </div>
 
@@ -30,11 +41,7 @@
     </form>
 
 
-
-
-
     <button type="button" class="btn btn-light" onclick="window.history.back()">목록</button>
-
 
 
     <script>
@@ -69,7 +76,7 @@
         });
 
         document.getElementById("btn-modify").addEventListener('click', function () {
-           location.href = "/board/write?boardID=${board.id}"
+            location.href = "/board/write?boardID=${board.id}"
         });
     </script>
 </div>
