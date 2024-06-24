@@ -26,10 +26,10 @@
 
     <select id="findBySearchWord" resultType="com.ohboon.ohboon.dto.ListBoardDTO" parameterType="Map">
         select
-        id, nickname, evaluation, reg_date, category, subject, meet_date, location, view_option
+        id, nickname, evaluation, reg_date, modify_date, category, subject, meet_date, location, view_option
         from
-        (select *, row_number() over (order by id) as num from board natural join user b1
-        where not view_option = 0 and <include refid="search"/>) as b2
+        (select *, row_number() over (order by modify_date desc) as num from board natural join user b1
+        where not view_option = 0 and <include refid="search"/> ) as b2
         where num between #{startIndex} and #{endIndex}
     </select>
 
@@ -45,11 +45,11 @@
 
     <select id="findWithSimple" resultType="com.ohboon.ohboon.dto.ListBoardDTO" parameterType="Map">
         select
-        id, nickname, evaluation, reg_date, category, subject, meet_date, location, view_option
+        id, nickname, evaluation, modify_date, category, subject, meet_date, location, view_option
         from
-        (select *, row_number() over (order by id) as num from board natural join user b1
+        (select *, row_number() over (order by modify_date desc) as num from board natural join user b1
         where not view_option = 0
-        and location like CONCAT('%', #{location}, '%') and meet_date between #{minTime} and #{maxTime} and category = #{category}
+        and location like CONCAT('%', #{location}, '%') and meet_date between #{minTime} and #{maxTime} and category = #{category} order by modify_date desc
         ) as b2
         where
         num between #{startIndex} and #{endIndex}

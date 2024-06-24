@@ -105,7 +105,7 @@
     <div class="container">
         <h2 class="mt-5 mb-5">글쓰기</h2>
         <div>
-            <input type="text" id="keyword" placeholder="검색할 장소를 입력하세요">
+            <input type="text" id="keyword" placeholder="검색할 장소를 입력하세요" value="${board.location}">
             <button onclick="searchPlaces()">검색</button>
         </div>
 
@@ -119,7 +119,7 @@
             <div id="map" style="width:50%;height:300px;"></div>
             <div class="mb-3">
                 <label for="meetDate" class="form-label">희망 날짜 및 시간</label>
-                <input type="datetime-local" id="meetDate" placeholder="날짜를 입력해 주세요" name="meetDate">
+                <input type="datetime-local" id="meetDate" placeholder="날짜를 입력해 주세요" name="meetDate" value="${board.meetDate}">
             </div>
             <div class="form-check">
                 <input class="form-check-input" type="radio" name="category" id="flexRadioDefault1" value="커리어 상담"
@@ -155,11 +155,11 @@
 
             <div class="mb-3">
                 <label for="subject" class="form-label">제목</label>
-                <input type="text" class="form-control" id="subject" placeholder="제목을 쓰세요" name="subject">
+                <input type="text" class="form-control" id="subject" placeholder="제목을 쓰세요" name="subject" value="${board.subject}">
             </div>
             <div class="mb-3">
                 <label for="content" class="form-label">내용</label>
-                <textarea name="content" id="content" placeholder="내용을 입력하세요." rows="8" class="form-control"></textarea>
+                <textarea name="content" id="content" placeholder="내용을 입력하세요." rows="8" class="form-control" >${board.content}</textarea>
             </div>
             <div>
                 <input type="hidden" class="form-control" id="location" name="location" value="">

@@ -5,12 +5,12 @@
 
     <div class="card">
         <div class="card-header">
-            <h2>제목</h2>
+            <h2>[${board.category}] ${board.subject}</h2>
         </div>
         <div class="card-body">
             <p class="card-text"><strong>내용:</strong> ${board.content}</p>
-            <p class="card-text"><strong>글쓴이:</strong></p>
-            <p class="card-text"><strong>작성일:</strong></p>
+            <p class="card-text"><strong>글쓴이:</strong>${board.email}</p>
+            <p class="card-text"><strong>작성일:</strong>${board.modifyDate}</p>
             <p class="card-text"><strong>위치 정보:</strong> ${board.location}</p>
         </div>
     </div>
@@ -23,9 +23,13 @@
         </c:if>
         <c:if test="${sessionScope.sessionEmail eq board.email}">
             <button type="button" id="btn-sign" class="btn btn-light">삭제</button>
+            <button type="button" id="btn-modify" class="btn btn-light">수정</button>
+
         </c:if>
 
     </form>
+
+
 
 
 
@@ -62,6 +66,10 @@
                         alert(error.message);
                     })
             });
+        });
+
+        document.getElementById("btn-modify").addEventListener('click', function () {
+           location.href = "/board/write?boardID=${board.id}"
         });
     </script>
 </div>
