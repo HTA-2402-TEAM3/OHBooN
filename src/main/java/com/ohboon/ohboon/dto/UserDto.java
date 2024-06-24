@@ -11,7 +11,7 @@ import java.time.LocalDateTime;
 @Builder
 @ToString
 
-public class UserDTO {
+public class UserDto {
     private String email;
     private String nickname;
     private String username;

@@ -1,7 +1,7 @@
 package com.ohboon.ohboon.dao;
 
 import com.ohboon.ohboon.dto.Grade;
-import com.ohboon.ohboon.dto.UserDTO;
+import com.ohboon.ohboon.dto.UserDto;
 import com.ohboon.ohboon.mail.NaverMail;
 import com.ohboon.ohboon.mybatis.MybatisConnectionFactory;
 import jakarta.servlet.http.HttpServletRequest;
@@ -59,8 +59,8 @@ public class UserDao {
     }
 
     // UserDto 생성
-    public UserDTO createUserDto(HttpServletRequest req, String hashUserPW, String renameProfile, String verificationCode) {
-        return UserDTO.builder()
+    public UserDto createUserDto(HttpServletRequest req, String hashUserPW, String renameProfile, String verificationCode) {
+        return UserDto.builder()
                 .email(req.getParameter("email"))
                 .nickname(req.getParameter("nickname"))
                 .username(req.getParameter("userName"))
@@ -79,7 +79,7 @@ public class UserDao {
     }
 
     // 사용자 저장 및 이메일 전송
-    public int registerUser(UserDTO userDto) {
+    public int registerUser(UserDto userDto) {
         int result = saveUser(userDto);
         if (result > 0) {
             String verificationCode = UUID.randomUUID().toString();
@@ -94,7 +94,7 @@ public class UserDao {
     }
 
     // 사용자 저장
-    public int saveUser(UserDTO userDto) {
+    public int saveUser(UserDto userDto) {
         int result = 0;
         try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
             result = sqlSession.insert("signup", userDto);
@@ -172,8 +172,8 @@ public class UserDao {
         return result;
     }
 
-    public UserDTO loginUser(UserDTO userDto) {
-        UserDTO loginMemberDto = null;
+    public UserDto loginUser(UserDto userDto) {
+        UserDto loginMemberDto = null;
         try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
             loginMemberDto = sqlSession.selectOne("loginUser", userDto);
         } catch (Exception e) {
@@ -182,8 +182,8 @@ public class UserDao {
         return loginMemberDto;
     }
 
-    public UserDTO infoUser(String nickname) {
-        UserDTO infoUserDto = null;
+    public UserDto infoUser(String nickname) {
+        UserDto infoUserDto = null;
         try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
             infoUserDto = sqlSession.selectOne("infoUser", nickname);
 
@@ -296,8 +296,8 @@ public class UserDao {
         return grade;
     }
 
-    public UserDTO findUserByEmail(String email) {
-        UserDTO user = null;
+    public UserDto findUserByEmail(String email) {
+        UserDto user = null;
         try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
             user = sqlSession.selectOne("findUserByEmail", email);
         } catch (Exception e) {
@@ -309,7 +309,7 @@ public class UserDao {
     public int updateUserInfo(String email, String nickname, String phone) {
         int result = 0;
         try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
-            UserDTO userDto = new UserDTO();
+            UserDto userDto = new UserDto();
 
             userDto.setEmail(email);
             userDto.setNickname(nickname);
@@ -322,7 +322,7 @@ public class UserDao {
         return result;
     }
 
-    public int updateUserInfo(UserDTO userDto) {
+    public int updateUserInfo(UserDto userDto) {
         int result = 0;
         try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
             result = sqlSession.update("updateUserInfo", userDto);
