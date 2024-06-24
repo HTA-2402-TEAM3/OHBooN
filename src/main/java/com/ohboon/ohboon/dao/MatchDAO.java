@@ -1,8 +1,11 @@
 package com.ohboon.ohboon.dao;
 
 import com.ohboon.ohboon.dto.MatchDTO;
-import com.ohboon.ohboon.mybatis.MybatisConnectionFactory;
+
+import com.ohboon.ohboon.util.MybatisConnectionFactory;
+
 import org.apache.ibatis.session.SqlSession;
+
 
 import java.util.HashMap;
 import java.util.Map;
