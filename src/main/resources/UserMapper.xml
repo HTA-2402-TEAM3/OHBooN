@@ -92,5 +92,7 @@
     <delete id="deleteUser" parameterType="String">
         delete from user where email = #{email} and available = 1
     </delete>
-
+<select id="findNicknameByEmail" parameterType="String" resultType="String">
+    select nickname from user where email =#{boardWriterName};
+</select>
 </mapper>

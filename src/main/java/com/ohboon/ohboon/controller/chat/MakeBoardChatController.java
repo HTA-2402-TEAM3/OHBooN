@@ -2,6 +2,7 @@ package com.ohboon.ohboon.controller.chat;
 
 import com.google.gson.Gson;
 import com.ohboon.ohboon.dao.BoardDAO;
+import com.ohboon.ohboon.dao.UserDao;
 import com.ohboon.ohboon.dto.ChatDTO;
 import com.ohboon.ohboon.dto.ModalDto;
 import com.ohboon.ohboon.service.ChatService;
@@ -30,7 +31,9 @@ public class MakeBoardChatController extends HttpServlet {
         Map<String, Object> reqMap = new HashMap<>();
 
         BoardDAO boardDAO = new BoardDAO();
-        String receiverName = boardDAO.findEmailByBoardId(board_id);
+        String boardWriterName = boardDAO.findEmailByBoardId(board_id);
+        UserDao userDao = new UserDao();
+        String receiverName = userDao.findNicknameByEmail(boardWriterName);
 
         ChatDTO makeChatDto = ChatDTO.builder()
                 .boardID(board_id)
@@ -40,9 +43,11 @@ public class MakeBoardChatController extends HttpServlet {
         ChatService chatService = new ChatService();
         long chat_id = chatService.getChatId(makeChatDto);
 
+        System.out.println(chat_id);
+
         if (chat_id != 0) {
             MatchService matchService = new MatchService();
-            long match_id = matchService.getMatchId(board_id, receiverName, senderName);
+            long match_id = matchService.getMatchId(board_id, boardWriterName, senderName);
 
 
             chatService = new ChatService();

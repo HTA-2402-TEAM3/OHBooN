@@ -334,4 +334,15 @@ public class UserDao {
     }
 
 
+    public String findNicknameByEmail(String boardWriterName) {
+        String nickname = null;
+        try(
+        SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
+            nickname = sqlSession.selectOne("findNicknameByEmail", boardWriterName);
+            sqlSession.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return nickname;
+    }
 }

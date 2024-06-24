@@ -83,10 +83,7 @@ public class ChatService {
             userDAO = new UserDao();
             msgDAO = new MsgDAO();
             Map<String, Object> map = new HashMap<>();
-//            map.put("match_id", chatDTO.getMatchID());
-//            map.put("board_id", chatDTO.getBoardID());
-//            map.put("sender", chatDTO.getSender());
-//            map.put("receiver", chatDTO.getReceiver());
+
             if (chatDTO.getSender().equals(userID)) {
                 map.put("subject", chatDTO.getReceiver());
 //                map.put("profile", userDAO.getProfile(chatDTO.getReceiver()));
