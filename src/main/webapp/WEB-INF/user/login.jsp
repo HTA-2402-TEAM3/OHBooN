@@ -3,7 +3,7 @@
 
 <%@ include file="../include/header.jsp" %>
 
-<main class="form-signin w-100 m-auto">
+<div class="container" style="max-width: 400px; margin-top: 50px;">
     <form action="../user/login" method="post">
 
         <h2 class="h3 mb-3 fw-normal">LOGIN</h2>
@@ -28,6 +28,6 @@
         <button class="btn btn-primary w-100 py-2" type="submit">LOGIN</button>
         <a href="../user/login/password-search" class="btn btn-outline-secondary w-100 py-2 mt-2">LOST PASSWORD</a>
     </form>
-</main>
+</div>
 
 <%@ include file="../include/footer.jsp" %>

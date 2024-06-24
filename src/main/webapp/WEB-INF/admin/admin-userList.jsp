@@ -3,6 +3,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ include file="../include/header.jsp" %>
 
+
 <div class="container mt-5">
     <h2>관리자 - 사용자 목록</h2>
     <p>Session Grade :  <%=session.getAttribute("sessionGrade")%> </p>
@@ -10,11 +11,11 @@
     <form action="${pageContext.request.contextPath}/admin/userList" method="get">
         <label for="limit">한 페이지에 표시할 사용자 수:</label>
         <select name="limit" id="limit" onchange="this.form.submit()">
-            <option value="10" ${param.limit == 10 ? 'selected' : ''}>10명</option>
-            <option value="20" ${param.limit == 20 ? 'selected' : ''}>20명</option>
-            <option value="50" ${param.limit == 50 ? 'selected' : ''}>50명</option>
-            <option value="100" ${param.limit == 100 ? 'selected' : ''}>100명</option>
-            <option value="all" ${param.limit == 'all' ? 'selected' : ''}>전체</option>
+            <option value="10" ${param.limit == '10' ? 'selected' : ''}>10명</option>
+            <option value="20" ${param.limit == '20' ? 'selected' : ''}>20명</option>
+            <option value="50" ${param.limit == '50' ? 'selected' : ''}>50명</option>
+            <option value="100" ${param.limit == '100' ? 'selected' : ''}>100명</option>
+            <option value="all" ${param.limit == 'all' ? 'selected' : ''}>최대</option>
         </select>
     </form>
 
@@ -22,16 +23,22 @@
     <jsp:include page="pagination.jsp">
         <jsp:param name="currentPage" value="${currentPage}" />
         <jsp:param name="totalPages" value="${totalPages}" />
-        <jsp:param name="limit" value="${limit}" />
+        <jsp:param name="limit" value="${'all'.equals(limit) ? 'all' : limit}" />
     </jsp:include>
 
     <form action="${pageContext.request.contextPath}/admin/updateUserInfo" method="post">
         <input type="hidden" name="email" value="${user.email}"/>
 
         <div class="table-responsive">
-            <table class="user-table">
+            <table class="user-table" style="width: 180%">
+
+                <colgroup>
+                    <col style="width: auto;">
+                </colgroup>
+
                 <thead>
                 <tr>
+                    <th>순서</th>
                     <th>1.Email</th>
                     <th>2.닉네임</th>
                     <th>3.프로필사진</th>
@@ -62,6 +69,8 @@
                 <tbody>
                 <c:forEach var="user" items="${userList}">
                     <tr>
+                        <td>${status.index + 1}</td> <!-- 순서 추가 한 페이지에 들어가는 숫자에 맞게 기입: 예) 1~10 / 1~20 / 1~50 / 1~최대-->
+
                         <%--1. 사용자 이메일--%>
                         <td>${user.email}</td>
 
@@ -84,8 +93,9 @@
                             <c:choose>
                                 <c:when test="${empty user.profile}">(이미지 없음)</c:when>
                                 <c:otherwise>
+                                    <%--코드 통합 후 이미지 파일 저장 경로 세팅 필요.--%>
                                     <a href="${pageContext.request.contextPath}/upload/${user.profile}" target="_blank">
-                                        <img src="${pageContext.request.contextPath}/upload/${user.profile}" class="profile">
+                                        <img src="${pageContext.request.contextPath}/upload/${user.profile}" class="profile" alt="fail to get img">
                                     </a>
                                 </c:otherwise>
                             </c:choose>
@@ -148,13 +158,24 @@
                                     </ul>
                                 </td>
                                 <td><%--12. 사용자 계정 활성여부--%>
-                                    <ul>
-                                        <li>${user.available}</li>
-                                        <li><input type="checkbox" class="form-check" id="available"
-                                                   name="available" ${user.available ? "checked" : ""} required></li>
-                                    </ul>
+                                    <div>
+                                        <input type="radio" id="available_${user.email}" name="available_${user.email}" value="true" ${user.available ? 'checked' : ''}>
+                                        <label for="available_${user.email}">활성</label>
+
+                                        <input type="radio" id="not_available_${user.email}" name="available_${user.email}" value="false" ${!user.available ? 'checked' : ''}>
+                                        <label for="not_available_${user.email}">비활성</label>
+                                    </div>
                                 </td>
-                                <td>비공개</td> <%--13. 사용자 패스워드--%>
+                                <td> <%--13. 사용자 패스워드--%>
+                                    <c:choose>
+                                        <c:when test="${user.userPW.startsWith('$2a$') or user.userPW.startsWith('$2b$') and user.userPW.length() == 60}">
+                                            암호화됨
+                                        </c:when>
+                                        <c:otherwise>
+                                            비정상PW
+                                        </c:otherwise>
+                                    </c:choose>
+                                </td>
                                 <td>${user.requestTimeForDeletion}</td> <%--14. 사용자 계정 삭제요청시간--%>
 
                                 <td> <%--15. 계정 인증코드--%>

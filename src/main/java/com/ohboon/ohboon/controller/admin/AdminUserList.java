@@ -28,10 +28,19 @@ public class AdminUserList extends HttpServlet {
         String pageStr = req.getParameter("page");
         String limitStr = req.getParameter("limit");
         int page = pageStr != null ? Integer.parseInt(pageStr) : 1;
-        int limit = (limitStr != null && !limitStr.equals("all")) ? Integer.parseInt(limitStr) : 10;
+
+        int limit;
+        boolean isAll = "all".equals(limitStr);
+
+        if (isAll) {
+            limit = Integer.MAX_VALUE; // 실제 가능한 최대 값으로 설정
+        } else {
+            limit = limitStr != null ? Integer.parseInt(limitStr) : 10;
+        }
+
         int offset = (page - 1) * limit;
         int totalCount = userDao.getTotalUserCount(grade);
-        int totalPages = (int) Math.ceil((double) totalCount / limit);
+        int totalPages = isAll ? 1 : (int) Math.ceil((double) totalCount / limit);
 
         // 사용지 등급 확인
         if (grade == Grade.ADMIN) {
@@ -47,7 +56,7 @@ public class AdminUserList extends HttpServlet {
         req.setAttribute("userList", userList);
         req.setAttribute("currentPage", page);
         req.setAttribute("totalPages", totalPages);
-        req.setAttribute("limit", limit);
+        req.setAttribute("limit", limitStr);
 
         RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/admin/admin-userList.jsp");
         dispatcher.forward(req, resp);
