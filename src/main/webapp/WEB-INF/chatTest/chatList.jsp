@@ -66,6 +66,6 @@
 <br/>
 
 <div id="messages"></div>
-<script src="../../Chat.js"></script>
+<script src="../../js/Chat.js"></script>
 </body>
 </html>

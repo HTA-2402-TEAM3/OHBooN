@@ -146,7 +146,7 @@ function matching() {
 async function enterChat(long) {
     console.log(long);
     try {
-        const resp = await fetch("/enterChat?chat_id=" + long);
+        const resp = await fetch("/chat/enterChat?chat_id=" + long);
         console.log(resp);
 
         const data = await resp.json();
@@ -193,7 +193,7 @@ function showMsgList() {
 
 async function ChatRoomList() {
     try {
-        const resp = await fetch("/chatList", {
+        const resp = await fetch("/chat/chatList", {
             method: "POST", // POST 메서드로 변경
             headers: {
                 "Content-Type": "application/json"

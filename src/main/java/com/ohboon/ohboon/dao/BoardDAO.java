@@ -4,11 +4,12 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.ohboon.ohboon.mybatis.MybatisConnectionFactory;
 import org.apache.ibatis.session.SqlSession;
 
 import com.ohboon.ohboon.dto.BoardDTO;
 import com.ohboon.ohboon.dto.ListBoardDTO;
-import com.ohboon.ohboon.util.MybatisConnectionFactory;
+
 
 public class BoardDAO {
 

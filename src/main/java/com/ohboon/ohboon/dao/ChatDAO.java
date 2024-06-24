@@ -1,10 +1,9 @@
 package com.ohboon.ohboon.dao;
 
 import com.ohboon.ohboon.dto.ChatDTO;
+import com.ohboon.ohboon.mybatis.MybatisConnectionFactory;
 import org.apache.ibatis.session.SqlSession;
-import util.MybatisConnectionFactory;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;

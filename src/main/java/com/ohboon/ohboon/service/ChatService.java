@@ -3,7 +3,7 @@ package com.ohboon.ohboon.service;
 import com.ohboon.ohboon.dao.ChatDAO;
 import com.ohboon.ohboon.dao.MatchDAO;
 import com.ohboon.ohboon.dao.MsgDAO;
-import com.ohboon.ohboon.dao.UserDAO;
+import com.ohboon.ohboon.dao.UserDao;
 import com.ohboon.ohboon.dto.ChatDTO;
 import com.ohboon.ohboon.dto.MsgDTO;
 import org.eclipse.tags.shaded.org.apache.xalan.xsltc.compiler.util.MultiHashtable;
@@ -67,14 +67,14 @@ public class ChatService {
 
     public Map<Long, Map<String, Object>> getChatList(String userID) {
         ChatDAO chatRoomDAO = new ChatDAO();
-        UserDAO userDAO;
+        UserDao userDAO;
         MsgDAO msgDAO;
         List<ChatDTO> chatList = chatRoomDAO.getChatList(userID);
         System.out.println("chatList: "+chatList);
 
         Map<Long, Map<String, Object>> roomMap = new LinkedHashMap<>();
         for (ChatDTO chatDTO : chatList) {
-            userDAO = new UserDAO();
+            userDAO = new UserDao();
             msgDAO = new MsgDAO();
             Map<String, Object> map = new HashMap<>();
 //            map.put("match_id", chatDTO.getMatchID());

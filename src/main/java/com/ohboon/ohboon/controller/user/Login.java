@@ -3,7 +3,7 @@ package com.ohboon.ohboon.controller.user;
 import com.ohboon.ohboon.dao.UserDao;
 import com.ohboon.ohboon.dto.Grade;
 import com.ohboon.ohboon.dto.ModalDto;
-import com.ohboon.ohboon.dto.UserDto;
+import com.ohboon.ohboon.dto.UserDTO;
 import com.ohboon.ohboon.utils.CookieManager;
 import com.ohboon.ohboon.utils.ScriptWriter;
 import jakarta.servlet.ServletException;
@@ -33,12 +33,12 @@ public class Login extends HttpServlet {
         String email = req.getParameter("email");
         String userPW = req.getParameter("userPW");
 
-        UserDto userDto = UserDto
+        UserDTO userDto = UserDTO
                 .builder()
                 .email(req.getParameter("email"))
                 .build();
         UserDao userDao = new UserDao();
-        UserDto loginUserDto = userDao.loginUser(userDto);
+        UserDTO loginUserDto = userDao.loginUser(userDto);
 
         if (loginUserDto == null){
             // 아이디가 없는 경우
