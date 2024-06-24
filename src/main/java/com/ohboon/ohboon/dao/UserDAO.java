@@ -196,11 +196,14 @@ public class UserDAO {
     }
 
 
+
     public boolean sendPasswordByEmail(String email, String link ) {
+
         Map<String, String> sendMailInfo = new HashMap<>();
         sendMailInfo.put("from", "mgrtest@naver.com");
         sendMailInfo.put("to", email);
         sendMailInfo.put("subject", "비밀번호 재설정 링크");
+
         sendMailInfo.put("content", "PW 재설정 링크: "+ link);
         sendMailInfo.put("format", "text/plain; charset=utf-8");
         try {
@@ -215,7 +218,9 @@ public class UserDAO {
 
     public int updatePassword(String email, String newPassword) {
         int result = 0;
-        String [] newPW = {email, newPassword};
+
+        String[] newPW = {email, newPassword};
+
         try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
             result = sqlSession.update("updatePassword", newPW);
         } catch (Exception e) {
@@ -241,7 +246,9 @@ public class UserDAO {
             params.put("email", email);
             params.put("token", token);
             result = sqlSession.update("savePasswordResetToken", params);
+
             if(result>0) return true;
+
         } catch (Exception e) {
             e.printStackTrace();
         }

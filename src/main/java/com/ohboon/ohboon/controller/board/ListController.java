@@ -101,6 +101,10 @@ public class ListController extends HttpServlet {
 			endPage = totalPage;
 		}
 
+		for (ListBoardDTO board : boards) {
+			System.out.println(board);
+		}
+
 		req.setAttribute("boards", boards);
 		req.setAttribute("startPage", String.valueOf(startPage));
 		req.setAttribute("endPage", String.valueOf(endPage));

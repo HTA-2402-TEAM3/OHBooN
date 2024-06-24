@@ -6,10 +6,13 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import com.ohboon.ohboon.mybatis.MybatisConnectionFactory;
+
 
 import com.ohboon.ohboon.dao.BoardDAO;
 import com.ohboon.ohboon.dto.BoardDTO;
 import com.ohboon.ohboon.dto.ListBoardDTO;
+import org.apache.ibatis.session.SqlSession;
 
 public class BoardService {
 
