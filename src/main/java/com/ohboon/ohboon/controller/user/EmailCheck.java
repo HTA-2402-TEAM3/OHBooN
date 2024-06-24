@@ -1,7 +1,7 @@
 package com.ohboon.ohboon.controller.user;
 
 import com.google.gson.Gson;
-import com.ohboon.ohboon.dao.UserDao;
+import com.ohboon.ohboon.dao.UserDAO;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
@@ -20,7 +20,7 @@ public class EmailCheck extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String email = req.getParameter("email");
         System.out.println(email);
-        UserDao userDao = new UserDao();
+        UserDAO userDao = new UserDAO();
         int result = userDao.emailCheck(email);
 
         // 결과값을 json으로 변경해서 프론트에 전달해야 함.
