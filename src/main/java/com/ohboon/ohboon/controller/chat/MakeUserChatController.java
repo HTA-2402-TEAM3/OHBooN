@@ -17,7 +17,7 @@ import java.util.*;
 import com.ohboon.ohboon.service.ChatService;
 
 
-@WebServlet("/user/chat/makeChat")
+@WebServlet("/chat/makeUserChat")
 public class MakeUserChatController extends HttpServlet {
     private ChatService chatService;
 

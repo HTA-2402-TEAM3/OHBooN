@@ -14,7 +14,7 @@ public class MatchService {
         map.put("senderName", senderName);
 
         MatchDAO matchCreateDAO = new MatchDAO();
-        int rs = matchCreateDAO.createMatch(map);
+       matchCreateDAO.createMatch(map);
 
         long match_id = 0;
 
@@ -23,9 +23,8 @@ public class MatchService {
         map0.put("senderName", senderName);
 
         MatchDAO matchDAO = new MatchDAO();
-        if(rs > 0) {
-            match_id = matchDAO.getMatchId(map0);
-        }
+
+        match_id = matchDAO.getMatchId(map0);
         return match_id;
     }
 }

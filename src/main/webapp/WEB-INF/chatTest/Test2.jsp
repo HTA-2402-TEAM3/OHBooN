@@ -15,7 +15,7 @@
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 <body>
-
+<input type="hidden" id="chat_id" name="chat_id" value="${chat_id}" />
 <%--채팅리스트--%>
 <div id="container">
     <aside id="chatRoomList">
@@ -36,7 +36,7 @@
         </footer>
     </main>
 </div>
-<script src="Chat.js"></script>
+<script src="../js/Chat.js"></script>
 </body>
 </html>
 <%@include file="../include/footer.jsp"%>

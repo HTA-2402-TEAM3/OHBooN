@@ -3,6 +3,7 @@ package com.ohboon.ohboon.controller.chat;
 import com.google.gson.Gson;
 import com.ohboon.ohboon.dao.BoardDAO;
 import com.ohboon.ohboon.dto.ChatDTO;
+import com.ohboon.ohboon.dto.ModalDto;
 import com.ohboon.ohboon.service.ChatService;
 import com.ohboon.ohboon.service.MatchService;
 import jakarta.servlet.ServletException;
@@ -16,14 +17,15 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
-@WebServlet("/board/chat/makeChat")
+@WebServlet("/makeBoardChat")
 public class MakeBoardChatController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession httpSession = req.getSession();
         String senderName = (String) httpSession.getAttribute("sessionNickname");
 
-        long board_id = Long.parseLong(req.getParameter("board_id"));
+        long board_id = Long.parseLong(req.getParameter("boardID"));
+        System.out.println(board_id);
 
         Map<String, Object> reqMap = new HashMap<>();
 
@@ -35,43 +37,51 @@ public class MakeBoardChatController extends HttpServlet {
                 .sender(senderName)
                 .receiver(receiverName)
                 .build();
-
-        MatchService matchService = new MatchService();
-        long match_id = matchService.getMatchId(board_id, receiverName, senderName);
-
         ChatService chatService = new ChatService();
         long chat_id = chatService.getChatId(makeChatDto);
 
-        chatService = new ChatService();
-        chatService.insertMatchId(match_id, chat_id);
+        if (chat_id != 0) {
+            MatchService matchService = new MatchService();
+            long match_id = matchService.getMatchId(board_id, receiverName, senderName);
 
-        System.out.println("makeChatDto: " + makeChatDto);
 
-        ChatDTO chatRoomDto = ChatDTO.builder()
-                .chatID(chat_id)
-                .matchID(match_id)
-                .boardID(board_id)
-                .sender(senderName)
-                .receiver(receiverName)
-                .build();
+            chatService = new ChatService();
+            chatService.insertMatchId(match_id, chat_id);
 
-        req.setAttribute("match_id", match_id);
+            System.out.println("makeChatDto: " + makeChatDto);
 
-        Map<String, Object> chatRoomDtoMap = setChatRoomDto(chatRoomDto);
+            ChatDTO chatRoomDto = ChatDTO.builder()
+                    .chatID(chat_id)
+                    .matchID(match_id)
+                    .boardID(board_id)
+                    .sender(senderName)
+                    .receiver(receiverName)
+                    .build();
 
-        reqMap.put("match_id", match_id);
-        reqMap.put("chat_id", chat_id);
-        reqMap.put("chatRoomDto", chatRoomDtoMap);
+            req.setAttribute("match_id", match_id);
 
-        Gson gson = new Gson();
-        String json = gson.toJson(reqMap);
-        System.out.println(json);
+            Map<String, Object> chatRoomDtoMap = setChatRoomDto(chatRoomDto);
 
-        req.setAttribute("chatRoomDto", chatRoomDto);
-        req.setAttribute("chat_id", chat_id);
+            reqMap.put("match_id", match_id);
+            reqMap.put("chat_id", chat_id);
+            reqMap.put("chatRoomDto", chatRoomDtoMap);
 
-        req.getRequestDispatcher("/Test2.jsp").forward(req, resp);
+            Gson gson = new Gson();
+            String json = gson.toJson(reqMap);
+            System.out.println(json);
+
+            req.setAttribute("chatRoomDto", chatRoomDto);
+            req.setAttribute("chat_id", chat_id);
+
+            req.getRequestDispatcher("/WEB-INF/chatTest/Test2.jsp").forward(req, resp);
+        } else {
+            ModalDto modalDto = new ModalDto("채팅","이미 생성된 대화가 있습니다.","show");
+            HttpSession session02 = req.getSession(); // 모달을 session02에 싣기
+            session02.setAttribute("modal", modalDto);
+            resp.sendRedirect("../index/index");
+        }
     }
+
     private Map<String, Object> setChatRoomDto(ChatDTO chatDTO) {
         Map<String, Object> map = new HashMap<>();
         map.put("chat_id", chatDTO.getChatID());

@@ -8,7 +8,7 @@
     </insert>
 
     <select id="getMatchId" parameterType="Map" resultType="long">
-        select match_id from matching where board_idx=#{board_id} and sender = #{senderName};
+        select match_id from matching where board_idx=#{board_id} and sender = #{senderName}
     </select>
     <select id="getMatchEmail" parameterType="long" resultType="String">
         select email from matching where match_id = #{match_id}
