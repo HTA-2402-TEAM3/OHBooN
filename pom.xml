@@ -4,10 +4,11 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
     <modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.jhta2402</groupId>
-    <artifactId>jhta2402_3_team_project_1</artifactId>
+    <groupId>com.ohboon</groupId>
+    <artifactId>ohboon</artifactId>
     <version>1.0-SNAPSHOT</version>
-    <name>jhta2402_3_team_project_1</name>
+    <name>ohboon</name>
+
     <packaging>war</packaging>
 
     <properties>
@@ -18,13 +19,6 @@
     </properties>
 
     <dependencies>
-
-        <!--  https://mvnrepository.com/artifact/com.oracle.database.jdbc/ojdbc11  -->
-        <dependency>
-            <groupId>com.oracle.database.jdbc</groupId>
-            <artifactId>ojdbc11</artifactId>
-            <version>21.8.0.0</version>
-        </dependency>
 
         <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
         <dependency>
@@ -67,6 +61,36 @@
             <artifactId>mariadb-java-client</artifactId>
             <version>2.7.2</version>
         </dependency>
+        <dependency>
+            <groupId>jakarta.websocket</groupId>
+            <artifactId>jakarta.websocket-api</artifactId>
+            <version>2.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+<!--        websocket ServerEndPoint Dependency-->
+        <dependency>
+            <groupId>jakarta.websocket</groupId>
+            <artifactId>jakarta.websocket-client-api</artifactId>
+            <version>2.1.0</version>
+            <scope>provided</scope>
+        </dependency>
+<!--        websocket Client Handling Dependency-->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.10.1</version>
+        </dependency>
+<!--        GSON Dependency-->
+        <dependency>
+            <groupId>org.glassfish.web</groupId>
+            <artifactId>jakarta.servlet.jsp.jstl</artifactId>
+            <version>3.0.1</version>
+        </dependency>
+        <dependency>
+            <groupId>jakarta.servlet.jsp.jstl</groupId>
+            <artifactId>jakarta.servlet.jsp.jstl-api</artifactId>
+            <version>3.0.0</version>
+        </dependency>
 
         <!-- https://mvnrepository.com/artifact/javax.activation/activation -->
         <dependency>
@@ -89,13 +113,11 @@
             <version>0.4.20</version>
         </dependency>
 
-
         <dependency>
             <groupId>com.sun.mail</groupId>
             <artifactId>jakarta.mail</artifactId>
             <version>2.0.1</version>
         </dependency>
-
 
         <dependency>
             <groupId>jakarta.servlet</groupId>
@@ -115,8 +137,8 @@
             <version>${junit.version}</version>
             <scope>test</scope>
         </dependency>
-    </dependencies>
 
+    </dependencies>
     <build>
         <plugins>
             <plugin>

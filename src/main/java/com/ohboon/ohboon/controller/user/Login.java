@@ -1,6 +1,6 @@
 package com.ohboon.ohboon.controller.user;
 
-import com.ohboon.ohboon.dao.UserDao;
+import com.ohboon.ohboon.dao.UserDAO;
 import com.ohboon.ohboon.dto.Grade;
 import com.ohboon.ohboon.dto.ModalDto;
 import com.ohboon.ohboon.dto.UserDto;
@@ -37,7 +37,7 @@ public class Login extends HttpServlet {
                 .builder()
                 .email(req.getParameter("email"))
                 .build();
-        UserDao userDao = new UserDao();
+        UserDAO userDao = new UserDAO();
         UserDto loginUserDto = userDao.loginUser(userDto);
 
         if (loginUserDto == null){

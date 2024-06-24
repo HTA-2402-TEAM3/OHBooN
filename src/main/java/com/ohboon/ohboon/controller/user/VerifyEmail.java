@@ -1,6 +1,6 @@
 package com.ohboon.ohboon.controller.user;
 
-import com.ohboon.ohboon.dao.UserDao;
+import com.ohboon.ohboon.dao.UserDAO;
 import com.ohboon.ohboon.utils.ScriptWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -26,7 +26,7 @@ public class VerifyEmail extends HttpServlet {
             return;
         }
 
-        UserDao userDao = new UserDao();
+        UserDAO userDao = new UserDAO();
         int result = userDao.verifyEmail(email, token);
         String grade = userDao.gradeCheck(email);
 
