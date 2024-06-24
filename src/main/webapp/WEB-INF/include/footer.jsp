@@ -3,7 +3,7 @@
     <div class="container">
         <footer class="py-3 my-4">
             <ul class="nav justify-content-center border-bottom pb-3 mb-3">
-                <li class="nav-item"><a href="../index/index.jsp" class="nav-link px-2 text-body-secondary">Home</a></li>
+                <li class="nav-item"><a href="index/index.jsp" class="nav-link px-2 text-body-secondary">Home</a></li>
                 <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">Notice</a></li>
                 <li class="nav-item"><a href="#" class="nav-link px-2 text-body-secondary">FAQs</a></li>
             </ul>
@@ -24,7 +24,7 @@
                     ${modal.msg}
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">cancel</button>
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Confirm</button>
                     <%--<button type="button" class="btn btn-primary">confirm</button>--%>
                 </div>
             </div>

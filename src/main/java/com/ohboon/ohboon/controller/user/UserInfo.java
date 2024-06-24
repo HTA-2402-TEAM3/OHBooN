@@ -19,10 +19,10 @@ public class UserInfo extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
         HttpSession session = req.getSession();
-        String nickname = (String) session.getAttribute("sessionNickname");
+        String email = (String) session.getAttribute("sessionEmail");
 
         UserDao userDao = new UserDao();
-        UserDto infoUserDto = userDao.infoUser(nickname);
+        UserDto infoUserDto = userDao.findUserByEmail(email);
 
         if (infoUserDto == null) {
             resp.sendRedirect("../index/index");

@@ -13,6 +13,8 @@ import jakarta.servlet.http.HttpSession;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
+import java.util.HashMap;
+import java.util.Map;
 
 // 회원정보 수정 페이지에서 PW 변경시 동작하는 서블릿
 
@@ -34,18 +36,26 @@ public class PasswordUpdate extends HttpServlet {
         }
 
         String newPassword = req.getParameter("newPW");
-
         UserDao userDao = new UserDao();
         UserDto userDto = userDao.findUserByEmail(email);
 
         if (userDto != null) {
-            String hashedPassword = BCrypt.hashpw(newPassword, BCrypt.gensalt());
-            int result = userDao.updatePassword(email, hashedPassword);
+            try{
+                String hashedPassword = BCrypt.hashpw(newPassword, BCrypt.gensalt());
 
-            if (result > 0) {
-                ScriptWriter.alertAndNext(resp, "비밀번호가 성공적으로 변경되었습니다.", "../user/info");
-            } else {
-                ScriptWriter.alertAndBack(resp, "비밀번호 변경에 실패했습니다. 다시 시도해주세요.");
+                Map<String, Object> map = new HashMap<>();
+                map.put("password",hashedPassword);
+                map.put("email",email);
+                int result = userDao.updatePassword(map);
+
+                if (result > 0) {
+                    ScriptWriter.alertAndNext(resp, "비밀번호가 성공적으로 변경되었습니다.", "/user/info");
+                } else {
+                    ScriptWriter.alertAndBack(resp, "비밀번호 변경에 실패했습니다. 다시 시도해주세요.");
+                }
+            }catch(Exception e) {
+                e.printStackTrace();
+                ScriptWriter.alertAndBack(resp, "비밀번호 암호화에 실패하였습니다. 다시 시도해도 안 될 경우 관리자에게 문의하세요");
             }
         } else {
             ScriptWriter.alertAndBack(resp, "사용자 정보를 찾을 수 없습니다.");

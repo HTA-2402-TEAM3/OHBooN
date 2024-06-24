@@ -4,6 +4,7 @@ import com.ohboon.ohboon.dto.Grade;
 import com.ohboon.ohboon.dto.UserDto;
 import com.ohboon.ohboon.mail.NaverMail;
 import com.ohboon.ohboon.mybatis.MybatisConnectionFactory;
+import com.ohboon.ohboon.utils.ScriptWriter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
 import net.coobird.thumbnailator.Thumbnails;
@@ -16,9 +17,11 @@ import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
+import static com.ohboon.ohboon.mybatis.MybatisConnectionFactory.sqlSessionFactory;
 import static java.time.LocalDateTime.now;
 
 public class UserDao {
@@ -63,7 +66,7 @@ public class UserDao {
         return UserDto.builder()
                 .email(req.getParameter("email"))
                 .nickname(req.getParameter("nickname"))
-                .username(req.getParameter("userName"))
+                .userName(req.getParameter("userName"))
                 .birth(req.getParameter("birth"))
                 .phone(req.getParameter("phone"))
                 .available(true)
@@ -75,6 +78,7 @@ public class UserDao {
                 .agreeInfoOffer(Boolean.parseBoolean(req.getParameter("agreeInfoOffer")))
                 .requestTimeForDeletion(null)
                 .verificationCode(verificationCode)
+                .privateField(false)
                 .build();
     }
 
@@ -182,17 +186,14 @@ public class UserDao {
         return loginMemberDto;
     }
 
-    public UserDto infoUser(String nickname) {
-        UserDto infoUserDto = null;
+    public UserDto findUserByEmail(String email) {
+        UserDto userDto = null;
         try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
-            infoUserDto = sqlSession.selectOne("infoUser", nickname);
-
-            //디버깅 로그
-            System.out.println("User found: " + (infoUserDto != null ? infoUserDto.toString() : "null"));
+            userDto = sqlSession.selectOne("findUserByEmail", email);
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return infoUserDto;
+        return userDto;
     }
 
 
@@ -213,11 +214,11 @@ public class UserDao {
         }
     }
 
-    public int updatePassword(String email, String newPassword) {
+    public int updatePassword(Map map) {
         int result = 0;
-        String [] newPW = {email, newPassword};
         try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
-            result = sqlSession.update("updatePassword", newPW);
+
+            result = sqlSession.update("updatePassword", map);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -248,10 +249,14 @@ public class UserDao {
         return false;
     }
 
-    public boolean isTokenValid(String token) {
+    public boolean isTokenValid(String token, String email) {
         try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
-            int count = sqlSession.selectOne("isTokenValid", token);
-            return count > 0;
+            String emailFound = sqlSession.selectOne("isTokenValid", token);
+            if(email.equals("")) {
+                return false;
+            }
+            else if (email.equals(emailFound)) return true;
+            else return false;
         } catch (Exception e) {
             e.printStackTrace();
             return false;
@@ -286,6 +291,20 @@ public class UserDao {
         return result;
     }
 
+    public boolean verifyPasswordResetToken(String email, String token) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            Map<String, String> params = new HashMap<>();
+            params.put("email", email);
+            params.put("token", token);
+            Integer count = session.selectOne("UserMapper.verifyPasswordResetToken", params);
+            return count != null && count > 0;
+        }
+    }
+
+    public String getEmailByToken(String token) {
+        return null;
+    }
+
     public String gradeCheck(String email) {
         String grade = "";
         try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
@@ -294,16 +313,6 @@ public class UserDao {
             e.printStackTrace();
         }
         return grade;
-    }
-
-    public UserDto findUserByEmail(String email) {
-        UserDto user = null;
-        try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
-            user = sqlSession.selectOne("findUserByEmail", email);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return user;
     }
 
     public int updateUserInfo(String email, String nickname, String phone) {
@@ -333,5 +342,36 @@ public class UserDao {
         return result;
     }
 
+
+    // ADMIN 사용자의 열람 가능한 사용자 목록
+    public List<UserDto> getAllUsersExcludingAdmin(int offset, int limit) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            Map<String, Object> params = new HashMap<>();
+            params.put("offset", offset);
+            params.put("limit", limit);
+            return session.selectList("getAllUsersExcludingAdmin", params);
+        }
+    }
+
+    public List<UserDto> getUsersForManager(int offset, int limit) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            Map<String, Object> params = new HashMap<>();
+            params.put("offset", offset);
+            params.put("limit", limit);
+            return session.selectList("getUsersForManager", params);
+        }
+    }
+
+    // 사용자 숫자 세기
+    public int getTotalUserCount(Grade grade) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            if (grade == Grade.ADMIN) {
+                return session.selectOne("getTotalUserCountExcludingAdmin");
+            } else if (grade == Grade.MANAGER) {
+                return session.selectOne("getTotalUserCountForManager");
+            }
+            return 0;
+        }
+    }
 
 }
