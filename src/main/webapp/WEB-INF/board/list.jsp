@@ -192,26 +192,25 @@
                 <c:forEach var="board" items="${requestScope.boards}" varStatus="status">
                     <tr>
                         <td>${status.count}</td>
-                        <td>${totalCount - param.page * 10 - status.index}</td>
                         <td>
 
                             <div>
                                 <span>${board.nickName}</span>
                                 <span> ${board.evaluation}</span>
-                                <span> ${board.regDate}</span>
+                                <span> ${board.modifyDate}</span>
                             </div>
 
                             <div>
                                 <c:choose>
                                     <c:when test="${board.viewOption eq 1}">
                                         <a href="../board/view?boardID=${board.id}">
-                                            <c:if test="${not empty board.category}">[${board.category}]</c:if> ${board.subject} ${board.regDate}
+                                            <c:if test="${not empty board.category}">[${board.category}]</c:if> ${board.subject} ${board.modifyDate}
                                         </a>
                                     </c:when>
 
                                     <c:otherwise>
                                         <span>
-                                            <c:if test="${not empty board.category}">[${board.category}]</c:if> ${board.subject} ${board.regDate}
+                                            <c:if test="${not empty board.category}">[매칭 완료]</c:if> ${board.subject} ${board.modifyDate}
                                         </span>
                                     </c:otherwise>
                                 </c:choose>
@@ -225,11 +224,6 @@
 
                         </td>
                     </tr>
-
-                    <%--                    <td>--%>
-                    <%--                        <f:parseDate var="regdate" value="${board.regDate}" pattern="yyyy-MM-dd"></f:parseDate>--%>
-                    <%--                        <f:formatDate value="${regdate}" pattern="yyyy/MM/dd"></f:formatDate>--%>
-                    <%--                    </td>--%>
 
                 </c:forEach>
 

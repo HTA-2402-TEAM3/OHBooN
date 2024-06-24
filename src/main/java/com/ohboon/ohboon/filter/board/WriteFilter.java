@@ -34,6 +34,7 @@ public class WriteFilter implements Filter {
 		httpServletResponse.setContentType("application/json");
 		httpServletResponse.setCharacterEncoding("UTF-8");
 		PrintWriter writer = httpServletResponse.getWriter();
+/*
 
 		if (Objects.isNull(loginEmail)) {
 			httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
@@ -41,6 +42,7 @@ public class WriteFilter implements Filter {
 			writer.flush();
 			return;
 		}
+*/
 
 		if (Objects.nonNull(boardID) && !boardID.matches("^[\\d]+$")) {
 			httpServletResponse.setStatus(HttpServletResponse.SC_BAD_REQUEST);
