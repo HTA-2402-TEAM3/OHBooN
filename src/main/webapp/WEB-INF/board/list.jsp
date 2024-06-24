@@ -210,7 +210,7 @@
 
                                     <c:otherwise>
                                         <span>
-                                            <c:if test="${not empty board.category}">[${board.category}]</c:if> ${board.subject} ${board.modifyDate}
+                                            <c:if test="${not empty board.category}">[매칭 완료]</c:if> ${board.subject} ${board.modifyDate}
                                         </span>
                                     </c:otherwise>
                                 </c:choose>
