@@ -50,4 +50,8 @@
     <select id="getMsg" resultType="MsgDTO" parameterType="long">
         select * from msg where chatroom_id = #{chatID}
     </select>
+
+    <select id="countChatRoom" resultType="int" parameterType="ChatDTO">
+        select count(*) from chatroom where board_idx=#{boardID} and sender=#{sender}
+    </select>
 </mapper>

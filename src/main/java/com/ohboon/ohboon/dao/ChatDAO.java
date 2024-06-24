@@ -60,4 +60,11 @@ public class ChatDAO {
         ss.close();
         return rs;
     }
+
+    public int countChatRoom(ChatDTO chatRoomDto) {
+        int rs = ss.selectOne("countChatRoom", chatRoomDto);
+        ss.commit();
+        ss.close();
+        return rs;
+    }
 }

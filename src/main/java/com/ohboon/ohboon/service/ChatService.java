@@ -24,8 +24,14 @@ public class ChatService {
 //    }
 
     public long getChatId(ChatDTO chatRoomDto) {
-        ChatDAO chatDAO = new ChatDAO();
-        return chatDAO.CreateChatRoom(chatRoomDto);
+        ChatDAO chatDAO1 = new ChatDAO();
+        int cnt = chatDAO1.countChatRoom(chatRoomDto);
+
+        if(cnt == 0) {
+            ChatDAO chatDAO = new ChatDAO();
+            return chatDAO.CreateChatRoom(chatRoomDto);
+        }
+        else return 0;
     }
 
     public List<String> findUsersByChatId(long chatId) {
