@@ -1,7 +1,7 @@
 package com.ohboon.ohboon.controller.user;
 
 
-import com.ohboon.ohboon.dao.UserDao;
+import com.ohboon.ohboon.dao.UserDAO;
 import com.ohboon.ohboon.dto.UserDto;
 import com.ohboon.ohboon.utils.ScriptWriter;
 import com.ohboon.ohboon.utils.VerificationCodeGenerator;
@@ -65,7 +65,7 @@ public class Signup extends HttpServlet {
             return;
         }
 
-        UserDao userDao = new UserDao();
+        UserDAO userDao = new UserDAO();
 
         
         // 비밀번호 암호화

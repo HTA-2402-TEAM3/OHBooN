@@ -1,7 +1,7 @@
 package com.ohboon.ohboon.controller.user;
 
 
-import com.ohboon.ohboon.dao.UserDao;
+import com.ohboon.ohboon.dao.UserDAO;
 import com.ohboon.ohboon.dto.UserDto;
 import com.ohboon.ohboon.utils.ScriptWriter;
 import jakarta.servlet.RequestDispatcher;
@@ -24,7 +24,7 @@ public class UserInfoUpdate extends HttpServlet {
         HttpSession session = req.getSession();
         String email = (String) session.getAttribute("sessionEmail");
 
-        UserDao userDao = new UserDao();
+        UserDAO userDao = new UserDAO();
         UserDto infoUserDto = userDao.findUserByEmail(email);
 
         if (infoUserDto == null) {
@@ -60,7 +60,7 @@ public class UserInfoUpdate extends HttpServlet {
             return;
         }
 
-        UserDao userDao = new UserDao();
+        UserDAO userDao = new UserDAO();
         UserDto userDto = userDao.findUserByEmail(email);
 
         if (userDto != null) {
