@@ -6,11 +6,13 @@ import java.io.PrintWriter;
 import com.ohboon.ohboon.service.BoardService;
 
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+@MultipartConfig
 @WebServlet("/board/delete")
 public class DeleteController extends HttpServlet {
 	@Override

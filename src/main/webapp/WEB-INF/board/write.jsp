@@ -6,6 +6,14 @@
 <html>
 <head>
     <title>JSP - Hello World</title>
+
+    <c:if test="${empty sessionEmail}">
+        <script>
+            alert("로그인 후 사용가능한 기능입니다.")
+            location.href = "/user/login"
+        </script>
+    </c:if>
+
     <script>
         function validateForm(event) {
             let meetDate = document.getElementById('meetDate').value;
@@ -66,10 +74,6 @@
 
                 let boardForm = document.getElementById("boardForm");
                 let boardData = new FormData(boardForm);
-
-                boardData.forEach((value, key) => {
-                    console.log(key, value);
-                });
 
                 fetch('/board/write', {
                     method: 'POST',
