@@ -24,12 +24,23 @@
         <jsp:param name="currentPage" value="${currentPage}" />
         <jsp:param name="totalPages" value="${totalPages}" />
         <jsp:param name="limit" value="${'all'.equals(limit) ? 'all' : limit}" />
+        <jsp:param name="pageGroupSize" value="${pageGroupSize}" />
+        <jsp:param name="groupStartPage" value="${groupStartPage}" />
+        <jsp:param name="groupEndPage" value="${groupEndPage}" />
+        <jsp:param name="currentPageGroup" value="${currentPageGroup}" />
     </jsp:include>
+
+    <%-- 상단 스크롤바 --%>
+    <div class="table-responsive" style="overflow-x: auto; position: relative;">
+        <div id="top-scroll" style="height: 20px; overflow-x: auto; overflow-y: hidden;">
+            <div style="width: 180%;"></div> <!-- 테이블의 넓이와 맞춰줌 -->
+        </div>
+    </div>
 
     <form action="${pageContext.request.contextPath}/admin/updateUserInfo" method="post">
         <input type="hidden" name="email" value="${user.email}"/>
 
-        <div class="table-responsive">
+        <div class="table-responsive" id="bottom-scroll">
             <table class="user-table" style="width: 180%">
 
                 <colgroup>
@@ -39,6 +50,7 @@
                 <thead>
                 <tr>
                     <th>순서</th>
+                    <th>Contact</th>
                     <th>1.Email</th>
                     <th>2.닉네임</th>
                     <th>3.프로필사진</th>
@@ -67,9 +79,14 @@
                 </thead>
 
                 <tbody>
-                <c:forEach var="user" items="${userList}">
+                <c:forEach var="user" items="${userList}" varStatus="status">
                     <tr>
                         <td>${status.index + 1}</td> <!-- 순서 추가 한 페이지에 들어가는 숫자에 맞게 기입: 예) 1~10 / 1~20 / 1~50 / 1~최대-->
+
+                        <%--사용자에게 1:1 메시지 발송 : @WebServlet("/makeUserChat") 페이지로 연결. 사용자는 이메일 값으로 탐색--%>
+                        <td>
+                            <button type="button" onclick="sendMessage('${user.email}')">Message</button>
+                        </td>
 
                         <%--1. 사용자 이메일--%>
                         <td>${user.email}</td>
@@ -215,8 +232,44 @@
         <jsp:param name="currentPage" value="${currentPage}" />
         <jsp:param name="totalPages" value="${totalPages}" />
         <jsp:param name="limit" value="${limit}" />
+        <jsp:param name="pageGroupSize" value="${pageGroupSize}" />
+        <jsp:param name="groupStartPage" value="${groupStartPage}" />
+        <jsp:param name="groupEndPage" value="${groupEndPage}" />
+        <jsp:param name="currentPageGroup" value="${currentPageGroup}" />
     </jsp:include>
 
 </div>
 
 <%@ include file="../include/footer.jsp" %>
+
+<script>
+    function sendMessage(email) {
+        const form = document.createElement('form');
+        form.method = 'POST';
+        form.action = '${pageContext.request.contextPath}/makeUserChat';
+
+        const input = document.createElement('input');
+        input.type = 'hidden';
+        input.name = 'email';
+        input.value = email;
+
+        form.appendChild(input);
+        document.body.appendChild(form);
+        form.submit();
+    }
+</script>
+
+<script>
+    document.addEventListener("DOMContentLoaded", function() {
+        const topScroll = document.getElementById("top-scroll");
+        const bottomScroll = document.getElementById("bottom-scroll");
+
+        topScroll.addEventListener("scroll", function() {
+            bottomScroll.scrollLeft = topScroll.scrollLeft;
+        });
+
+        bottomScroll.addEventListener("scroll", function() {
+            topScroll.scrollLeft = bottomScroll.scrollLeft;
+        });
+    });
+</script>

@@ -4,20 +4,45 @@
 
 <nav aria-label="Page navigation example">
     <ul class="pagination">
-        <c:if test="${currentPage > 1}">
-            <li class="page-item">
-                <a class="page-link" href="${pageContext.request.contextPath}/admin/userList?page=${currentPage - 1}&limit=${limit}" aria-label="Previous">
+        <%--첫 페이지로 이동하는 바튼--%>
+        <li class="page-item">
+            <a class="page-link" href="${pageContext.request.contextPath}/admin/userList?page=1&limit=${limit}" aria-label="Previous">
+                <span aria-hidden="true">First</span>
+            </a>
+        </li>
+
+        <%--이전 페이지 그룹으로 이동하는 바튼--%>
+        <li class="page-item">
+            <c:if test="${currentPage <= pageGroupSize}">
+                <a class="page-link" href="${pageContext.request.contextPath}/admin/userList?page=1&limit=${limit}" aria-label="Previous">
                     <span aria-hidden="true">&laquo;</span>
                 </a>
-            </li>
-            <li class="page-item">
+            </c:if>
+            <c:if test="${currentPage > pageGroupSize}">
+                <a class="page-link" href="${pageContext.request.contextPath}/admin/userList?page=${currentPage - pageGroupSize}&limit=${limit}" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </c:if>
+        </li>
+
+        <%--이전 페이지로 이동하는 바튼--%>
+        <li class="page-item">
+            <c:if test="${currentPage == 1}">
                 <a class="page-link" href="${pageContext.request.contextPath}/admin/userList?page=1&limit=${limit}" aria-label="Previous">
                     <span aria-hidden="true">&lt;</span>
                 </a>
-            </li>
-        </c:if>
+            </c:if>
+            <c:if test="${currentPage > 1}">
+                <a class="page-link" href="${pageContext.request.contextPath}/admin/userList?page=${currentPage - 1}&limit=${limit}" aria-label="Previous">
+                    <span aria-hidden="true">&lt;</span>
+                </a>
+            </c:if>
+        </li>
 
-        <c:forEach var="i" begin="1" end="${totalPages}">
+
+
+        <%--숫자 클릭해서 해당 페이지로 이동하는 바튼--%>
+        <c:forEach var="i" begin="${groupStartPage}" end="${groupEndPage}">
             <c:choose>
                 <c:when test="${i == currentPage}">
                     <li class="page-item active" aria-current="page">
@@ -30,18 +55,41 @@
             </c:choose>
         </c:forEach>
 
-        <c:if test="${currentPage < totalPages}">
-            <li class="page-item">
+
+
+        <%--다음 페이지로 이동하는 바튼--%>
+        <li class="page-item">
+            <c:if test="${currentPage >= totalPages}">
+                <a class="page-link" href="${pageContext.request.contextPath}/admin/userList?page=${totalPages}&limit=${limit}" aria-label="Next">
+                    <span aria-hidden="true">&gt;</span>
+                </a>
+            </c:if>
+            <c:if test="${currentPage < totalPages}">
                 <a class="page-link" href="${pageContext.request.contextPath}/admin/userList?page=${currentPage + 1}&limit=${limit}" aria-label="Next">
                     <span aria-hidden="true">&gt;</span>
                 </a>
-            </li>
-            <li class="page-item">
-                <a class="page-link" href="${pageContext.request.contextPath}/admin/userList?page=${totalPages}&limit=${limit}" aria-label="Next">
+            </c:if>
+        </li>
+
+        <%--다음 페이지 그룹으로 이동하는 바튼--%>
+        <li class="page-item">
+            <c:if test="${currentPage >= (totalPages/pageGroupSize-1)*pageGroupSize}">
+                <a class="page-link" href="${pageContext.request.contextPath}/admin/userList?page=${totalPages}&limit=${limit}" aria-label="Previous">
                     <span aria-hidden="true">&raquo;</span>
                 </a>
-            </li>
-        </c:if>
+            </c:if>
+            <c:if test="${currentPage < (totalPages/pageGroupSize-1)*pageGroupSize}">
+                <a class="page-link" href="${pageContext.request.contextPath}/admin/userList?page=${currentPage + pageGroupSize}&limit=${limit}" aria-label="Previous">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </c:if>
+        </li>
 
+        <%--최종 페이지로 이동하는 바튼--%>
+        <li class="page-item">
+            <a class="page-link" href="${pageContext.request.contextPath}/admin/userList?page=${totalPages}&limit=${limit}" aria-label="Next">
+                <span aria-hidden="true">Last: ${totalPages}</span>
+            </a>
+        </li>
     </ul>
 </nav>

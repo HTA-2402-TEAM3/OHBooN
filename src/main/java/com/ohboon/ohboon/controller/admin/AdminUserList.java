@@ -27,20 +27,27 @@ public class AdminUserList extends HttpServlet {
         // 사용자 목록 페이징을 위한 인덱스 변수 설정
         String pageStr = req.getParameter("page");
         String limitStr = req.getParameter("limit");
-        int page = pageStr != null ? Integer.parseInt(pageStr) : 1;
 
-        int limit;
-        boolean isAll = "all".equals(limitStr);
-
-        if (isAll) {
-            limit = Integer.MAX_VALUE; // 실제 가능한 최대 값으로 설정
-        } else {
-            limit = limitStr != null ? Integer.parseInt(limitStr) : 10;
+        if (limitStr == null || limitStr.isEmpty()) {
+            limitStr = "10"; // 기본값: 페이지당 10명 출력으로 설정
         }
 
+        int page = pageStr != null ? Integer.parseInt(pageStr) : 1;
+        int limit = !limitStr.equals("all") ? Integer.parseInt(limitStr) : Integer.MAX_VALUE;
         int offset = (page - 1) * limit;
         int totalCount = userDao.getTotalUserCount(grade);
-        int totalPages = isAll ? 1 : (int) Math.ceil((double) totalCount / limit);
+        int totalPages = (int) Math.ceil((double) totalCount / limit);
+
+
+        //페이지 그룹 계산
+        int pageGroupSize = 10;
+        int currentPageGroup = (int) Math.ceil((double) page / pageGroupSize);
+        int groupStartPage = (currentPageGroup - 1) * pageGroupSize + 1;
+        int groupEndPage = Math.min(groupStartPage + pageGroupSize - 1, totalPages);
+        if (groupEndPage > totalPages) {
+            groupEndPage = totalPages;
+        }
+
 
         // 사용지 등급 확인
         if (grade == Grade.ADMIN) {
@@ -52,11 +59,15 @@ public class AdminUserList extends HttpServlet {
             return;
         }
 
-        // 목록 페이징을 위해서 필요한 변수값을 JSP에서 받기
+        // 목록 페이징을 위해서 필요한 변수값을 JSP에 보내기
         req.setAttribute("userList", userList);
         req.setAttribute("currentPage", page);
         req.setAttribute("totalPages", totalPages);
-        req.setAttribute("limit", limitStr);
+        req.setAttribute("limit", limit);
+        req.setAttribute("pageGroupSize", pageGroupSize);
+        req.setAttribute("groupStartPage", groupStartPage);
+        req.setAttribute("groupEndPage", groupEndPage);
+        req.setAttribute("currentPageGroup", currentPageGroup);
 
         RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/admin/admin-userList.jsp");
         dispatcher.forward(req, resp);
