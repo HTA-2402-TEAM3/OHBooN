@@ -15,10 +15,7 @@ import java.io.File;
 import java.io.IOException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import static com.ohboon.ohboon.mybatis.MybatisConnectionFactory.sqlSessionFactory;
 import static java.time.LocalDateTime.now;
@@ -342,7 +339,7 @@ public class UserDAO {
     }
 
 
-    // ADMIN 사용자의 열람 가능한 사용자 목록
+    // ADMIN 관리자의 열람 가능한 사용자 목록 - 검색어 없음
     public List<UserDto> getAllUsersExcludingAdmin(int offset, int limit) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             Map<String, Object> params = new HashMap<>();
@@ -352,6 +349,7 @@ public class UserDAO {
         }
     }
 
+    // MANAGER 관리자의 열람 가능한 사용자 목록 - 검색어 없음
     public List<UserDto> getUsersForManager(int offset, int limit) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             Map<String, Object> params = new HashMap<>();
@@ -361,7 +359,7 @@ public class UserDAO {
         }
     }
 
-    // 사용자 숫자 세기
+    // 관리가자 접근 가능한 사용자 숫자 세기 - 검색어 없음
     public int getTotalUserCount(Grade grade) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             if (grade == Grade.ADMIN) {
@@ -370,6 +368,48 @@ public class UserDAO {
                 return session.selectOne("getTotalUserCountForManager");
             }
             return 0;
+        }
+    }
+
+    // 관리가자 접근 가능한 사용자 숫자 세기 - 검색어 있음(없을 경우도 사용 가능)
+    public int getTotalUserCount(Grade grade, String searchField, String searchKeyword) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            if(grade == Grade.ADMIN || grade == Grade.MANAGER){
+                Map<String, Object> params = new HashMap<>();
+                params.put("grade", grade);
+                params.put("searchField", searchField);
+                params.put("searchKeyword", searchKeyword);
+                return session.selectOne("getTotalUserCount", params);
+            }
+            return 0;
+        }
+    }
+
+    // ADMIN 사용자의 열람 가능한 사용자 목록 - 검색어 있음(없을 경우도 사용 가능)
+    public List<UserDto> getAllUsersExcludingAdmin(int offset, int limit, String searchField, String searchKeyword, String sortField, String sortOrder) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            Map<String, Object> params = new HashMap<>();
+            params.put("offset", offset);
+            params.put("limit", limit);
+            params.put("searchField", searchField);
+            params.put("searchKeyword", searchKeyword);
+            params.put("sortField", sortField);
+            params.put("sortOrder", sortOrder);
+            return session.selectList("getAllUsersExcludingAdmin", params);
+        }
+    }
+
+    // ADMIN 사용자의 열람 가능한 사용자 목록 - 검색어 있음(없을 경우도 사용 가능)
+    public List<UserDto> getUsersForManager(int offset, int limit, String searchField, String searchKeyword, String sortField, String sortOrder) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            Map<String, Object> params = new HashMap<>();
+            params.put("offset", offset);
+            params.put("limit", limit);
+            params.put("searchField", searchField);
+            params.put("searchKeyword", searchKeyword);
+            params.put("sortField", sortField);
+            params.put("sortOrder", sortOrder);
+            return session.selectList("getUsersForManager", params);
         }
     }
 
