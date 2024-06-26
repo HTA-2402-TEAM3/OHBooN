@@ -167,7 +167,7 @@
                     </div>
                     <div id="fast-matching">
 
-                        <button type="submit" class="btn btn-light">패스트 매칭 하러 가기 >>></button>
+                        <button type="submit" class="btn btn-light-fast">패스트 매칭 하러 가기 >>></button>
                     </div>
                 </div>
 
@@ -176,8 +176,7 @@
 
         <!-- 메인 콘텐츠 -->
         <main class="col-md-9 py-3">
-            <h2 class="mt-5 mb-5">LIST</h2>
-
+<%--            <h2 class="mt-5 mb-5"></h2>--%>
             <c:choose>
             <c:when test="${boards.size() le 0}">
             <p>게시글이 없습니다.</p>
