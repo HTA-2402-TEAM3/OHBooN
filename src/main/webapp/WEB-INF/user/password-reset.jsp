@@ -4,6 +4,7 @@
 <main class="form-signin w-100 m-auto">
     <form action="${pageContext.request.contextPath}/user/login/password-reset" method="post">
         <input type="hidden" name="token" value="${token}">
+        <input type="hidden" name="email" value="${email}" />
         <div class="mb-3">
             <div class="row g-3">
                 <div class="col-auto">

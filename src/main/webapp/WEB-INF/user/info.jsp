@@ -42,7 +42,7 @@
         </tr>
         <tr>
             <th>USER NAME</th>
-            <td>${infoUserDto.username}</td>
+            <td>${infoUserDto.userName}</td>
             <td></td>
         </tr>
         <tr>

@@ -1,6 +1,6 @@
 package com.ohboon.ohboon.controller.user;
 
-import com.ohboon.ohboon.dao.UserDao;
+import com.ohboon.ohboon.dao.UserDAO;
 import com.ohboon.ohboon.utils.ScriptWriter;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -23,7 +23,7 @@ public class PasswordSearch extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String email = req.getParameter("email");
-        UserDao userDao = new UserDao();
+        UserDAO userDao = new UserDAO();
 
         // 방법1) 직접적으로 PW 변경
 
@@ -65,7 +65,7 @@ public class PasswordSearch extends HttpServlet {
 
         if (saveTokenResult) {
             // 비밀번호 변경 링크 생성
-            String resetLink = "http://localhost:8080/user/login/password-reset?token=" + token;
+            String resetLink = "http://localhost:8080/user/login/password-reset?token=" + token + "&email=" + email;
 
             // 비밀번호 변경 링크를 이메일로 전송
             boolean emailSent = userDao.sendPasswordByEmail(email, resetLink);

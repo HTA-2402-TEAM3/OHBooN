@@ -20,6 +20,7 @@ public class ListBoardDTO {
 	private String nickName;
 	private int evaluation;
 	private LocalDateTime regDate;
+	private LocalDateTime modifyDate;
 	private String category;
 	private String subject;
 	private LocalDateTime meetDate;
