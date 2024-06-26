@@ -75,4 +75,10 @@ public class ChatDAO {
         ss.close();
         return chat_id;
     }
+
+	public void deleteChatRoom(long matchId) {
+        ss.delete("deleteChatRoom", matchId);
+        ss.commit();
+        ss.close();
+	}
 }

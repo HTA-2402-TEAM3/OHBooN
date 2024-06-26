@@ -1,8 +1,8 @@
 package com.ohboon.ohboon.controller.user;
 
 
-import com.ohboon.ohboon.dao.UserDao;
-import com.ohboon.ohboon.dto.UserDto;
+import com.ohboon.ohboon.dao.UserDAO;
+import com.ohboon.ohboon.dto.UserDTO;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -21,14 +21,14 @@ public class UserInfo extends HttpServlet {
         HttpSession session = req.getSession();
         String email = (String) session.getAttribute("sessionEmail");
 
-        UserDao userDao = new UserDao();
-        UserDto infoUserDto = userDao.findUserByEmail(email);
+        UserDAO userDao = new UserDAO();
+        UserDTO infoUserDTO = userDao.findUserByEmail(email);
 
-        if (infoUserDto == null) {
+        if (infoUserDTO == null) {
             resp.sendRedirect("../index/index");
 
         } else {
-            req.setAttribute("infoUserDto", infoUserDto);
+            req.setAttribute("infoUserDTO", infoUserDTO);
             RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/user/info.jsp");
             dispatcher.forward(req, resp);
         }

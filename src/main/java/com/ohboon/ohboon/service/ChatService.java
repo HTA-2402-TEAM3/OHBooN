@@ -2,7 +2,7 @@ package com.ohboon.ohboon.service;
 
 import com.ohboon.ohboon.dao.ChatDAO;
 import com.ohboon.ohboon.dao.MsgDAO;
-import com.ohboon.ohboon.dao.UserDao;
+import com.ohboon.ohboon.dao.UserDAO;
 import com.ohboon.ohboon.dto.ChatDTO;
 import com.ohboon.ohboon.dto.MsgDTO;
 
@@ -70,13 +70,13 @@ public class ChatService {
 
     public Map<Long, Map<String, Object>> getChatList(String userID) {
         ChatDAO chatRoomDAO = new ChatDAO();
-        UserDao userDAO;
+        UserDAO userDAO;
         MsgDAO msgDAO;
         List<ChatDTO> chatList = chatRoomDAO.getChatList(userID);
 
         Map<Long, Map<String, Object>> roomMap = new LinkedHashMap<>();
         for (ChatDTO chatDTO : chatList) {
-            userDAO = new UserDao();
+            userDAO = new UserDAO();
             msgDAO = new MsgDAO();
             Map<String, Object> map = new HashMap<>();
 

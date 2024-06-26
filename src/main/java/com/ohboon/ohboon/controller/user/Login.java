@@ -1,14 +1,9 @@
 package com.ohboon.ohboon.controller.user;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
-import com.ohboon.ohboon.controller.chat.MakeBoardChatController;
-import com.ohboon.ohboon.dao.UserDao;
+import com.ohboon.ohboon.dao.UserDAO;
 import com.ohboon.ohboon.dto.Grade;
 import com.ohboon.ohboon.dto.ModalDto;
-import com.ohboon.ohboon.dto.UserDto;
-import com.ohboon.ohboon.service.MatchService;
-import com.ohboon.ohboon.util.LocalDateTimeAdapter;
+import com.ohboon.ohboon.dto.UserDTO;
 import com.ohboon.ohboon.utils.CookieManager;
 import com.ohboon.ohboon.utils.ScriptWriter;
 import jakarta.servlet.ServletException;
@@ -20,10 +15,6 @@ import jakarta.servlet.http.HttpSession;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.IOException;
-import java.io.PrintWriter;
-import java.time.LocalDateTime;
-import java.util.List;
-import java.util.Map;
 
 import static com.ohboon.ohboon.dto.Grade.*;
 
@@ -42,38 +33,38 @@ public class Login extends HttpServlet {
         String email = req.getParameter("email");
         String userPW = req.getParameter("userPW");
 
-        UserDto userDto = UserDto
+        UserDTO userDto = UserDTO
                 .builder()
                 .email(req.getParameter("email"))
                 .build();
-        UserDao userDao = new UserDao();
-        UserDto loginUserDto = userDao.loginUser(userDto);
+        UserDAO userDao = new UserDAO();
+        UserDTO loginUserDTO = userDao.loginUser(userDto);
 
-        if (loginUserDto == null) {
+        if (loginUserDTO == null) {
             // 아이디가 없는 경우
             System.out.println("email doesnot exist");
             ScriptWriter.alertAndBack(resp, "이메일 또는 패스워드가 일치하지 않습니다.");
         }
         // email과 password 받아서 이것을 암호화하여 PW 확인
         else {
-            String encodedPassword = loginUserDto.getUserPW(); // 암호화된 비밀번호
+            String encodedPassword = loginUserDTO.getUserPW(); // 암호화된 비밀번호
             if (BCrypt.checkpw(req.getParameter("userPW"), encodedPassword)) { // BCrypt.checkpw( A, B ): 비밀번호 A와, B의 일치여부 확인
 
                 //로그인 -> 세션에서 아이디, 이름, 등급, 프로필사진 정보를 담음
                 HttpSession session = req.getSession();
-                session.setAttribute("sessionEmail", loginUserDto.getEmail());
-                session.setAttribute("sessionNickname", loginUserDto.getNickname());
-                session.setAttribute("sessionGrade", loginUserDto.getGrade());
-                session.setAttribute("sessionProfile", loginUserDto.getProfile());
-                session.setAttribute("sessionUserName", loginUserDto.getUsername());
-                session.setAttribute("sessionBirth", loginUserDto.getBirth());
-                session.setAttribute("sessionPhone", loginUserDto.getPhone());
-                session.setAttribute("sessionEvaluation", loginUserDto.getEvaluation());
-                session.setAttribute("sessionCreateDate", loginUserDto.getCreateDate());
-                session.setAttribute("sessionAgreeInfoOffer", loginUserDto.isAgreeInfoOffer());
+                session.setAttribute("sessionEmail", loginUserDTO.getEmail());
+                session.setAttribute("sessionNickname", loginUserDTO.getNickname());
+                session.setAttribute("sessionGrade", loginUserDTO.getGrade());
+                session.setAttribute("sessionProfile", loginUserDTO.getProfile());
+                session.setAttribute("sessionUserName", loginUserDTO.getUserName());
+                session.setAttribute("sessionBirth", loginUserDTO.getBirth());
+                session.setAttribute("sessionPhone", loginUserDTO.getPhone());
+                session.setAttribute("sessionEvaluation", loginUserDTO.getEvaluation());
+                session.setAttribute("sessionCreateDate", loginUserDTO.getCreateDate());
+                session.setAttribute("sessionAgreeInfoOffer", loginUserDTO.isAgreeInfoOffer());
 
-                String nickname = loginUserDto.getNickname();
-                Grade grade = loginUserDto.getGrade();
+                String nickname = loginUserDTO.getNickname();
+                Grade grade = loginUserDTO.getGrade();
 
                 ModalDto modalDto;
 

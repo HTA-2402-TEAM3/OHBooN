@@ -2,6 +2,7 @@ package com.ohboon.ohboon.service;
 
 
 import com.ohboon.ohboon.dao.BoardDAO;
+import com.ohboon.ohboon.dao.ChatDAO;
 import com.ohboon.ohboon.dao.MatchDAO;
 import com.ohboon.ohboon.dto.MatchDTO;
 
@@ -40,6 +41,8 @@ public class MatchService {
         if(rs > 0) {
             MatchDAO matchDAO1 = new MatchDAO();
             board_id = matchDAO1.getBoardID(matchId);
+            ChatDAO chatDAO = new ChatDAO();
+            chatDAO.deleteChatRoom(matchId);
         }
         return board_id;
     }

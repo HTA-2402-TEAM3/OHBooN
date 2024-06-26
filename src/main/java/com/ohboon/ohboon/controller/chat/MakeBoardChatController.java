@@ -2,7 +2,7 @@ package com.ohboon.ohboon.controller.chat;
 
 import com.google.gson.Gson;
 import com.ohboon.ohboon.dao.BoardDAO;
-import com.ohboon.ohboon.dao.UserDao;
+import com.ohboon.ohboon.dao.UserDAO;
 import com.ohboon.ohboon.dto.ChatDTO;
 import com.ohboon.ohboon.dto.ModalDto;
 import com.ohboon.ohboon.service.ChatService;
@@ -15,7 +15,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -33,7 +32,7 @@ public class MakeBoardChatController extends HttpServlet {
 
         BoardDAO boardDAO = new BoardDAO();
         String boardWriterName = boardDAO.findEmailByBoardId(board_id);
-        UserDao userDao = new UserDao();
+        UserDAO userDao = new UserDAO();
         String receiverName = userDao.findNicknameByEmail(boardWriterName);
 
         ChatDTO makeChatDto = ChatDTO.builder()

@@ -1,7 +1,7 @@
 package com.ohboon.ohboon.controller.user;
 
 import com.ohboon.ohboon.dao.UserDAO;
-import com.ohboon.ohboon.dto.UserDto;
+import com.ohboon.ohboon.dto.UserDTO;
 import com.ohboon.ohboon.utils.ScriptWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -28,7 +28,7 @@ public class PasswordConfirm extends HttpServlet {
         String email = (String) session.getAttribute("sessionEmail");
 
         UserDAO userDao = new UserDAO();
-        UserDto userDto = userDao.findUserByEmail(email);
+        UserDTO userDto = userDao.findUserByEmail(email);
 
         if (userDto != null && BCrypt.checkpw(password, userDto.getUserPW())) {
             session.setAttribute("passwordVerified", true);

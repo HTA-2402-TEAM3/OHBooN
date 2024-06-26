@@ -62,4 +62,7 @@
             </if>
         </where>
     </select>
+    <delete id="deleteChatRoom" parameterType="long">
+        delete from chatroom where match_id = #{match_id}
+    </delete>
 </mapper>

@@ -1,8 +1,8 @@
 package com.ohboon.ohboon.controller.user;
 
 
-import com.ohboon.ohboon.dao.UserDao;
-import com.ohboon.ohboon.dto.UserDto;
+import com.ohboon.ohboon.dao.UserDAO;
+import com.ohboon.ohboon.dto.UserDTO;
 import com.ohboon.ohboon.utils.ScriptWriter;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -24,14 +24,14 @@ public class UserInfoUpdate extends HttpServlet {
         HttpSession session = req.getSession();
         String email = (String) session.getAttribute("sessionEmail");
 
-        UserDao userDao = new UserDao();
-        UserDto infoUserDto = userDao.findUserByEmail(email);
+        UserDAO userDao = new UserDAO();
+        UserDTO infoUserDTO = userDao.findUserByEmail(email);
 
-        if (infoUserDto == null) {
+        if (infoUserDTO == null) {
             ScriptWriter.alert(resp,"사용자 메일 정보를 찾을 수 없습니다.");
             resp.sendRedirect("/index/index");
         } else {
-            req.setAttribute("infoUserDto", infoUserDto);
+            req.setAttribute("infoUserDTO", infoUserDTO);
             RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/user/info-update.jsp");
             dispatcher.forward(req, resp);
         }
@@ -60,8 +60,8 @@ public class UserInfoUpdate extends HttpServlet {
             return;
         }
 
-        UserDao userDao = new UserDao();
-        UserDto userDto = userDao.findUserByEmail(email);
+        UserDAO userDao = new UserDAO();
+        UserDTO userDto = userDao.findUserByEmail(email);
 
         if (userDto != null) {
             userDto.setPhone(phone);
