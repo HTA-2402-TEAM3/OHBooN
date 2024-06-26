@@ -330,5 +330,9 @@
     </main>
 </div>
 
+<script>
+    websocket = new WebSocket("ws://192.168.0.97:8080/chat");
+</script>
+
 
 <%@ include file="../include/footer.jsp" %>

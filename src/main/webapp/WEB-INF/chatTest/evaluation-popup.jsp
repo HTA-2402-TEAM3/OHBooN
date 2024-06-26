@@ -10,13 +10,29 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <html>
 <head>
+    <link rel="stylesheet" href="../../css/popup.css">
     <title>팝업</title>
     <script src="https://kit.fontawesome.com/a2e8ca0ae3.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 <body>
-<input type="hidden" name="evalEmpty" id="evalEmpty" value="${requestScope.evalEmpty}">
+<div id='vote' class='page'>
+    <h1 id='product-names'></h1>
+    <div id='circle-container'>
+        <div id='circle-one' class='active picked'>
+            <div class='overlay'></div>
+            <h1 class='votecount'><i class="material-icons thumbup">
+                <button type="button" id="like-${status.index}">좋아요</button>
+                thumb_up</i></h1>
+        </div>
+        <div id='circle-two' class='active'>
+            <div class='overlay'></div>
+            <h1 class='votecount'><i class="material-icons thumbup">thumb_down
+                <button type="button" id="hate-${status.index}">싫어요</button>
+            </i></h1>
+
+            <input type="hidden" name="evalEmpty" id="evalEmpty" value="${requestScope.evalEmpty}">
 <c:choose>
     <c:when test="${not empty requestScope.evaluationMap}">
         <form action="/match/evaluation" id="evaluationForm">
@@ -31,9 +47,9 @@
                                 <c:set var="userEmail" value="${MatchDTO.email}"/>
                             </c:if>
                             <span> ${userEmail} </span>
-                            <button type="button" id="like-${status.index}">좋아요</button>
-                            <button type="button" id="hate-${status.index}">싫어요</button>
-                            <input type="hidden" id="match-id${status.index}" name="matchID"
+                          <%--  <button type="button" id="like-${status.index}">좋아요</button>
+                                    <button type="button" id="hate-${status.index}">싫어요</button>--%>
+                                <input type="hidden" id="match-id${status.index}" name="matchID"
                                    value="${MatchDTO.matchID}">
                             <input type="hidden" id="email${status.index}" name="email" value="${userEmail}">
                             <input type="hidden" id="evaluation-result${status.index}" name="evaluationResult">

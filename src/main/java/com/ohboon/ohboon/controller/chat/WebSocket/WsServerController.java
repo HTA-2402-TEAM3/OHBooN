@@ -16,25 +16,34 @@ import java.util.*;
 public class WsServerController {
     private ChatService chatService;
     private static List<Session> sessionList = new ArrayList<>();
-//    ws 연결된 모든 session이 들어감
-    private static Map<Session, String> sessionsMap = new HashMap<>();
-//    ws 연결된 wsSession으로 httpSession받아오는 용도 --> 닉네임 받아올거임
+    //    ws 연결된 모든 session이 들어감
+    private static Map<String, Session> sessionsMap = new HashMap<>();
+    //    ws 연결된 wsSession으로 httpSession받아오는 용도 --> 닉네임 받아올거임
     private static Map<Long, List<Session>> chatRoomSessionMap = Collections.synchronizedMap(new HashMap<>());
 //    chat_id(key) 채팅방에 저장된 user들 websocket(value) map
 
     @OnOpen
     public void onOpen(Session session, EndpointConfig config) {
         //client가 websocket에 연결되었을 때
-//        HttpSession httpSession = (HttpSession) config.getUserProperties().get("PRIVATE_HTTP_SESSION");
         String userNickname = (String) config.getUserProperties().get("PRIVATE_HTTP_SESSION");
-//        String userNickname = (String) httpSession.getAttribute("sessionNickname");
-        System.out.println("userNickname"+userNickname);
 
-
-        sessionsMap.put(session, userNickname);
+        System.out.println("userNickname: " + userNickname);
         sessionList.add(session);
-
-        System.out.println(sessionList);
+        if (sessionsMap.isEmpty()) {
+            sessionsMap.put(userNickname, session);
+        } else {
+            for (String name : sessionsMap.keySet()) {
+                if (userNickname.equals(name)) {
+                    sessionsMap.replace(name, session);
+                    System.out.println(sessionsMap);
+                } else {
+                    sessionsMap.put(userNickname, session);
+                    System.out.println(sessionsMap);
+                }
+            }
+        }
+        System.out.println("모든 ws session : " + sessionList);
+        System.out.println("닉넴, ws session : " + sessionsMap);
     }
 
     @OnMessage
@@ -56,15 +65,15 @@ public class WsServerController {
         System.out.println(sender);
 
         chatRoomSessionMap = setChatUsers(chat_id, sessionsMap);
-        System.out.println("chatRoomSessionMap : "+chatRoomSessionMap);
+        System.out.println("chatRoomSessionMap : " + chatRoomSessionMap);
         saveMsg(chat_id, sender, match_id, content);
 
         chatRoomSessionMap.get(chat_id).forEach(session1 -> {
             try {
                 if (session1 == wsSession) {
-                    session1.getBasicRemote().sendText("나|" + content +"|"+formattedNow);
+                    session1.getBasicRemote().sendText("나|" + content + "|" + formattedNow);
                 } else {
-                    session1.getBasicRemote().sendText(sender + "|" + content+"|"+formattedNow);
+                    session1.getBasicRemote().sendText(sender + "|" + content + "|" + formattedNow);
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -72,25 +81,25 @@ public class WsServerController {
         });
     }
 
-    private Map<Long, List<Session>> setChatUsers(long chatId, Map<Session, String> sessionsMap) {
+    private Map<Long, List<Session>> setChatUsers(long chatId, Map<String, Session> sessionsMap) {
         List<Session> userList = new ArrayList<>();
 
         chatService = new ChatService();
         List<String> users = chatService.findUsersByChatId(chatId);
 
-        System.out.println("users :"+users);
-        System.out.println("sessionsMap :" +sessionsMap);
+        System.out.println(chatId + " : db저장된 채팅방 내의 users :" + users);
+        System.out.println("sessionsMap :" + sessionsMap);
 
-        for(Session key : sessionsMap.keySet()) {
-            for(String user : users) {
-                if(sessionsMap.get(key).equals(user)) {
-                    userList.add(key);
+        for (String key : sessionsMap.keySet()) {
+            for (String user : users) {
+                if (key.equals(user)) {
+                    userList.add(sessionsMap.get(key));
                 }
             }
         }
         chatRoomSessionMap.put(chatId, userList);
-        System.out.println("userList : "+userList);
-        System.out.println("chatRoomSessionMap : "+chatRoomSessionMap);
+        System.out.println("userList : " + userList);
+        System.out.println("chatRoomSessionMap : " + chatRoomSessionMap);
         return chatRoomSessionMap;
     }
 
