@@ -196,12 +196,12 @@ public class UserDao {
     }
 
 
-    public boolean sendPasswordByEmail(String email, String link ) {
+    public boolean sendPasswordByEmail(String email, String link) {
         Map<String, String> sendMailInfo = new HashMap<>();
         sendMailInfo.put("from", "mgrtest@naver.com");
         sendMailInfo.put("to", email);
         sendMailInfo.put("subject", "비밀번호 재설정 링크");
-        sendMailInfo.put("content", "PW 재설정 링크: "+ link);
+        sendMailInfo.put("content", "PW 재설정 링크: " + link);
         sendMailInfo.put("format", "text/plain; charset=utf-8");
         try {
             NaverMail naverMail = new NaverMail();
@@ -215,7 +215,7 @@ public class UserDao {
 
     public int updatePassword(String email, String newPassword) {
         int result = 0;
-        String [] newPW = {email, newPassword};
+        String[] newPW = {email, newPassword};
         try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
             result = sqlSession.update("updatePassword", newPW);
         } catch (Exception e) {
@@ -241,7 +241,7 @@ public class UserDao {
             params.put("email", email);
             params.put("token", token);
             result = sqlSession.update("savePasswordResetToken", params);
-            if(result>0) return true;
+            if (result > 0) return true;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -336,13 +336,33 @@ public class UserDao {
 
     public String findNicknameByEmail(String boardWriterName) {
         String nickname = null;
-        try(
-        SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
+        try (
+                SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
             nickname = sqlSession.selectOne("findNicknameByEmail", boardWriterName);
             sqlSession.commit();
         } catch (Exception e) {
             e.printStackTrace();
         }
         return nickname;
+    }
+
+    public Object getProfile(String name) {
+        String nickname = null;
+        try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
+            nickname = sqlSession.selectOne("findProfileByName", name);
+            sqlSession.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return nickname;
+    }
+
+    public void setEvaluation(Map<String, String> map) {
+        try(SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
+            sqlSession.update("setEvaluation", map);
+            sqlSession.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }

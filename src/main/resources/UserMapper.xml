@@ -6,8 +6,8 @@
 
     <insert id="signup" parameterType="UserDto">
         INSERT INTO user values(
-            #{email}, #{nickname}, #{username}, #{birth}, #{phone}, true, #{userPW},
-            #{grade}, null, #{profile}, #{createDate}, #{agreeInfoOffer}, null, #{verificationCode}
+        #{email}, #{nickname}, #{username}, #{birth}, #{phone}, true, #{userPW},
+        #{grade}, null, #{profile}, #{createDate}, #{agreeInfoOffer}, null, #{verificationCode}
         )
     </insert>
 
@@ -25,11 +25,11 @@
     <!--사용자가 메일 인증을 한 경우 등급을 STANDBY에서 MEMBER로 변경-->
 
 
-    <select id="emailCheck"  parameterType="String" resultType="int">
+    <select id="emailCheck" parameterType="String" resultType="int">
         Select count(*) as total from user where email = #{email} and available = 1
     </select>
 
-    <select id="gradeCheck"  parameterType="String" resultType="String">
+    <select id="gradeCheck" parameterType="String" resultType="String">
         Select grade from user where email = #{email} and available = 1
     </select>
 
@@ -67,9 +67,9 @@
     <!--유저 정보 변경-->
     <update id="updateUserInfo" parameterType="UserDto">
         UPDATE user SET
-            phone = #{phone},
-            agreeinfooffer = #{agreeInfoOffer},
-            profile = #{profile}
+        phone = #{phone},
+        agreeinfooffer = #{agreeInfoOffer},
+        profile = #{profile}
         WHERE email = #{email} and available = 1
     </update>
 
@@ -92,7 +92,13 @@
     <delete id="deleteUser" parameterType="String">
         delete from user where email = #{email} and available = 1
     </delete>
-<select id="findNicknameByEmail" parameterType="String" resultType="String">
-    select nickname from user where email =#{boardWriterName};
-</select>
+    <select id="findNicknameByEmail" parameterType="String" resultType="String">
+        select nickname from user where email =#{boardWriterName}
+    </select>
+    <select id="findProfileByName" parameterType="String" resultType="String">
+        select profile from user where nickname = #{nickname}
+    </select>
+    <update id="setEvaluation" parameterType="hashMap">
+        update user set evaluation = evaluation + #{evaluationResult} where email = #{email}
+    </update>
 </mapper>
