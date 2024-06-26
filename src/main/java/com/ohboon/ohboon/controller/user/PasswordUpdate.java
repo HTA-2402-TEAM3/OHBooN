@@ -2,7 +2,7 @@ package com.ohboon.ohboon.controller.user;
 
 
 import com.ohboon.ohboon.dao.UserDAO;
-import com.ohboon.ohboon.dto.UserDto;
+import com.ohboon.ohboon.dto.UserDTO;
 import com.ohboon.ohboon.utils.ScriptWriter;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -37,7 +37,7 @@ public class PasswordUpdate extends HttpServlet {
 
         String newPassword = req.getParameter("newPW");
         UserDAO userDao = new UserDAO();
-        UserDto userDto = userDao.findUserByEmail(email);
+        UserDTO userDto = userDao.findUserByEmail(email);
 
         if (userDto != null) {
             try{

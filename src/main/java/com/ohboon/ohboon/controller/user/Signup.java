@@ -2,7 +2,7 @@ package com.ohboon.ohboon.controller.user;
 
 
 import com.ohboon.ohboon.dao.UserDAO;
-import com.ohboon.ohboon.dto.UserDto;
+import com.ohboon.ohboon.dto.UserDTO;
 import com.ohboon.ohboon.utils.ScriptWriter;
 import com.ohboon.ohboon.utils.VerificationCodeGenerator;
 import jakarta.servlet.ServletException;
@@ -79,8 +79,8 @@ public class Signup extends HttpServlet {
         // 이메일 인증코드 생성
         String verificationCode = VerificationCodeGenerator.generateRandomCode();
 
-        // UserDto 생성
-        UserDto userDto = userDao.createUserDto(req, hashUserPW, renameProfile, verificationCode);
+        // UserDTO 생성
+        UserDTO userDto = userDao.createUserDTO(req, hashUserPW, renameProfile, verificationCode);
 
         // 사용자 등록 및 이메일 전송
         int result = userDao.registerUser(userDto);

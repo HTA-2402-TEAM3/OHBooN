@@ -1,8 +1,8 @@
 <%-- Created by IntelliJ IDEA. User: Dayou Date: 2024-06-13 Time: 오전 9:16 --%>
-<%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<%@ page contentType="text/html; charset=UTF-8" language="java" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
-
+<%@include file="../include/header.jsp"%>
 <html>
 <head>
     <meta charset="UTF-8">
@@ -15,13 +15,11 @@
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
 </head>
 <body>
-</form>
-
+<input type="hidden" id="chat_id" name="chat_id" value="${chat_id}" />
 <%--채팅리스트--%>
 <div id="container">
     <aside id="chatRoomList">
     </aside>
-
     <main>
         <ul id="messages">
         </ul>
@@ -38,6 +36,7 @@
         </footer>
     </main>
 </div>
-<script src="Chat.js"></script>
+<script src="../js/Chat.js"></script>
 </body>
 </html>
+<%@include file="../include/footer.jsp"%>

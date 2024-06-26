@@ -1,4 +1,4 @@
-package com.ohboon.ohboon.controller.ChatController;
+package com.ohboon.ohboon.controller.chat;
 
 
 import com.google.gson.Gson;
@@ -17,7 +17,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet("/chatList")
+@WebServlet("/chat/chatList")
 public class ChatListController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
@@ -35,10 +35,8 @@ public class ChatListController extends HttpServlet {
             list.add(entry);
         });
 
-
         Gson gson = new Gson();
         String json = gson.toJson(list);
-        System.out.println("json: "+json);
 
         resp.setContentType("application/json");
         resp.setCharacterEncoding("utf-8");

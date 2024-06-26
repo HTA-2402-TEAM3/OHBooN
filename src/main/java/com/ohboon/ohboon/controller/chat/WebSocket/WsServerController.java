@@ -1,10 +1,9 @@
-package com.ohboon.ohboon.controller.ChatController.WebSocket;
+package com.ohboon.ohboon.controller.chat.WebSocket;
 
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
 import com.ohboon.ohboon.dto.MsgDTO;
 import com.ohboon.ohboon.service.ChatService;
-import jakarta.servlet.http.HttpSession;
 import jakarta.websocket.*;
 import jakarta.websocket.server.ServerEndpoint;
 

@@ -2,7 +2,7 @@ package com.ohboon.ohboon.controller.admin;
 
 import com.ohboon.ohboon.dao.UserDAO;
 import com.ohboon.ohboon.dto.Grade;
-import com.ohboon.ohboon.dto.UserDto;
+import com.ohboon.ohboon.dto.UserDTO;
 import com.ohboon.ohboon.utils.ScriptWriter;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -22,7 +22,7 @@ public class AdminUserList extends HttpServlet {
         HttpSession session = req.getSession();
         Grade grade = (Grade) session.getAttribute("sessionGrade");
         UserDAO userDao = new UserDAO();
-        List<UserDto> userList;
+        List<UserDTO> userList;
 
         // 사용자 목록 페이징을 위한 인덱스 변수 설정
         String pageStr = req.getParameter("page");

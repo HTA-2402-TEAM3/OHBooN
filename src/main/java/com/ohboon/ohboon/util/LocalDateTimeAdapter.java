@@ -1,4 +1,4 @@
-package util;
+package com.ohboon.ohboon.util;
 
 import com.google.gson.TypeAdapter;
 import com.google.gson.stream.JsonReader;

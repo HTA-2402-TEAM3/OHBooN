@@ -9,7 +9,7 @@
     <typeAliases>
         <typeAlias alias="BoardDTO" type="com.ohboon.ohboon.dto.BoardDTO"/>
         <typeAlias alias="ModalDto" type="com.ohboon.ohboon.dto.ModalDto"/>
-        <typeAlias alias="UserDTO" type="com.ohboon.ohboon.dto.UserDto"/>
+        <typeAlias alias="UserDTO" type="com.ohboon.ohboon.dto.UserDTO"/>
         <typeAlias alias="ChatDTO" type="com.ohboon.ohboon.dto.ChatDTO"/>
         <typeAlias alias="MatchDTO" type="com.ohboon.ohboon.dto.MatchDTO"/>
         <typeAlias alias="MsgDTO" type="com.ohboon.ohboon.dto.MsgDTO"/>
