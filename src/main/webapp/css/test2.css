@@ -138,7 +138,7 @@ main header{
     margin-bottom:5px;
 }
 #messages .message{
-    padding:20px;
+    padding:10px;
     color:#fff;
     line-height:25px;
     max-width:90%;
@@ -150,10 +150,10 @@ main header{
     text-align:right;
 }
 #messages .you .message{
-    background-color:#808080;
+    background-color:#F5F5DC;
 }
 #messages .me .message{
-    background-color:#ffc0cb;
+    background-color:#fca76d;
 }
 
 
@@ -191,7 +191,7 @@ main footer button{
     font-weight:bold;
     color:#ffffff;
     /*background:transparent;*/
-    background-color: #808080;
+    background-color: #fca76d;
     /*border: none;*/
     cursor: pointer;
 }

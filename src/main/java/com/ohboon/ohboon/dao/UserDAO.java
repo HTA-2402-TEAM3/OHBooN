@@ -4,7 +4,7 @@ import com.ohboon.ohboon.dto.Grade;
 import com.ohboon.ohboon.dto.UserDTO;
 import com.ohboon.ohboon.mail.NaverMail;
 import com.ohboon.ohboon.mybatis.MybatisConnectionFactory;
-import com.ohboon.ohboon.utils.ScriptWriter;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
 import net.coobird.thumbnailator.Thumbnails;
