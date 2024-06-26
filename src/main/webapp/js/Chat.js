@@ -117,14 +117,14 @@ function matchBtn(user) {
 }
 
 function matching() {
+    console.log("matching",enterChatObj.match_id);
     $.ajax({
         method: 'post',
-        url: '/match',
+        url: './match',
         data: {
             match_id: enterChatObj.match_id
         },
         success: function (data) {
-            alert(JSON.stringify(data));
             if (data.isMatch > 0) {
                 alert("매칭 확정 되었습니다.");
             } else {

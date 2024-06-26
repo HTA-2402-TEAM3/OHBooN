@@ -22,6 +22,7 @@ public class MatchController extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         long match_id = Long.parseLong(req.getParameter("match_id"));
+        System.out.println(match_id);
 
         MatchService matchService = new MatchService();
         long board_id = matchService.isMatched(match_id);
