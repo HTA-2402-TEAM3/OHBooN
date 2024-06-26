@@ -3,7 +3,7 @@ var inputMessage = document.getElementById('messageInput');
 var sessionNickname = '<%=session.getAttribute("sessionNickname")%>';
 var enterChatObj = null;
 var recentRoom;
-var board_id = document.getElementById('chat_id').value;
+var chat_id = document.getElementById('chat_id').value;
 
 var messagesContainer = document.getElementById("messages");
 var li = document.createElement('li');
@@ -20,23 +20,25 @@ var chatRoomListObj_tmp;
 
 document.addEventListener("DOMContentLoaded", function () {
     ChatRoomList("showL").then();
+    console.log("chat_id :", chat_id);
+    enterChat(recentRoom).then();
     if (sessionNickname && sessionNickname.trim() !== "") {
         // function openSocket() {
-        writeResponse("WebSocket is open!!!!");
+        // writeResponse("WebSocket is open!!!!");
         // Ensure only one connection is open at a time
-        if (websocket !== undefined && websocket.readyState !== WebSocket.CLOSED) {
-            writeResponse("WebSocket is already opened.");
-            return;
-        }
+        // if (websocket !== undefined && websocket.readyState !== WebSocket.CLOSED) {
+        //     writeResponse("WebSocket is already opened.");
+        //     return;
+        // }
         // Create a new instance of the websocket
         websocket = new WebSocket("ws://192.168.0.97:8080/chat");
-        websocket.onopen = function (event) {
-            if (event.data === undefined) return;
-            writeResponse(event.data);
-
-            console.log("recent", recentRoom);
-            enterChat(recentRoom).then();
-        };
+        // websocket.onopen = function (event) {
+        //     if (event.data === undefined) return;
+        //     writeResponse(event.data);
+        //
+        //     console.log("recent", recentRoom);
+        //     enterChat(recentRoom).then();
+        // };
         websocket.onmessage = function (event) {
             // ws객체에 전달받은 메세지가 있으면 실행되는 함수
             var message = event.data.split("|");
@@ -52,8 +54,8 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
         console.log("user is not login...");
     }
-    if (board_id !== undefined) {
-        enterChat(board_id).then();
+    if (chat_id !== undefined) {
+        enterChat(chat_id).then();
     }
 });
 
@@ -126,11 +128,13 @@ function matchBtn(user) {
 function matching() {
     $.ajax({
         method: 'post',
-        url: '../match',
+        url: '/match',
         data: {
             match_id: enterChatObj.match_id
         },
         success: function (data) {
+            console.log(enterChatObj)
+            console.log(enterChatObj.match_id)
             alert(JSON.stringify(data));
             if (data.isMatch > 0) {
                 alert("매칭 확정 되었습니다.");
@@ -143,6 +147,7 @@ function matching() {
         }
     })
 }
+
 
 async function enterChat(long) {
     console.log(long);
@@ -210,6 +215,7 @@ async function ChatRoomList(text) {
             console.log("showL");
 
             chatRoomListObj.forEach(item => {
+                recentRoom = item.key[0];
                 var li = document.createElement('li');
                 var a = document.createElement('a');
                 var div = document.createElement('div');
@@ -222,7 +228,7 @@ async function ChatRoomList(text) {
                 console.log("item", item.value.subject);
 
                 if (item.value.profile === undefined) {
-                    img.setAttribute("src", "/image/user.png");
+                    img.setAttribute("src", "../image/user.png");
                     img.setAttribute("alt", "");
                 } else {
                     img.setAttribute("src", item.value.profile);
