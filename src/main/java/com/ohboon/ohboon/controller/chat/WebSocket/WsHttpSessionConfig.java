@@ -1,4 +1,4 @@
-package com.ohboon.ohboon.controller.ChatController.WebSocket;
+package com.ohboon.ohboon.controller.chat.WebSocket;
 
 import jakarta.servlet.http.HttpSession;
 import jakarta.websocket.HandshakeResponse;

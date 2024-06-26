@@ -4,74 +4,75 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import com.ohboon.ohboon.mybatis.MybatisConnectionFactory;
 import org.apache.ibatis.session.SqlSession;
 
 import com.ohboon.ohboon.dto.BoardDTO;
 import com.ohboon.ohboon.dto.ListBoardDTO;
-import com.ohboon.ohboon.util.MybatisConnectionFactory;
+
 
 public class BoardDAO {
 
-	private final SqlSession sqlSession;
+    private final SqlSession sqlSession;
 
-	public BoardDAO() {
-		this.sqlSession = MybatisConnectionFactory.getSqlSession();
-	}
-
-	public BoardDAO(boolean isCommit) {
-		this.sqlSession = MybatisConnectionFactory.getSqlSession(isCommit);
-	}
-
-	public Optional<BoardDTO> findByID(long id) {
-		return Optional.ofNullable(sqlSession.selectOne("findByID", id));
-	}
-
-	public int save(BoardDTO boardDTO) {
-		return this.sqlSession.insert("save", boardDTO);
-	}
-
-	public int modify(BoardDTO boardDTO) {
-		return this.sqlSession.update("modify", boardDTO);
-	}
-
-	public List<ListBoardDTO> findWithSimple(Map<String, String> searchOptions) {
-		return this.sqlSession.selectList("findWithSimple", searchOptions);
-	}
-
-	public List<ListBoardDTO> findBySearchWord(Map<String, String> searchOptions) {
-		return this.sqlSession.selectList("findBySearchWord", searchOptions);
-	}
-
-	public int calculateWordSearchBoardCount(Map<String, String> searchOptions) {
-		return this.sqlSession.selectOne("calculateWordSearchBoardCount", searchOptions);
-	}
-
-	public int calculateSimpleSearchBoardCount(Map<String, String> searchOptions) {
-		return this.sqlSession.selectOne("calculateSimpleSearchBoardCount", searchOptions);
-	}
-  
-  public String findEmailByBoardId(long id){
-        SqlSession sqlSession = MybatisConnectionFactory.getSqlSession();
-        String userEmail = sqlSession.selectOne("findEmailByBoardId", id);
-        sqlSession.commit();
-        sqlSession.close();
-        return userEmail;
+    public BoardDAO() {
+        this.sqlSession = MybatisConnectionFactory.getSqlSession();
     }
 
-	public int delete(long boardID) {
-		return this.sqlSession.update("delete", boardID);
-	}
+    public BoardDAO(boolean isCommit) {
+        this.sqlSession = MybatisConnectionFactory.getSqlSession(isCommit);
+    }
 
-	public void close() {
-		sqlSession.close();
-	}
+    public Optional<BoardDTO> findByID(long id) {
+        return Optional.ofNullable(sqlSession.selectOne("findByID", id));
+    }
 
-	public void rollback() {
-		sqlSession.rollback();
-	}
+    public int save(BoardDTO boardDTO) {
+        return this.sqlSession.insert("save", boardDTO);
+    }
 
-	public void commit() {
-		sqlSession.commit();
-	}
+    public int modify(BoardDTO boardDTO) {
+        return this.sqlSession.update("modify", boardDTO);
+    }
+
+    public List<ListBoardDTO> findWithSimple(Map<String, String> searchOptions) {
+        return this.sqlSession.selectList("findWithSimple", searchOptions);
+    }
+
+    public List<ListBoardDTO> findBySearchWord(Map<String, String> searchOptions) {
+        return this.sqlSession.selectList("findBySearchWord", searchOptions);
+    }
+
+    public int calculateWordSearchBoardCount(Map<String, String> searchOptions) {
+        return this.sqlSession.selectOne("calculateWordSearchBoardCount", searchOptions);
+    }
+
+    public int calculateSimpleSearchBoardCount(Map<String, String> searchOptions) {
+        return this.sqlSession.selectOne("calculateSimpleSearchBoardCount", searchOptions);
+    }
+
+    public String findEmailByBoardId(long id) {
+        return this.sqlSession.selectOne("findEmailByBoardId", id);
+    }
+
+    public int match(long boardID) {
+        return this.sqlSession.update("match", boardID);
+    }
+
+    public int delete(long boardID) {
+        return this.sqlSession.update("delete", boardID);
+    }
+
+    public void close() {
+        sqlSession.close();
+    }
+
+    public void rollback() {
+        sqlSession.rollback();
+    }
+
+    public void commit() {
+        sqlSession.commit();
+    }
 
 }
