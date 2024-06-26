@@ -34,5 +34,4 @@ public class ScriptWriter {
             throw new RuntimeException(e);
         }
     }
-
 }

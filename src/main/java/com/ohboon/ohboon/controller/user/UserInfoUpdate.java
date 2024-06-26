@@ -53,7 +53,7 @@ public class UserInfoUpdate extends HttpServlet {
         boolean agreeInfoOffer = req.getParameter("agreeInfoOffer") != null;
         Part profilePart = req.getPart("profile");
         String profile = uploadProfileImage(profilePart, req);
-
+        boolean clearProfile = req.getParameter("clearProfile") != null; // 프로필 사진 제거
 
         if (phone == null || phone.trim().isEmpty()) {
             ScriptWriter.alertAndBack(resp, "전화번호를 입력해주세요.");
@@ -66,16 +66,22 @@ public class UserInfoUpdate extends HttpServlet {
         if (userDto != null) {
             userDto.setPhone(phone);
             userDto.setAgreeInfoOffer(agreeInfoOffer);
-            if (profile != null) {
+            // 프로필 이미지 갱신 또는 삭제
+            if (clearProfile && (profile == null || profile.isEmpty())) {
+                userDto.setProfile(null);
+            } else if (profile != null) {
                 userDto.setProfile(profile);
             }
+
 
             int result = userDao.updateUserInfo(userDto);
             if (result > 0) {
                 // 세션 정보 갱신
                 session.setAttribute("sessionPhone", userDto.getPhone());
                 session.setAttribute("sessionAgreeInfoOffer", userDto.isAgreeInfoOffer());
-                if (profile != null) {
+                if (clearProfile && (profile == null || profile.isEmpty())) {
+                    session.setAttribute("sessionProfile", null);
+                } else if (profile != null) {
                     session.setAttribute("sessionProfile", userDto.getProfile());
                 }
 

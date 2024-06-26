@@ -8,11 +8,15 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.name.Rename;
+import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
@@ -21,6 +25,17 @@ import static com.ohboon.ohboon.mybatis.MybatisConnectionFactory.sqlSessionFacto
 import static java.time.LocalDateTime.now;
 
 public class UserDAO {
+    private static SqlSessionFactory sqlSessionFactory;
+
+    static {
+        try {
+            String resource = "/config.xml";
+            InputStream inputStream = Resources.getResourceAsStream(resource);
+            sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     // 비밀번호 해시화
     public String hashPassword(String password) {
@@ -152,6 +167,7 @@ public class UserDAO {
         return result;
     }
 
+    // DB에 이메일 존재 여부 검사
     public int emailCheck(String email) {
         int result = 0;
         try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
@@ -162,6 +178,7 @@ public class UserDAO {
         return result;
     }
 
+    // DB에 닉네임 존재 여부 검사
     public int nicknameCheck(String nickname) {
         int result = 0;
         try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
@@ -413,4 +430,31 @@ public class UserDAO {
         }
     }
 
+    // 프로필 사진 삭제
+    public void clearUserProfile(String email) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            session.update("clearUserProfile", email);
+            session.commit();
+        }
+    }
+
+    // 닉네임 존재 여부 확인(어드민 페이지 닉네임 변경시 사용)
+    public boolean isNicknameExists(String nickname) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            int count = session.selectOne("isNicknameExists", nickname);
+            return count > 0;
+        }
+    }
+
+    // 닉네임 업데이트(어드민 페이지 닉네임 변경시 사용)
+    public int updateNickname(String email, String newNickname) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            Map<String, String> params = new HashMap<>();
+            params.put("email", email);
+            params.put("newNickname", newNickname);
+            int result = session.update("updateNickname", params);
+            session.commit();
+            return result;
+        }
+    }
 }

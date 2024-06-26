@@ -29,16 +29,18 @@
         WHERE email = #{email} AND verificationcode = #{token}
     </update>
 
+    <!--회원가입시 이메일이 DB에 존재하는지 확인-->
     <select id="emailCheck"  parameterType="String" resultType="int">
-        Select count(*) as total from user where email = #{email} and available = 1
+        Select count(*) as total from user where email = #{email}
+    </select>
+
+    <!--회원가입시 닉네임이 DB에 존재하는지 확인-->
+    <select id="nicknameCheck" parameterType="String" resultType="int">
+        Select count(*) as total from user where nickname = #{nickname}
     </select>
 
     <select id="gradeCheck"  parameterType="String" resultType="String">
         Select grade from user where email = #{email} and available = 1
-    </select>
-
-    <select id="nicknameCheck" parameterType="String" resultType="int">
-        Select count(*) as total from user where nickname = #{nickname} and available = 1
     </select>
 
     <select id="loginUser" parameterType="UserDto" resultType="UserDto">
@@ -194,5 +196,20 @@
             </if>
         </if>
     </select>
+
+    <!--사용자 프로필사진 제거-->
+    <update id="clearUserProfile">
+        UPDATE user SET profile = NULL WHERE email = #{email}
+    </update>
+
+    <!-- 닉네임 존재 여부 확인 -->
+    <select id="isNicknameExists" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM user WHERE nickname = #{nickname}
+    </select>
+
+    <!-- 닉네임 업데이트 -->
+    <update id="updateNickname" parameterType="map">
+        UPDATE user SET nickname = #{newNickname} WHERE email = #{email}
+    </update>
 
 </mapper>
