@@ -25,7 +25,7 @@ import java.util.*;
 import static com.ohboon.ohboon.mybatis.MybatisConnectionFactory.sqlSessionFactory;
 import static java.time.LocalDateTime.now;
 
-public class UserDao {
+public class UserDAO {
 
     private static SqlSessionFactory sqlSessionFactory;
 
@@ -391,7 +391,7 @@ public class UserDao {
 
 
     // ADMIN 관리자의 열람 가능한 사용자 목록 - 검색어 없음
-    public List<UserDto> getAllUsersExcludingAdmin(int offset, int limit) {
+    public List<UserDTO> getAllUsersExcludingAdmin(int offset, int limit) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             Map<String, Object> params = new HashMap<>();
             params.put("offset", offset);
@@ -400,7 +400,7 @@ public class UserDao {
         }
     }
 
-    public List<UserDto> getUsersForManager(int offset, int limit) {
+    public List<UserDTO> getUsersForManager(int offset, int limit) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             Map<String, Object> params = new HashMap<>();
             params.put("offset", offset);
@@ -436,7 +436,7 @@ public class UserDao {
     }
 
     // ADMIN 사용자의 열람 가능한 사용자 목록 - 검색어 있음(없을 경우도 사용 가능)
-    public List<UserDto> getAllUsersExcludingAdmin(int offset, int limit, String searchField, String searchKeyword, String sortField, String sortOrder) {
+    public List<UserDTO> getAllUsersExcludingAdmin(int offset, int limit, String searchField, String searchKeyword, String sortField, String sortOrder) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             Map<String, Object> params = new HashMap<>();
             params.put("offset", offset);
@@ -450,7 +450,7 @@ public class UserDao {
     }
 
     // ADMIN 사용자의 열람 가능한 사용자 목록 - 검색어 있음(없을 경우도 사용 가능)
-    public List<UserDto> getUsersForManager(int offset, int limit, String searchField, String searchKeyword, String sortField, String sortOrder) {
+    public List<UserDTO> getUsersForManager(int offset, int limit, String searchField, String searchKeyword, String sortField, String sortOrder) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             Map<String, Object> params = new HashMap<>();
             params.put("offset", offset);
