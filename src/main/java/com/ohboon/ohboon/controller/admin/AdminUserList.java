@@ -1,6 +1,6 @@
 package com.ohboon.ohboon.controller.admin;
 
-import com.ohboon.ohboon.dao.UserDao;
+import com.ohboon.ohboon.dao.UserDAO;
 import com.ohboon.ohboon.dto.Grade;
 import com.ohboon.ohboon.dto.UserDto;
 import com.ohboon.ohboon.utils.ScriptWriter;
@@ -21,7 +21,7 @@ public class AdminUserList extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession session = req.getSession();
         Grade grade = (Grade) session.getAttribute("sessionGrade");
-        UserDao userDao = new UserDao();
+        UserDAO userDao = new UserDAO();
         List<UserDto> userList;
 
         // 사용자 목록 페이징을 위한 인덱스 변수 설정

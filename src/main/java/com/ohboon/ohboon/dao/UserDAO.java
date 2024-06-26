@@ -4,7 +4,7 @@ import com.ohboon.ohboon.dto.Grade;
 import com.ohboon.ohboon.dto.UserDto;
 import com.ohboon.ohboon.mail.NaverMail;
 import com.ohboon.ohboon.mybatis.MybatisConnectionFactory;
-import com.ohboon.ohboon.utils.ScriptWriter;
+
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
 import net.coobird.thumbnailator.Thumbnails;
@@ -24,7 +24,7 @@ import java.util.UUID;
 import static com.ohboon.ohboon.mybatis.MybatisConnectionFactory.sqlSessionFactory;
 import static java.time.LocalDateTime.now;
 
-public class UserDao {
+public class UserDAO {
 
     // 비밀번호 해시화
     public String hashPassword(String password) {
