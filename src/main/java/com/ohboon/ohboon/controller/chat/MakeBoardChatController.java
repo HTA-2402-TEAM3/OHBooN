@@ -15,6 +15,7 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.servlet.http.HttpSession;
 
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -24,7 +25,7 @@ public class MakeBoardChatController extends HttpServlet {
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession httpSession = req.getSession();
         String senderName = (String) httpSession.getAttribute("sessionNickname");
-
+        String senderEmail = (String) httpSession.getAttribute("sessionEmail");
         long board_id = Long.parseLong(req.getParameter("boardID"));
         System.out.println(board_id);
 
@@ -40,15 +41,15 @@ public class MakeBoardChatController extends HttpServlet {
                 .sender(senderName)
                 .receiver(receiverName)
                 .build();
+        ChatService chatService1 = new ChatService();
+        int cnt = chatService1.getChatcnt(makeChatDto);
+
         ChatService chatService = new ChatService();
-        long chat_id = chatService.getChatId(makeChatDto);
-
-        System.out.println(chat_id);
-
-        if (chat_id != 0) {
+        long chat_id = chatService.getChatId(makeChatDto, cnt);
+        if (cnt == 0) {
             MatchService matchService = new MatchService();
-            long match_id = matchService.getMatchId(board_id, boardWriterName, senderName);
-
+            long match_id = matchService.getMatchId(board_id, boardWriterName, senderEmail);
+//          매치 튜플 추가 -> receiver, sender email 로 저장
 
             chatService = new ChatService();
             chatService.insertMatchId(match_id, chat_id);
@@ -80,10 +81,12 @@ public class MakeBoardChatController extends HttpServlet {
 
             req.getRequestDispatcher("/WEB-INF/chatTest/Test2.jsp").forward(req, resp);
         } else {
-            ModalDto modalDto = new ModalDto("채팅","이미 생성된 대화가 있습니다.","show");
-            HttpSession session02 = req.getSession(); // 모달을 session02에 싣기
-            session02.setAttribute("modal", modalDto);
-            resp.sendRedirect("../index/index");
+            ModalDto modalDto = new ModalDto("채팅", "이미 생성된 대화가 있습니다.", "show");
+            HttpSession session = req.getSession();
+            session.setAttribute("modal", modalDto);
+            req.setAttribute("chat_id", chat_id);
+            System.out.println(chat_id);
+            req.getRequestDispatcher("/WEB-INF/chatTest/Test2.jsp").forward(req, resp);
         }
     }
 

@@ -47,7 +47,7 @@ public class EnterChatController extends HttpServlet {
                 Map<LocalDateTime, Map<String, Object>> msgMap = chatService.getMsgMap(chat_id);
 
                 ChatDAO chatRoomDAO = new ChatDAO();
-                String match_email = "null";
+                String match_email = null;
                 long match_id = chatRoomDAO.getMatchIdByChatId(chat_id);
                 if (match_id != 0) {
                     MatchDAO matchDAO = new MatchDAO();
