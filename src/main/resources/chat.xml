@@ -26,7 +26,7 @@
         select match_id from chatroom where chat_id = #{chat_id}
     </select>
     <select id="getCountMatchByChatId" parameterType="Long" resultType="Long">
-        select count(match_id) from chatroom where chat_id = #{chat_id}
+        select count(*) from chatroom where chat_id = #{chat_id}
     </select>
     <select id="getChatList" resultType="ChatDTO" parameterType="String">
 <!--        SELECT * FROM chatroom where sender = #{senderName} or receiver = #{senderName}-->
@@ -52,6 +52,14 @@
     </select>
 
     <select id="countChatRoom" resultType="int" parameterType="ChatDTO">
-        select count(*) from chatroom where board_idx=#{boardID} and sender=#{sender}
+        select count(*) from chatroom
+        <where>
+            <if test="boardID != null">
+            board_idx=#{boardID} and sender=#{sender}
+            </if>
+            <if test="boardID == null">
+                sender=#{sender} and receiver = #{receiver}
+            </if>
+        </where>
     </select>
 </mapper>

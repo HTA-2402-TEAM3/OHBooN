@@ -31,18 +31,19 @@ public class ChatDAO {
     }
 
     public long getMatchIdByChatId(long chatId) {
-        long matchId = 0;
+        long match_id = 0;
         long match = ss.selectOne("getCountMatchByChatId", chatId);
         if(match!=0) {
             try {
-                ss.selectOne("getMatchIdByChatId", chatId);
+                match_id = ss.selectOne("getMatchIdByChatId", chatId);
+                System.out.println("MatchID in DAO :"+match_id);
             } catch (NullPointerException e) {
                 throw new NullPointerException();
             }
         }
         ss.commit();
         ss.close();
-        return matchId;
+        return match_id;
     }
 
     public List<ChatDTO> getChatList(String userId) {
@@ -66,5 +67,12 @@ public class ChatDAO {
         ss.commit();
         ss.close();
         return rs;
+    }
+
+    public long getChatID(ChatDTO chatRoomDto) {
+        long chat_id = ss.selectOne("getChatID", chatRoomDto);
+        ss.commit();
+        ss.close();
+        return chat_id;
     }
 }

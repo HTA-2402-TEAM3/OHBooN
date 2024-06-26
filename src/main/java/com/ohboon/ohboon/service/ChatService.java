@@ -18,20 +18,20 @@ public class ChatService {
         MsgDAO msgDAO = new MsgDAO();
         return msgDAO.saveMsg(msgDTO);
     }
-//    public List<MsgDTO> getMsgList(long chat_id) {
-//        MsgDAO msgDAO = new MsgDAO();
-//        return msgDAO.getMsgList(chat_id);
-//    }
-
-    public long getChatId(ChatDTO chatRoomDto) {
+    public int getChatcnt(ChatDTO chatDTO){
         ChatDAO chatDAO1 = new ChatDAO();
-        int cnt = chatDAO1.countChatRoom(chatRoomDto);
+        return chatDAO1.countChatRoom(chatDTO);
+    }
+    public long getChatId(ChatDTO chatRoomDto, int cnt) {
 
         if(cnt == 0) {
             ChatDAO chatDAO = new ChatDAO();
             return chatDAO.CreateChatRoom(chatRoomDto);
         }
-        else return 0;
+        else{
+            ChatDAO chatDAO2 = new ChatDAO();
+            return chatDAO2.getChatID(chatRoomDto);
+        }
     }
 
     public List<String> findUsersByChatId(long chatId) {
@@ -43,7 +43,6 @@ public class ChatService {
             users.add(result.get("sender"));
             users.add(result.get("receiver"));
         }
-
         return users;
     }
 
@@ -76,7 +75,6 @@ public class ChatService {
         UserDao userDAO;
         MsgDAO msgDAO;
         List<ChatDTO> chatList = chatRoomDAO.getChatList(userID);
-        System.out.println("chatList: "+chatList);
 
         Map<Long, Map<String, Object>> roomMap = new LinkedHashMap<>();
         for (ChatDTO chatDTO : chatList) {
@@ -86,16 +84,15 @@ public class ChatService {
 
             if (chatDTO.getSender().equals(userID)) {
                 map.put("subject", chatDTO.getReceiver());
-//                map.put("profile", userDAO.getProfile(chatDTO.getReceiver()));
+                map.put("profile", userDAO.getProfile(chatDTO.getReceiver()));
             } else {
                 map.put("subject", chatDTO.getSender());
-//                map.put("profile", userDAO.getProfile(chatDTO.getSender()));
+                map.put("profile", userDAO.getProfile(chatDTO.getSender()));
             }
             map.put("profile", null);
             map.put("recentContent", msgDAO.getRecentMsg(chatDTO.getChatID()));
             roomMap.put(chatDTO.getChatID(), map);
         }
-        System.out.println("roomMap: "+roomMap);
         return roomMap;
     }
 }
