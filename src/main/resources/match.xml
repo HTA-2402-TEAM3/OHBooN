@@ -13,4 +13,17 @@
     <select id="getMatchEmail" parameterType="long" resultType="String">
         select email from matching where match_id = #{match_id}
     </select>
+    <update id="isMatched" parameterType="long">
+        update matching set isMatch = 1 where match_id = #{match_id}
+    </update>
+    <select id="getBoardID" parameterType="long" resultType="long">
+        select board_idx from matching where match_id = #{match_id}
+    </select>
+    <select id="getMatchedList" resultType="MatchDTO" parameterType="String">
+        select * from matching where isMatch = 1 and evaluation = 0
+        and (email = #{email} or sender = #{email})
+    </select>
+    <update id="setMatchEvaluation" parameterType="String">
+        update matching set evaluation = 1 where match_id = #{matchID}
+    </update>
 </mapper>
