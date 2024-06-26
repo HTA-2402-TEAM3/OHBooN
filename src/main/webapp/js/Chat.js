@@ -2,8 +2,8 @@ var websocket;
 var inputMessage = document.getElementById('messageInput');
 var sessionNickname = '<%=session.getAttribute("sessionNickname")%>';
 var enterChatObj = null;
-var recentRoom;
 var chat_id = document.getElementById('chat_id').value;
+var recentRoom;
 
 var messagesContainer = document.getElementById("messages");
 var li = document.createElement('li');
@@ -18,27 +18,16 @@ chatRoomList.appendChild(chatUl);
 var chatRoomListObj;
 var chatRoomListObj_tmp;
 
-document.addEventListener("DOMContentLoaded", function () {
-    ChatRoomList("showL").then();
+document.addEventListener("DOMContentLoaded", async function () {
+    ChatRoomList("showL").then(result => {
+        console.log("result", result);
+        recentRoom = result[0].key;
+    });
+
     console.log("chat_id :", chat_id);
-    enterChat(recentRoom).then();
+
     if (sessionNickname && sessionNickname.trim() !== "") {
-        // function openSocket() {
-        // writeResponse("WebSocket is open!!!!");
-        // Ensure only one connection is open at a time
-        // if (websocket !== undefined && websocket.readyState !== WebSocket.CLOSED) {
-        //     writeResponse("WebSocket is already opened.");
-        //     return;
-        // }
-        // Create a new instance of the websocket
         websocket = new WebSocket("ws://192.168.0.97:8080/chat");
-        // websocket.onopen = function (event) {
-        //     if (event.data === undefined) return;
-        //     writeResponse(event.data);
-        //
-        //     console.log("recent", recentRoom);
-        //     enterChat(recentRoom).then();
-        // };
         websocket.onmessage = function (event) {
             // ws객체에 전달받은 메세지가 있으면 실행되는 함수
             var message = event.data.split("|");
@@ -54,8 +43,10 @@ document.addEventListener("DOMContentLoaded", function () {
     } else {
         console.log("user is not login...");
     }
-    if (chat_id !== undefined) {
+    if (chat_id !== undefined && chat_id !== "") {
         enterChat(chat_id).then();
+    } else {
+        enterChat(recentRoom).then();
     }
 });
 
@@ -133,8 +124,6 @@ function matching() {
             match_id: enterChatObj.match_id
         },
         success: function (data) {
-            console.log(enterChatObj)
-            console.log(enterChatObj.match_id)
             alert(JSON.stringify(data));
             if (data.isMatch > 0) {
                 alert("매칭 확정 되었습니다.");
@@ -153,10 +142,9 @@ async function enterChat(long) {
     console.log(long);
     try {
         const resp = await fetch("/chat/enterChat?chat_id=" + long);
-        console.log(resp);
+        // console.log(resp);
 
         const data = await resp.json();
-        console.log(data);
 
         enterChatObj = data;
     } catch (error) {
@@ -175,7 +163,7 @@ function showMsgList() {
         var msg = document.createElement('div');
         msg.className = "message";
 
-        console.log(group);
+        // console.log(group);
         if (enterChatObj.user_id === group.sender) {
             li.className = "me";
             entete.innerHTML = `<span class="status blue"></span>
@@ -198,6 +186,7 @@ function showMsgList() {
 }
 
 async function ChatRoomList(text) {
+    let data;
     try {
         const resp = await fetch("/chat/chatList", {
             method: "POST", // POST 메서드로 변경
@@ -205,9 +194,7 @@ async function ChatRoomList(text) {
                 "Content-Type": "application/json"
             }
         });
-        const data = await resp.json();
-        console.log(data);
-        // recentRoom = Object.key(data[0]);
+        data = await resp.json();
 
         chatRoomListObj = data;
 
@@ -215,7 +202,6 @@ async function ChatRoomList(text) {
             console.log("showL");
 
             chatRoomListObj.forEach(item => {
-                recentRoom = item.key[0];
                 var li = document.createElement('li');
                 var a = document.createElement('a');
                 var div = document.createElement('div');
@@ -224,11 +210,9 @@ async function ChatRoomList(text) {
                 a.onclick = function () {
                     enterChat(item.key);
                 };
-                console.log("item", item);
-                console.log("item", item.value.subject);
 
                 if (item.value.profile === undefined) {
-                    img.setAttribute("src", "../image/user.png");
+                    img.setAttribute("src", "/image/defaultImage.png");
                     img.setAttribute("alt", "");
                 } else {
                     img.setAttribute("src", item.value.profile);
@@ -244,6 +228,7 @@ async function ChatRoomList(text) {
     } catch (error) {
         console.error("errrrr", error);
     }
+    return data;
 }
 
 fetchingChatRoomList();
@@ -261,7 +246,7 @@ function fetchingChatRoomList() {
 
                 await ChatRoomList("showL");
 
-                console.log("채팅방 목록 : ", chatRoomListObj_tmp);
+                console.log("fetching!");
             }
         } catch (error) {
             console.error("fetchingChatRoomList : ", error);
