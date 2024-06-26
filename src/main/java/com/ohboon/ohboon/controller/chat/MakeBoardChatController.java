@@ -21,11 +21,11 @@ import java.util.Map;
 @WebServlet("/makeBoardChat")
 public class MakeBoardChatController extends HttpServlet {
     @Override
-    protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+    protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         HttpSession httpSession = req.getSession();
         String senderName = (String) httpSession.getAttribute("sessionNickname");
         String senderEmail = (String) httpSession.getAttribute("sessionEmail");
-        long board_id = Long.parseLong(req.getParameter("boardID"));
+        long board_id = Long.parseLong(req.getParameter("board_id"));
         System.out.println(board_id);
 
         Map<String, Object> reqMap = new HashMap<>();
