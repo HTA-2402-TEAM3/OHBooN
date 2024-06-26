@@ -81,31 +81,52 @@
                 <th>순서</th>
                 <th>Contact</th>
                 <th>
-                    <a href="${pageContext.request.contextPath}/admin/userList?page=${currentPage}&limit=${limit}&searchField=${param.searchField}&searchKeyword=${param.searchKeyword}&sortField=email&sortOrder=${param.sortOrder == 'asc' ? 'desc' : 'asc'}">1.Email</a>
+                    <a href="${pageContext.request.contextPath}/admin/userList?page=${currentPage}&limit=${limit}&searchField=${param.searchField == '' ? 'all' : param.searchField}&searchKeyword=${param.searchKeyword == '' ? '' : param.searchKeyword}&sortField=email&sortOrder=${param.sortOrder == 'asc' ? 'desc' : 'asc'}">1.Email</a>
                 </th>
                 <th>
-                    <a href="${pageContext.request.contextPath}/admin/userList?page=${currentPage}&limit=${limit}&searchField=${param.searchField}&searchKeyword=${param.searchKeyword}&sortField=nickname&sortOrder=${param.sortOrder == 'asc' ? 'desc' : 'asc'}">2.닉네임</a>
+                    <a href="${pageContext.request.contextPath}/admin/userList?page=${currentPage}&limit=${limit}&searchField=${param.searchField == '' ? 'all' : param.searchField}&searchKeyword=${param.searchKeyword == '' ? '' : param.searchKeyword}&sortField=nickname&sortOrder=${param.sortOrder == 'asc' ? 'desc' : 'asc'}">2.닉네임</a>
                 </th>
-                <th>3.프로필사진</th>
-                <th>4.닉네임&프로필</th>
                 <th>
-                    <a href="${pageContext.request.contextPath}/admin/userList?page=${currentPage}&limit=${limit}&searchField=${param.searchField}&searchKeyword=${param.searchKeyword}&sortField=grade&sortOrder=${param.sortOrder == 'asc' ? 'desc' : 'asc'}">5.회원등급</a>
+                    <a href="${pageContext.request.contextPath}/admin/userList?page=${currentPage}&limit=${limit}&searchField=${param.searchField == '' ? 'all' : param.searchField}&searchKeyword=${param.searchKeyword == '' ? '' : param.searchKeyword}&sortField=profile&sortOrder=${param.sortOrder == 'asc' ? 'desc' : 'asc'}">3.프로필사진</a>
                 </th>
-                <th>6.평가점수</th>
                 <th>
-                    <a href="${pageContext.request.contextPath}/admin/userList?page=${currentPage}&limit=${limit}&searchField=${param.searchField}&searchKeyword=${param.searchKeyword}&sortField=createdate&sortOrder=${param.sortOrder == 'asc' ? 'desc' : 'asc'}">7.계정생성일</a>
+                    <a href="${pageContext.request.contextPath}/admin/userList?page=${currentPage}&limit=${limit}&searchField=${param.searchField == '' ? 'all' : param.searchField}&searchKeyword=${param.searchKeyword == '' ? '' : param.searchKeyword}&sortField=privateField&sortOrder=${param.sortOrder == 'asc' ? 'desc' : 'asc'}">4.닉네임&프로필</a>
                 </th>
-                <th>8.정보제공 동의</th>
-
+                <th>
+                    <a href="${pageContext.request.contextPath}/admin/userList?page=${currentPage}&limit=${limit}&searchField=${param.searchField == '' ? 'all' : param.searchField}&searchKeyword=${param.searchKeyword == '' ? '' : param.searchKeyword}&sortField=grade&sortOrder=${param.sortOrder == 'asc' ? 'desc' : 'asc'}">5.회원등급</a>
+                </th>
+                <th>
+                    <a href="${pageContext.request.contextPath}/admin/userList?page=${currentPage}&limit=${limit}&searchField=${param.searchField == '' ? 'all' : param.searchField}&searchKeyword=${param.searchKeyword == '' ? '' : param.searchKeyword}&sortField=evaluation&sortOrder=${param.sortOrder == 'asc' ? 'desc' : 'asc'}">6.평가점수</a>
+                </th>
+                <th>
+                    <a href="${pageContext.request.contextPath}/admin/userList?page=${currentPage}&limit=${limit}&searchField=${param.searchField == '' ? 'all' : param.searchField}&searchKeyword=${param.searchKeyword == '' ? '' : param.searchKeyword}&sortField=createdate&sortOrder=${param.sortOrder == 'asc' ? 'desc' : 'asc'}">7.계정생성일</a>
+                </th>
+                <th>
+                    <a href="${pageContext.request.contextPath}/admin/userList?page=${currentPage}&limit=${limit}&searchField=${param.searchField == '' ? 'all' : param.searchField}&searchKeyword=${param.searchKeyword == '' ? '' : param.searchKeyword}&sortField=agreeInfoOffer&sortOrder=${param.sortOrder == 'asc' ? 'desc' : 'asc'}">8.정보제공 동의</a>
+                </th>
                 <c:choose>
                     <c:when test="${sessionGrade eq 'ADMIN'}">
-                        <th>9.사용자 이름</th>
-                        <th>10.생년월일</th>
-                        <th>11.연락처</th>
-                        <th>12.계정활성여부</th>
-                        <th>13.패스워드</th>
-                        <th>14.탈퇴신청일시</th>
-                        <th>15.인증코드</th>
+                        <th>
+                            <a href="${pageContext.request.contextPath}/admin/userList?page=${currentPage}&limit=${limit}&searchField=${param.searchField == '' ? 'all' : param.searchField}&searchKeyword=${param.searchKeyword == '' ? '' : param.searchKeyword}&sortField=username&sortOrder=${param.sortOrder == 'asc' ? 'desc' : 'asc'}">9.사용자 이름</a>
+                        </th>
+                        <th>
+                            <a href="${pageContext.request.contextPath}/admin/userList?page=${currentPage}&limit=${limit}&searchField=${param.searchField == '' ? 'all' : param.searchField}&searchKeyword=${param.searchKeyword == '' ? '' : param.searchKeyword}&sortField=birth&sortOrder=${param.sortOrder == 'asc' ? 'desc' : 'asc'}">10.생년월일</a>
+                        </th>
+                        <th>
+                            <a href="${pageContext.request.contextPath}/admin/userList?page=${currentPage}&limit=${limit}&searchField=${param.searchField == '' ? 'all' : param.searchField}&searchKeyword=${param.searchKeyword == '' ? '' : param.searchKeyword}&sortField=phone&sortOrder=${param.sortOrder == 'asc' ? 'desc' : 'asc'}">11.연락처</a>
+                        </th>
+                        <th>
+                            <a href="${pageContext.request.contextPath}/admin/userList?page=${currentPage}&limit=${limit}&searchField=${param.searchField == '' ? 'all' : param.searchField}&searchKeyword=${param.searchKeyword == '' ? '' : param.searchKeyword}&sortField=available&sortOrder=${param.sortOrder == 'asc' ? 'desc' : 'asc'}">12.계정활성여부</a>
+                        </th>
+                        <th>
+                            <a href="${pageContext.request.contextPath}/admin/userList?page=${currentPage}&limit=${limit}&searchField=${param.searchField == '' ? 'all' : param.searchField}&searchKeyword=${param.searchKeyword == '' ? '' : param.searchKeyword}&sortField=password&sortOrder=${param.sortOrder == 'asc' ? 'desc' : 'asc'}">13.패스워드</a>
+                        </th>
+                        <th>
+                            <a href="${pageContext.request.contextPath}/admin/userList?page=${currentPage}&limit=${limit}&searchField=${param.searchField == '' ? 'all' : param.searchField}&searchKeyword=${param.searchKeyword == '' ? '' : param.searchKeyword}&sortField=requestTimeForDeletion&sortOrder=${param.sortOrder == 'asc' ? 'desc' : 'asc'}">14.탈퇴신청일시</a>
+                        </th>
+                        <th>
+                            <a href="${pageContext.request.contextPath}/admin/userList?page=${currentPage}&limit=${limit}&searchField=${param.searchField == '' ? 'all' : param.searchField}&searchKeyword=${param.searchKeyword == '' ? '' : param.searchKeyword}&sortField=verificationCode&sortOrder=${param.sortOrder == 'asc' ? 'desc' : 'asc'}">15.인증코드</a>
+                        </th>
                     </c:when>
                     <c:otherwise>
                         <th>기타 개인정보</th>

@@ -64,7 +64,10 @@ public class AdminUserList extends HttpServlet {
         if(limit < 1) {limit = 10;} // limit 에 1보다 작은 수가 입력될 경우 기본값(10)으로 설정
 
         // totalCount는 테이블에 출력되는 사용자의 숫자
-        int totalCount = userDao.getTotalUserCount(grade, searchField, searchKeyword);
+        int totalCount = 0;
+        if(userDao.getTotalUserCount(grade, searchField, searchKeyword) > 0 ){
+            totalCount = userDao.getTotalUserCount(grade, searchField, searchKeyword);
+        }
 
         // totalPages는 총 출력되는 페이지 갯수
         int totalPages = (int) Math.ceil((double) totalCount / limit);
@@ -81,14 +84,18 @@ public class AdminUserList extends HttpServlet {
         int offset = (page - 1) * limit;
 
         // 사용자 등급 확인
-        if (grade == Grade.ADMIN && searchKeyword.isEmpty()) {
+        /*if (grade == Grade.ADMIN && searchKeyword.isEmpty()) {
             userList = userDao.getAllUsersExcludingAdmin(offset, limit);
-        }else if(grade == Grade.ADMIN){
+        }else
+         */
+            if(grade == Grade.ADMIN){
             userList = userDao.getAllUsersExcludingAdmin(offset, limit, searchField, searchKeyword, sortField, sortOrder);
         }
+            /*
         else if (grade == Grade.MANAGER && searchKeyword.isEmpty()) {
             userList = userDao.getUsersForManager(offset, limit);
         }
+        */
         else if (grade == Grade.MANAGER) {
             userList = userDao.getUsersForManager(offset, limit, searchField, searchKeyword, sortField, sortOrder);
         }
