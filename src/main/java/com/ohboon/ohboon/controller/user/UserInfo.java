@@ -22,13 +22,13 @@ public class UserInfo extends HttpServlet {
         String email = (String) session.getAttribute("sessionEmail");
 
         UserDAO userDao = new UserDAO();
-        UserDTO infoUserDTO = userDao.findUserByEmail(email);
+        UserDTO infoUserDto = userDao.findUserByEmail(email);
 
-        if (infoUserDTO == null) {
+        if (infoUserDto == null) {
             resp.sendRedirect("../index/index");
 
         } else {
-            req.setAttribute("infoUserDTO", infoUserDTO);
+            req.setAttribute("infoUserDto", infoUserDto);
             RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/user/info.jsp");
             dispatcher.forward(req, resp);
         }

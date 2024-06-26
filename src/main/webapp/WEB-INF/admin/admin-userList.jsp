@@ -58,7 +58,7 @@
     <%-- 테이블 상단 스크롤바 --%>
     <div class="table-responsive" style="overflow-x: auto; position: relative;">
         <div id="top-scroll" style="height: 20px; overflow-x: auto; overflow-y: hidden;">
-            <div <c:if test="${sessionGrade eq 'ADMIN'}">style="width: 250%"
+            <div <c:if test="${sessionGrade eq 'ADMIN'}">style="width: 250%">
             </c:if>">
         </div> <!-- 테이블의 넓이와 맞춰줌 -->
     </div>
@@ -155,7 +155,7 @@
                                         <a href="${pageContext.request.contextPath}/upload/${user.profile}"
                                            target="_blank">
                                             <img src="${pageContext.request.contextPath}/upload/${user.profile}"
-                                                 class="profile" alt="fail to get img">
+                                                 class="profile" alt="img: ${user.profile}">
                                         </a>
                                     </c:otherwise>
                                 </c:choose>
@@ -372,4 +372,4 @@
     }
 </script>
 
-<%@ include file="../include/footer.jsp" %>x`
+<%@ include file="../include/footer.jsp" %>

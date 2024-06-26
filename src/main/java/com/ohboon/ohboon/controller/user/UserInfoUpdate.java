@@ -25,13 +25,13 @@ public class UserInfoUpdate extends HttpServlet {
         String email = (String) session.getAttribute("sessionEmail");
 
         UserDAO userDao = new UserDAO();
-        UserDTO infoUserDTO = userDao.findUserByEmail(email);
+        UserDTO infoUserDto = userDao.findUserByEmail(email);
 
-        if (infoUserDTO == null) {
+        if (infoUserDto == null) {
             ScriptWriter.alert(resp,"사용자 메일 정보를 찾을 수 없습니다.");
             resp.sendRedirect("/index/index");
         } else {
-            req.setAttribute("infoUserDTO", infoUserDTO);
+            req.setAttribute("infoUserDto", infoUserDto);
             RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/user/info-update.jsp");
             dispatcher.forward(req, resp);
         }

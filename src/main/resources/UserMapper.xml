@@ -4,7 +4,7 @@
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ohboon.ohboon.mybatis">
 
-    <insert id="signup" parameterType="UserDto">
+    <insert id="signup" parameterType="UserDTO">
         INSERT INTO user values(
             #{email}, #{nickname}, #{userName}, #{birth}, #{phone}, true, #{userPW},
             #{grade}, null, #{profile}, #{createDate}, #{agreeInfoOffer}, null, #{verificationCode}, false
@@ -16,66 +16,78 @@
         UPDATE user SET verificationcode = #{token} WHERE email = #{email}
     </update>
 
+    <!--사용자 PW 분실시 인증을 위해 계정에 토큰 저장-->
+    <update id="savePasswordResetToken" parameterType="map">
+        UPDATE user SET verificationcode = #{token} WHERE email = #{email} and grade not IN ('ADMIN')
+        <!--ADMIN 계정은 PW 분실시 일반적인 방법으로 PW 찾기가 불가능하게 설정-->
+    </update>
+
     <!--사용자가 메일 인증을 한 경우 등급을 STANDBY에서 MEMBER로 변경-->
     <update id="verifyEmail" parameterType="map">
         UPDATE user SET grade = 'MEMBER', verificationcode = NULL
         WHERE email = #{email} AND verificationcode = #{token}
     </update>
 
-    <!--사용자가 메일 인증을 한 경우 등급을 STANDBY에서 MEMBER로 변경-->
-
-
-    <select id="emailCheck"  parameterType="String" resultType="int">
-        Select count(*) as total from user where email = #{email} and available = 1
+    <!--회원가입시 닉네임이 DB에 존재하는지 확인-->
+    <select id="nicknameCheck" parameterType="String" resultType="int">
+    Select count(*) as total from user where nickname = #{nickname}
     </select>
 
+    <!--회원가입시 이메일이 DB에 존재하는지 확인-->
+    <select id="emailCheck"  parameterType="String" resultType="int">
+        Select count(*) as total from user where email = #{email}
+    </select>
+
+    <!--회원의 등급 불러오기-->
     <select id="gradeCheck" parameterType="String" resultType="String">
         Select grade from user where email = #{email} and available = 1
     </select>
 
-    <select id="loginUser" parameterType="UserDto" resultType="UserDto">
+
+    <select id="loginUser" parameterType="UserDTO" resultType="UserDTO">
         select * from user where email = #{email} and available = 1
     </select>
 
-    <select id="infoUser" resultType="UserDto" parameterType="String">
+    <select id="infoUser" resultType="UserDTO" parameterType="String">
         select * from user where nickname = #{nickName} and available = 1
     </select>
 
 
-    <select id="findUserByEmail" parameterType="String" resultType="UserDto">
+    <select id="findUserByEmail" parameterType="String" resultType="UserDTO">
         SELECT * FROM user WHERE email = #{email} and available = 1
     </select>
 
-    <select id="findUserByNickname" parameterType="String" resultType="UserDto">
+    <select id="findUserByNickname" parameterType="String" resultType="UserDTO">
         SELECT * FROM user WHERE nickname = #{nickname} and available = 1
     </select>
 
-    <!--    비밀번호 변경창 링크용 토큰 생성-->
-    <update id="savePasswordResetToken" parameterType="map">
-        UPDATE user SET verificationcode = #{token} WHERE email = #{email}
-    </update>
-
     <!--비밀번호 변경창 링크용 토큰 검증-->
-    <select id="isTokenValid" parameterType="String" resultType="int">
-        SELECT COUNT(*) FROM user WHERE verificationcode = #{token}
+    <select id="verifyPasswordResetToken" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM user
+        WHERE email = #{email}
+        AND verificationcode is not null and verificationCode = #{token}
     </select>
 
     <!--유저 정보 변경-->
-    <update id="updateUserInfo" parameterType="UserDto">
+    <update id="updateUserInfo" parameterType="UserDTO">
         UPDATE user SET
         phone = #{phone},
-        agreeinfooffer = #{agreeInfoOffer},
+        agreeInfoOffer = #{agreeInfoOffer},
         profile = #{profile}
         WHERE email = #{email} and available = 1
     </update>
 
-    <!--패스워드 변경-->
-    <update id="updatePassword">
-        UPDATE users SET password = #{password} WHERE email = #{email}
+    <!--인포 화면에서 패스워드 변경-->
+    <update id="updatePassword" parameterType="map">
+        UPDATE user
+        SET userPW = #{password}, verificationcode = null
+        WHERE email = #{email}
     </update>
 
+    <!--로그인 화면에서 패스워드 분실시 패스워드 변경-->
     <update id="updatePasswordByToken" parameterType="map">
-        UPDATE user SET userPW = #{hashedPassword}, verificationcode = NULL WHERE verificationcode = #{token}
+        UPDATE user SET userPW = #{hashedPassword}, verificationcode = NULL WHERE verificationcode is not null and verificationcode = #{token}
     </update>
 
     <!--회원 탈퇴시 available -> false 로 변경 -->
@@ -90,27 +102,115 @@
     </delete>
 
     <!--관리자 페이지에서 ADMIN 관리자가 접근할 수 있는 사용자목록-->
-    <select id="getAllUsersExcludingAdmin" resultType="UserDto">
-        SELECT * FROM user WHERE grade != 'ADMIN'
-        LIMIT #{offset}, #{limit}
+    <select id="getAllUsersExcludingAdmin" parameterType="map" resultType="UserDTO">
+        SELECT *
+        FROM user
+        WHERE grade != 'ADMIN'
+        <if test="searchKeyword != null and searchKeyword != ''">
+            <if test="searchField == 'all'">
+                AND (email LIKE CONCAT('%', #{searchKeyword}, '%')
+                OR nickname LIKE CONCAT('%', #{searchKeyword}, '%')
+                OR profile LIKE CONCAT('%', #{searchKeyword}, '%')
+                OR evaluation LIKE CONCAT('%', #{searchKeyword}, '%')
+                OR createdate LIKE CONCAT('%', #{searchKeyword}, '%')
+                OR username LIKE CONCAT('%', #{searchKeyword}, '%')
+                OR birth LIKE CONCAT('%', #{searchKeyword}, '%')
+                OR phone LIKE CONCAT('%', #{searchKeyword}, '%'))
+            </if>
+            <if test="searchField != 'all'">
+                AND ${searchField} LIKE CONCAT('%', #{searchKeyword}, '%')
+            </if>
+        </if>
+        <if test="sortField != null and sortField != '' and sortOrder != null and sortOrder != ''">
+            ORDER BY ${sortField} ${sortOrder}
+        </if>
+        <if test="sortField == null or sortField == '' or sortOrder == null or sortOrder == ''">
+            ORDER BY createdate DESC
+        </if>
+        LIMIT #{limit} OFFSET #{offset}
     </select>
 
     <!--관리자 페이지에서 MANAGER 접근 가능한 사용자목록-->
-    <select id="getUsersForManager" resultType="UserDto">
+    <select id="getUsersForManager" parameterType="map" resultType="UserDTO">
         SELECT email, nickname, grade, evaluation, profile, createdate, agreeinfooffer
         FROM user
         WHERE available = 1
         AND grade IN ('STANDBY', 'MEMBER', 'RESTRICTED1', 'RESTRICTED2', 'BANNED')
-        LIMIT #{offset}, #{limit}
+        <if test="searchKeyword != null and searchKeyword != ''">
+            <if test="searchField == 'all'">
+                AND (email LIKE CONCAT('%', #{searchKeyword}, '%')
+                OR nickname LIKE CONCAT('%', #{searchKeyword}, '%')
+                OR profile LIKE CONCAT('%', #{searchKeyword}, '%')
+                OR evaluation LIKE CONCAT('%', #{searchKeyword}, '%')
+                OR createdate LIKE CONCAT('%', #{searchKeyword}, '%')
+                OR username LIKE CONCAT('%', #{searchKeyword}, '%')
+                OR birth LIKE CONCAT('%', #{searchKeyword}, '%')
+                OR phone LIKE CONCAT('%', #{searchKeyword}, '%'))
+            </if>
+            <if test="searchField != 'all'">
+                AND ${searchField} LIKE CONCAT('%', #{searchKeyword}, '%')
+            </if>
+        </if>
+        <if test="sortField != null and sortField != '' and sortOrder != null and sortOrder != ''">
+            ORDER BY ${sortField} ${sortOrder}
+        </if>
+        <if test="sortField == null or sortField == '' or sortOrder == null or sortOrder == ''">
+            ORDER BY createdate DESC
+        </if>
+        LIMIT #{limit} OFFSET #{offset}
     </select>
 
-    <!-- 총 사용자 수를 가져오는 쿼리 -->
+    <!-- ADMIN 관리자의 총 사용자 수를 가져오는 쿼리 - 검색어 없음 -->
     <select id="getTotalUserCountExcludingAdmin" resultType="int">
         SELECT COUNT(*) FROM user WHERE grade != 'ADMIN'
     </select>
 
+    <!-- MANAGER 관리자의 총 사용자 수를 가져오는 쿼리  - 검색어 없음 -->
     <select id="getTotalUserCountForManager" resultType="int">
         SELECT COUNT(*) FROM user WHERE available = 1 AND grade IN ('STANDBY', 'MEMBER', 'RESTRICTED1', 'RESTRICTED2', 'BANNED')
     </select>
+
+    <!-- ADMIN, MANAGER 관리자가 각자 접근할 수 있는 사용자의 수를 가져오는 쿼리 - 검색어 있음-->
+    <select id="getTotalUserCount" parameterType="map" resultType="int">
+        SELECT COUNT(*)
+        FROM user
+        WHERE 1=1
+        <if test="grade = ADMIN">
+            AND grade != 'ADMIN'
+        </if>
+        <if test="grade = MANAGER">
+            AND available = 1 AND grade IN ('STANDBY', 'MEMBER', 'RESTRICTED1', 'RESTRICTED2', 'BANNED')
+        </if>
+        <if test="searchKeyword != null and searchKeyword != ''">
+            <if test="searchField == 'all'">
+                AND (email LIKE CONCAT('%', #{searchKeyword}, '%')
+                OR nickname LIKE CONCAT('%', #{searchKeyword}, '%')
+                OR profile LIKE CONCAT('%', #{searchKeyword}, '%')
+                OR evaluation LIKE CONCAT('%', #{searchKeyword}, '%')
+                OR createdate LIKE CONCAT('%', #{searchKeyword}, '%')
+                OR username LIKE CONCAT('%', #{searchKeyword}, '%')
+                OR birth LIKE CONCAT('%', #{searchKeyword}, '%')
+                OR phone LIKE CONCAT('%', #{searchKeyword}, '%'))
+            </if>
+            <if test="searchField != 'all'">
+                AND ${searchField} LIKE CONCAT('%', #{searchKeyword}, '%')
+            </if>
+        </if>
+    </select>
+
+    <!--사용자 프로필사진 제거-->
+    <update id="clearUserProfile">
+        UPDATE user SET profile = NULL WHERE email = #{email}
+    </update>
+
+    <!-- 닉네임 존재 여부 확인 -->
+    <select id="isNicknameExists" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM user WHERE nickname = #{nickname}
+    </select>
+
+    <!-- 닉네임 업데이트(관리자 페이지에서 사용) -->
+    <update id="updateNickname" parameterType="map">
+        UPDATE user SET nickname = #{newNickname} WHERE email = #{email}
+    </update>
 
 </mapper>
