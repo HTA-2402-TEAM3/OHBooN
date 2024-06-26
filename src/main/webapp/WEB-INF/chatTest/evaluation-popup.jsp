@@ -15,70 +15,81 @@
     <script src="https://kit.fontawesome.com/a2e8ca0ae3.js" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
+          rel="stylesheet">
+
 </head>
 <body>
-<div id='vote' class='page'>
-    <h1 id='product-names'></h1>
-    <div id='circle-container'>
-        <div id='circle-one' class='active picked'>
-            <div class='overlay'></div>
-            <h1 class='votecount'><i class="material-icons thumbup">
-                <button type="button" id="like-${status.index}">좋아요</button>
-                thumb_up</i></h1>
-        </div>
-        <div id='circle-two' class='active'>
-            <div class='overlay'></div>
-            <h1 class='votecount'><i class="material-icons thumbup">thumb_down
-                <button type="button" id="hate-${status.index}">싫어요</button>
-            </i></h1>
 
-            <input type="hidden" name="evalEmpty" id="evalEmpty" value="${requestScope.evalEmpty}">
+<input type="hidden" name="evalEmpty" id="evalEmpty" value="${requestScope.evalEmpty}">
 <c:choose>
     <c:when test="${not empty requestScope.evaluationMap}">
         <form action="/match/evaluation" id="evaluationForm">
-            <table>
+            <ul>
                 <c:forEach var="MatchDTO" items="${evaluationMap}" varStatus="status">
-                    <tr>
-                        <td>
-                            <c:if test="${sessionEmail eq MatchDTO.email}">
-                                <c:set var="userEmail" value="${MatchDTO.sender}"/>
-                            </c:if>
-                            <c:if test="${sessionEmail ne MatchDTO.email}">
-                                <c:set var="userEmail" value="${MatchDTO.email}"/>
-                            </c:if>
-                            <span> ${userEmail} </span>
-                          <%--  <button type="button" id="like-${status.index}">좋아요</button>
-                                    <button type="button" id="hate-${status.index}">싫어요</button>--%>
-                                <input type="hidden" id="match-id${status.index}" name="matchID"
-                                   value="${MatchDTO.matchID}">
-                            <input type="hidden" id="email${status.index}" name="email" value="${userEmail}">
-                            <input type="hidden" id="evaluation-result${status.index}" name="evaluationResult">
-                        </td>
-                    </tr>
+                    <c:if test="${sessionEmail eq MatchDTO.email}">
+                        <c:set var="userEmail" value="${MatchDTO.sender}"/>
+                    </c:if>
+                    <c:if test="${sessionEmail ne MatchDTO.email}">
+                        <c:set var="userEmail" value="${MatchDTO.email}"/>
+                    </c:if>
+                    <li>
+<%--                    <span> ${userEmail} </span>--%>
+                    <%--  <button type="button" id="like-${status.index}">좋아요</button>
+                              <button type="button" id="hate-${status.index}">싫어요</button>--%>
+<%--                    <div id='vote' class='page'>--%>
+                        <h1 id='product-names'>${userEmail}</h1>
+                        <div id='circle-container'>
+                            <div id='circle-one' class='active picked'>
+                                <div class='overlay'></div>
+                                <h1 class='votecount'></h1>
+                                <button type="button" id="like-${status.index}" class="material-icons thumbup">thumb_up
+                                </button>
+                            </div>
+                            <div id='circle-two' class='active picked'>
+                                <div class='overlay'>
+                                    <h1 class='votecount'></h1>
+                                    <button type="button" id="hate-${status.index}" class="material-icons thumbdown">
+                                        thumb_down
+                                    </button>
+                                </div>
+                            </div>
+<%--                        </div>--%>
+                    </div>
+
+                    <input type="hidden" id="match-id${status.index}" name="matchID"
+                           value="${MatchDTO.matchID}">
+                    <input type="hidden" id="email${status.index}" name="email" value="${userEmail}">
+                    <input type="hidden" id="evaluation-result${status.index}" name="evaluationResult">
+                    </li>
                 </c:forEach>
-            </table>
-            <button type="button" id="btn-submit">평가 완료</button>
+            </ul>
+            <div>
+                <button type="button" id="btn-submit" class="">평가 완료</button>
+            </div>
         </form>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
                 const evaluationsSize = `${evaluationMap.size()}`;
-                console.log(evaluationsSize);
-
+                console.log("size", evaluationsSize);
 
                 for (let i = 0; i < evaluationsSize; i++) {
 
                     let evaluation = document.getElementById("evaluation-result" + i);
 
                     document.getElementById("like-" + i).addEventListener("click", function () {
+                        console.log("like");
                         evaluation.value = 1;
                     })
 
                     document.getElementById("hate-" + i).addEventListener("click", function () {
+                        console.log("hate");
                         evaluation.value = -1;
                     })
                 }
 
                 document.getElementById("btn-submit").addEventListener("click", function () {
+                    console.log("btn-submit");
                     const evaluations = [];
                     for (let i = 0; i < evaluationsSize; i++) {
                         const matchID = document.getElementById("match-id" + i).value;
@@ -91,7 +102,6 @@
                                 evaluationResult: evaluationResult
                             };
                             evaluations.push(evaluationObj);
-                            // evaluations.evaluationObj = evaluationObj;
                         }
                     }
                     const jsonData = JSON.stringify(evaluations);
