@@ -3,6 +3,7 @@ var inputMessage = document.getElementById('messageInput');
 var sessionNickname = '<%=session.getAttribute("sessionNickname")%>';
 var enterChatObj = null;
 var recentRoom;
+var chat_id = document.getElementById('chat_id').value;
 
 var messagesContainer = document.getElementById("messages");
 var li = document.createElement('li');
@@ -18,27 +19,26 @@ var chatRoomListObj;
 var chatRoomListObj_tmp;
 
 document.addEventListener("DOMContentLoaded", function () {
-    ChatRoomList().then();
-    if(chatRoomListObj_tmp !== chatRoomListObj) {
-        fetchingChatRoomList();
-    }
+    ChatRoomList("showL").then();
+    console.log("chat_id :", chat_id);
+    enterChat(recentRoom).then();
     if (sessionNickname && sessionNickname.trim() !== "") {
         // function openSocket() {
-        writeResponse("WebSocket is open!!!!");
+        // writeResponse("WebSocket is open!!!!");
         // Ensure only one connection is open at a time
-        if (websocket !== undefined && websocket.readyState !== WebSocket.CLOSED) {
-            writeResponse("WebSocket is already opened.");
-            return;
-        }
+        // if (websocket !== undefined && websocket.readyState !== WebSocket.CLOSED) {
+        //     writeResponse("WebSocket is already opened.");
+        //     return;
+        // }
         // Create a new instance of the websocket
         websocket = new WebSocket("ws://192.168.0.97:8080/chat");
-        websocket.onopen = function (event) {
-            if (event.data === undefined) return;
-            writeResponse(event.data);
-
-            console.log("recent", recentRoom);
-            enterChat(recentRoom).then();
-        };
+        // websocket.onopen = function (event) {
+        //     if (event.data === undefined) return;
+        //     writeResponse(event.data);
+        //
+        //     console.log("recent", recentRoom);
+        //     enterChat(recentRoom).then();
+        // };
         websocket.onmessage = function (event) {
             // ws객체에 전달받은 메세지가 있으면 실행되는 함수
             var message = event.data.split("|");
@@ -53,6 +53,9 @@ document.addEventListener("DOMContentLoaded", function () {
         }
     } else {
         console.log("user is not login...");
+    }
+    if (chat_id !== undefined) {
+        enterChat(chat_id).then();
     }
 });
 
@@ -125,11 +128,13 @@ function matchBtn(user) {
 function matching() {
     $.ajax({
         method: 'post',
-        url: '../match',
+        url: '/match',
         data: {
             match_id: enterChatObj.match_id
         },
         success: function (data) {
+            console.log(enterChatObj)
+            console.log(enterChatObj.match_id)
             alert(JSON.stringify(data));
             if (data.isMatch > 0) {
                 alert("매칭 확정 되었습니다.");
@@ -143,10 +148,11 @@ function matching() {
     })
 }
 
+
 async function enterChat(long) {
     console.log(long);
     try {
-        const resp = await fetch("/enterChat?chat_id=" + long);
+        const resp = await fetch("/chat/enterChat?chat_id=" + long);
         console.log(resp);
 
         const data = await resp.json();
@@ -191,9 +197,9 @@ function showMsgList() {
     });
 }
 
-async function ChatRoomList() {
+async function ChatRoomList(text) {
     try {
-        const resp = await fetch("/chatList", {
+        const resp = await fetch("/chat/chatList", {
             method: "POST", // POST 메서드로 변경
             headers: {
                 "Content-Type": "application/json"
@@ -205,44 +211,76 @@ async function ChatRoomList() {
 
         chatRoomListObj = data;
 
-        chatRoomListObj.forEach(item => {
-            var li = document.createElement('li');
-            var a = document.createElement('a');
-            var div = document.createElement('div');
-            var img = document.createElement("img");
-            chatUl.appendChild(li);
-            a.onclick = function () {
-                enterChat(item.key);
-            };
-            console.log("item", item);
-            console.log("item", item.value.subject);
+        if (text === "showL") {
+            console.log("showL");
 
-            if (item.value.profile === undefined) {
-                img.setAttribute("src", "/image/defaultImage.png");
-                img.setAttribute("alt", "");
-            } else {
-                img.setAttribute("src", item.value.profile);
-            }
-            a.appendChild(img);
+            chatRoomListObj.forEach(item => {
+                recentRoom = item.key[0];
+                var li = document.createElement('li');
+                var a = document.createElement('a');
+                var div = document.createElement('div');
+                var img = document.createElement("img");
+                chatUl.appendChild(li);
+                a.onclick = function () {
+                    enterChat(item.key);
+                };
+                console.log("item", item);
+                console.log("item", item.value.subject);
 
-            div.innerHTML = `  <h2>${item.value.subject}</h2>
+                if (item.value.profile === undefined) {
+                    img.setAttribute("src", "../image/user.png");
+                    img.setAttribute("alt", "");
+                } else {
+                    img.setAttribute("src", item.value.profile);
+                }
+                a.appendChild(img);
+
+                div.innerHTML = `  <h2>${item.value.subject}</h2>
                             <p>${item.value.recentContent}</p>`;
-            li.appendChild(a);
-            a.appendChild(div);
-        })
+                li.appendChild(a);
+                a.appendChild(div);
+            })
+        }
     } catch (error) {
         console.error("errrrr", error);
     }
 }
 
+fetchingChatRoomList();
+
 function fetchingChatRoomList() {
     setInterval(async () => {
         try {
-            ChatRoomList().then(chatRoomListObj_tmp = chatRoomListObj);
-            console.log("채팅방 목록 : ", chatRoomListObj_tmp);
-            // 채팅방 목록 출력
+            await ChatRoomList();
+            if (!deepEqual(chatRoomListObj, chatRoomListObj_tmp)) {
+                chatRoomListObj_tmp = JSON.parse(JSON.stringify(chatRoomListObj));
+
+                while (chatUl.firstChild) {
+                    chatUl.removeChild(chatUl.firstChild);
+                }
+
+                await ChatRoomList("showL");
+
+                console.log("채팅방 목록 : ", chatRoomListObj_tmp);
+            }
         } catch (error) {
             console.error("fetchingChatRoomList : ", error);
         }
-    }, 1000); // 10초마다 실행
+    }, 1000);
+}
+
+function deepEqual(obj1, obj2) {
+    if (obj1 === obj2) return true;
+    if (typeof obj1 !== 'object' || obj1 === null || typeof obj2 !== 'object' || obj2 === null) {
+        return false;
+    }
+    let keys1 = Object.keys(obj1);
+    let keys2 = Object.keys(obj2);
+    if (keys1.length !== keys2.length) return false;
+    for (let key of keys1) {
+        if (!keys2.includes(key) || !deepEqual(obj1[key], obj2[key])) {
+            return false;
+        }
+    }
+    return true;
 }

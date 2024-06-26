@@ -1,6 +1,7 @@
 package com.ohboon.ohboon.dto;
 
 import lombok.*;
+import org.apache.ibatis.session.ResultHandler;
 
 @Getter
 @Builder

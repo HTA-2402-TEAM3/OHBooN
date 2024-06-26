@@ -11,7 +11,7 @@ import java.time.format.DateTimeFormatter;
 @AllArgsConstructor
 @Builder
 @ToString
-public class UserDto {
+public class UserDTO {
     private String email;
     private String nickname;
     private String userName;

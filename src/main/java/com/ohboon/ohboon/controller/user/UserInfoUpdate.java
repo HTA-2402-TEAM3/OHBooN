@@ -2,7 +2,7 @@ package com.ohboon.ohboon.controller.user;
 
 
 import com.ohboon.ohboon.dao.UserDAO;
-import com.ohboon.ohboon.dto.UserDto;
+import com.ohboon.ohboon.dto.UserDTO;
 import com.ohboon.ohboon.utils.ScriptWriter;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -25,13 +25,13 @@ public class UserInfoUpdate extends HttpServlet {
         String email = (String) session.getAttribute("sessionEmail");
 
         UserDAO userDao = new UserDAO();
-        UserDto infoUserDto = userDao.findUserByEmail(email);
+        UserDTO infoUserDTO = userDao.findUserByEmail(email);
 
-        if (infoUserDto == null) {
+        if (infoUserDTO == null) {
             ScriptWriter.alert(resp,"사용자 메일 정보를 찾을 수 없습니다.");
             resp.sendRedirect("/index/index");
         } else {
-            req.setAttribute("infoUserDto", infoUserDto);
+            req.setAttribute("infoUserDTO", infoUserDTO);
             RequestDispatcher dispatcher = req.getRequestDispatcher("/WEB-INF/user/info-update.jsp");
             dispatcher.forward(req, resp);
         }
@@ -53,7 +53,7 @@ public class UserInfoUpdate extends HttpServlet {
         boolean agreeInfoOffer = req.getParameter("agreeInfoOffer") != null;
         Part profilePart = req.getPart("profile");
         String profile = uploadProfileImage(profilePart, req);
-        boolean clearProfile = req.getParameter("clearProfile") != null; // 프로필 사진 제거
+
 
         if (phone == null || phone.trim().isEmpty()) {
             ScriptWriter.alertAndBack(resp, "전화번호를 입력해주세요.");
@@ -61,27 +61,21 @@ public class UserInfoUpdate extends HttpServlet {
         }
 
         UserDAO userDao = new UserDAO();
-        UserDto userDto = userDao.findUserByEmail(email);
+        UserDTO userDto = userDao.findUserByEmail(email);
 
         if (userDto != null) {
             userDto.setPhone(phone);
             userDto.setAgreeInfoOffer(agreeInfoOffer);
-            // 프로필 이미지 갱신 또는 삭제
-            if (clearProfile && (profile == null || profile.isEmpty())) {
-                userDto.setProfile(null);
-            } else if (profile != null) {
+            if (profile != null) {
                 userDto.setProfile(profile);
             }
-
 
             int result = userDao.updateUserInfo(userDto);
             if (result > 0) {
                 // 세션 정보 갱신
                 session.setAttribute("sessionPhone", userDto.getPhone());
                 session.setAttribute("sessionAgreeInfoOffer", userDto.isAgreeInfoOffer());
-                if (clearProfile && (profile == null || profile.isEmpty())) {
-                    session.setAttribute("sessionProfile", null);
-                } else if (profile != null) {
+                if (profile != null) {
                     session.setAttribute("sessionProfile", userDto.getProfile());
                 }
 

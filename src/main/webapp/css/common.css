@@ -1,11 +1,3 @@
-@import url('userlist.css');
-
-.profile {
-    max-width: 100px;  /* 원하는 최대 너비로 설정 */
-    max-height: 100px;  /* 원하는 최대 높이로 설정 */
-    width: auto;
-    height: auto;
-}
 
 .error-404 {
     /*background-image: url("../images/image_404_error.png");*/
@@ -55,5 +47,10 @@
     aspect-ratio: auto;
     object-fit: contain;
 }
-
-
+.profile {
+    border-radius: 100px;
+    width: 38px !important;
+    height: 50px;
+    object-fit: cover;
+    overflow: hidden;
+}

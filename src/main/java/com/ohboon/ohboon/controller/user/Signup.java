@@ -2,7 +2,7 @@ package com.ohboon.ohboon.controller.user;
 
 
 import com.ohboon.ohboon.dao.UserDAO;
-import com.ohboon.ohboon.dto.UserDto;
+import com.ohboon.ohboon.dto.UserDTO;
 import com.ohboon.ohboon.utils.ScriptWriter;
 import com.ohboon.ohboon.utils.VerificationCodeGenerator;
 import jakarta.servlet.ServletException;
@@ -35,7 +35,7 @@ public class Signup extends HttpServlet {
 
         String email = req.getParameter("email");
         String userPW = req.getParameter("userPW");
-        String userName = req.getParameter("userName");
+        String username = req.getParameter("username");
         String birth = req.getParameter("birth");
         String phone = req.getParameter("phone");
 
@@ -51,11 +51,11 @@ public class Signup extends HttpServlet {
         }
 
         if (!isValidPhone(phone)) {
-            ScriptWriter.alertAndBack(resp, "유효한 전화번호를 입력해주세요.(숫자만 9~14자리)");
+            ScriptWriter.alertAndBack(resp, "유효한 전화번호를 입력해주세요.");
             return;
         }
 
-        if (userName == null || userName.trim().isEmpty()) {
+        if (username == null || username.trim().isEmpty()) {
             ScriptWriter.alertAndBack(resp, "이름을 입력해주세요.");
             return;
         }
@@ -79,8 +79,8 @@ public class Signup extends HttpServlet {
         // 이메일 인증코드 생성
         String verificationCode = VerificationCodeGenerator.generateRandomCode();
 
-        // UserDto 생성
-        UserDto userDto = userDao.createUserDto(req, hashUserPW, renameProfile, verificationCode);
+        // UserDTO 생성
+        UserDTO userDto = userDao.createUserDTO(req, hashUserPW, renameProfile, verificationCode);
 
         // 사용자 등록 및 이메일 전송
         int result = userDao.registerUser(userDto);

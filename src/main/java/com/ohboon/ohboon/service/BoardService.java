@@ -6,12 +6,11 @@ import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import com.ohboon.ohboon.mybatis.MybatisConnectionFactory;
-
 
 import com.ohboon.ohboon.dao.BoardDAO;
 import com.ohboon.ohboon.dto.BoardDTO;
 import com.ohboon.ohboon.dto.ListBoardDTO;
+import com.ohboon.ohboon.mybatis.MybatisConnectionFactory;
 import org.apache.ibatis.session.SqlSession;
 
 public class BoardService {
@@ -104,12 +103,13 @@ public class BoardService {
 		boardDAO.close();
 	}
   
-  public String findEmailByBoardId(long id){
-        SqlSession sqlSession = MybatisConnectionFactory.getSqlSession();
-        String userEmail = sqlSession.selectOne("findEmailByBoardId", id);
-        sqlSession.commit();
-        sqlSession.close();
-        return userEmail;
-    }
+//  public String findEmailByBoardId(long id){
+//        SqlSession sqlSession = MybatisConnectionFactory.getSqlSession();
+//        String userEmail = sqlSession.selectOne("findEmailByBoardId", id);
+//        sqlSession.commit();
+//        sqlSession.close();
+//        return userEmail;
+//    }
+
 
 }

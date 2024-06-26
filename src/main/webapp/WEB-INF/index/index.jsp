@@ -1,15 +1,12 @@
 <%@ page contentType="text/html; charset=UTF-8" language="java" pageEncoding="UTF-8" %>
 <%@ include file="../include/header.jsp" %>
 <div class="container">
-    <h2 class="mt-5 mb-5"> INDEX PAGE </h2>
-  <div>
-    <button type="submit" class="btn btn-light" onclick="local.href='/board/list'">패스트 매칭 하러 가기 >>></button>
+  <h2 class="mt-5 mb-5"></h2>
+  <div class="ohboon">
+    <img src="/image/ohboon.png" alt="">
   </div>
-
-    <p>Session Email :  <%=session.getAttribute("sessionEmail")%> </p>
-    <p>Session Nickname :  <%=session.getAttribute("sessionNickname")%> </p>
-    <p>Session Profile :  <%=session.getAttribute("sessionProfile")%> </p>
-    <p>Session Grade :  <%=session.getAttribute("sessionGrade")%> </p>
-
+  <div>
+    <button type="submit" class="btn btn-light" onclick="location.href='/board/list'"> >>> </button>
+  </div>
 </div>
 <%@ include file="../include/footer.jsp"%>

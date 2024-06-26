@@ -1,9 +1,10 @@
 package com.ohboon.ohboon.dao;
 
 import com.ohboon.ohboon.dto.Grade;
-import com.ohboon.ohboon.dto.UserDto;
+import com.ohboon.ohboon.dto.UserDTO;
 import com.ohboon.ohboon.mail.NaverMail;
 import com.ohboon.ohboon.mybatis.MybatisConnectionFactory;
+import com.ohboon.ohboon.utils.ScriptWriter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
 import net.coobird.thumbnailator.Thumbnails;
@@ -24,7 +25,8 @@ import java.util.*;
 import static com.ohboon.ohboon.mybatis.MybatisConnectionFactory.sqlSessionFactory;
 import static java.time.LocalDateTime.now;
 
-public class UserDAO {
+public class UserDao {
+
     private static SqlSessionFactory sqlSessionFactory;
 
     static {
@@ -34,6 +36,38 @@ public class UserDAO {
             sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
         } catch (IOException e) {
             throw new RuntimeException(e);
+        }
+    }
+
+    public String findNicknameByEmail(String boardWriterName) {
+        String nickname = null;
+        try (
+            SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
+            nickname = sqlSession.selectOne("findNicknameByEmail", boardWriterName);
+            sqlSession.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return nickname;
+    }
+
+    public Object getProfile(String name) {
+        String nickname = null;
+        try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
+            nickname = sqlSession.selectOne("findProfileByName", name);
+            sqlSession.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return nickname;
+    }
+
+    public void setEvaluation(Map<String, String> map) {
+        try(SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
+            sqlSession.update("setEvaluation", map);
+            sqlSession.commit();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
@@ -64,37 +98,37 @@ public class UserDAO {
             File newFile = new File(serverUploadDir + File.separator + renameProfile);
 
             Thumbnails.of(oldFile)
-                    .size(100, 200)
-                    .toFiles(dir, Rename.NO_CHANGE);
+                .size(100, 200)
+                .toFiles(dir, Rename.NO_CHANGE);
 
             oldFile.renameTo(newFile);
         }
         return renameProfile;
     }
 
-    // UserDto 생성
-    public UserDto createUserDto(HttpServletRequest req, String hashUserPW, String renameProfile, String verificationCode) {
-        return UserDto.builder()
-                .email(req.getParameter("email"))
-                .nickname(req.getParameter("nickname"))
-                .userName(req.getParameter("userName"))
-                .birth(req.getParameter("birth"))
-                .phone(req.getParameter("phone"))
-                .available(true)
-                .userPW(hashUserPW)
-                .grade(Grade.STANDBY)
-                .evaluation(0)
-                .profile(renameProfile)
-                .createDate(now())
-                .agreeInfoOffer(Boolean.parseBoolean(req.getParameter("agreeInfoOffer")))
-                .requestTimeForDeletion(null)
-                .verificationCode(verificationCode)
-                .privateField(false)
-                .build();
+    // UserDTO 생성
+    public UserDTO createUserDTO(HttpServletRequest req, String hashUserPW, String renameProfile, String verificationCode) {
+        return UserDTO.builder()
+            .email(req.getParameter("email"))
+            .nickname(req.getParameter("nickname"))
+            .userName(req.getParameter("userName"))
+            .birth(req.getParameter("birth"))
+            .phone(req.getParameter("phone"))
+            .available(true)
+            .userPW(hashUserPW)
+            .grade(Grade.STANDBY)
+            .evaluation(0)
+            .profile(renameProfile)
+            .createDate(now())
+            .agreeInfoOffer(Boolean.parseBoolean(req.getParameter("agreeInfoOffer")))
+            .requestTimeForDeletion(null)
+            .verificationCode(verificationCode)
+            .privateField(false)
+            .build();
     }
 
     // 사용자 저장 및 이메일 전송
-    public int registerUser(UserDto userDto) {
+    public int registerUser(UserDTO userDto) {
         int result = saveUser(userDto);
         if (result > 0) {
             String verificationCode = UUID.randomUUID().toString();
@@ -109,7 +143,7 @@ public class UserDAO {
     }
 
     // 사용자 저장
-    public int saveUser(UserDto userDto) {
+    public int saveUser(UserDTO userDto) {
         int result = 0;
         try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
             result = sqlSession.insert("signup", userDto);
@@ -189,8 +223,8 @@ public class UserDAO {
         return result;
     }
 
-    public UserDto loginUser(UserDto userDto) {
-        UserDto loginMemberDto = null;
+    public UserDTO loginUser(UserDTO userDto) {
+        UserDTO loginMemberDto = null;
         try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
             loginMemberDto = sqlSession.selectOne("loginUser", userDto);
         } catch (Exception e) {
@@ -199,8 +233,8 @@ public class UserDAO {
         return loginMemberDto;
     }
 
-    public UserDto findUserByEmail(String email) {
-        UserDto userDto = null;
+    public UserDTO findUserByEmail(String email) {
+        UserDTO userDto = null;
         try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
             userDto = sqlSession.selectOne("findUserByEmail", email);
         } catch (Exception e) {
@@ -331,7 +365,7 @@ public class UserDAO {
     public int updateUserInfo(String email, String nickname, String phone) {
         int result = 0;
         try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
-            UserDto userDto = new UserDto();
+            UserDTO userDto = new UserDTO();
 
             userDto.setEmail(email);
             userDto.setNickname(nickname);
@@ -344,7 +378,7 @@ public class UserDAO {
         return result;
     }
 
-    public int updateUserInfo(UserDto userDto) {
+    public int updateUserInfo(UserDTO userDto) {
         int result = 0;
         try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
             result = sqlSession.update("updateUserInfo", userDto);
@@ -366,7 +400,6 @@ public class UserDAO {
         }
     }
 
-    // MANAGER 관리자의 열람 가능한 사용자 목록 - 검색어 없음
     public List<UserDto> getUsersForManager(int offset, int limit) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             Map<String, Object> params = new HashMap<>();
@@ -376,7 +409,7 @@ public class UserDAO {
         }
     }
 
-    // 관리가자 접근 가능한 사용자 숫자 세기 - 검색어 없음
+    // MANAGER 관리자의 열람 가능한 사용자 목록 - 검색어 없음
     public int getTotalUserCount(Grade grade) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             if (grade == Grade.ADMIN) {

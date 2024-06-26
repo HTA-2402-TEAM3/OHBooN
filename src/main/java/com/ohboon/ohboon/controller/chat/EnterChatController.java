@@ -1,32 +1,26 @@
-package com.ohboon.ohboon.controller.ChatController;
+package com.ohboon.ohboon.controller.chat;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.ohboon.ohboon.dao.ChatDAO;
 import com.ohboon.ohboon.dao.MatchDAO;
-import com.ohboon.ohboon.dto.ChatDTO;
-import com.ohboon.ohboon.dto.MatchDTO;
-import com.ohboon.ohboon.dto.MsgDTO;
 import com.ohboon.ohboon.service.ChatService;
-import com.ohboon.ohboon.service.MatchService;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.servlet.http.HttpSession;
-import util.LocalDateTimeAdapter;
+import com.ohboon.ohboon.util.LocalDateTimeAdapter;
 
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.time.LocalDateTime;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@WebServlet("/enterChat")
-public class ChatController extends HttpServlet {
+@WebServlet("/chat/enterChat")
+public class EnterChatController extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         long chat_id;
@@ -53,7 +47,7 @@ public class ChatController extends HttpServlet {
                 Map<LocalDateTime, Map<String, Object>> msgMap = chatService.getMsgMap(chat_id);
 
                 ChatDAO chatRoomDAO = new ChatDAO();
-                String match_email = "null";
+                String match_email = null;
                 long match_id = chatRoomDAO.getMatchIdByChatId(chat_id);
                 if (match_id != 0) {
                     MatchDAO matchDAO = new MatchDAO();

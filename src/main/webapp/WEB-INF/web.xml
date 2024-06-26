@@ -16,7 +16,6 @@
         <filter-name>EncodingFilter</filter-name>
         <url-pattern>/index/index</url-pattern>
     </filter-mapping>
-
     <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>*.css</url-pattern>
@@ -25,8 +24,11 @@
         <servlet-name>default</servlet-name>
         <url-pattern>*.js</url-pattern>
     </servlet-mapping>
-
     <servlet-mapping>
+        <servlet-name>default</servlet-name>
+        <url-pattern>*.png</url-pattern>
+    </servlet-mapping>
+        <servlet-mapping>
         <servlet-name>default</servlet-name>
         <url-pattern>/upload/*</url-pattern>
     </servlet-mapping>
