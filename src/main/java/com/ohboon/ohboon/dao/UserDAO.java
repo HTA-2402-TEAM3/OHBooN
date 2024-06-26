@@ -4,27 +4,40 @@ import com.ohboon.ohboon.dto.Grade;
 import com.ohboon.ohboon.dto.UserDTO;
 import com.ohboon.ohboon.mail.NaverMail;
 import com.ohboon.ohboon.mybatis.MybatisConnectionFactory;
-
+import com.ohboon.ohboon.utils.ScriptWriter;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.Part;
 import net.coobird.thumbnailator.Thumbnails;
 import net.coobird.thumbnailator.name.Rename;
+import org.apache.ibatis.io.Resources;
 import org.apache.ibatis.session.SqlSession;
+import org.apache.ibatis.session.SqlSessionFactory;
+import org.apache.ibatis.session.SqlSessionFactoryBuilder;
 import org.mindrot.jbcrypt.BCrypt;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.InputStream;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 import static com.ohboon.ohboon.mybatis.MybatisConnectionFactory.sqlSessionFactory;
 import static java.time.LocalDateTime.now;
 
-public class UserDAO {
+public class UserDao {
+
+    private static SqlSessionFactory sqlSessionFactory;
+
+    static {
+        try {
+            String resource = "/config.xml";
+            InputStream inputStream = Resources.getResourceAsStream(resource);
+            sqlSessionFactory = new SqlSessionFactoryBuilder().build(inputStream);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
 
     public String findNicknameByEmail(String boardWriterName) {
         String nickname = null;
@@ -57,6 +70,7 @@ public class UserDAO {
             e.printStackTrace();
         }
     }
+
     // 비밀번호 해시화
     public String hashPassword(String password) {
         String salt = BCrypt.gensalt();
@@ -187,6 +201,7 @@ public class UserDAO {
         return result;
     }
 
+    // DB에 이메일 존재 여부 검사
     public int emailCheck(String email) {
         int result = 0;
         try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
@@ -197,6 +212,7 @@ public class UserDAO {
         return result;
     }
 
+    // DB에 닉네임 존재 여부 검사
     public int nicknameCheck(String nickname) {
         int result = 0;
         try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
@@ -374,8 +390,8 @@ public class UserDAO {
     }
 
 
-    // ADMIN 사용자의 열람 가능한 사용자 목록
-    public List<UserDTO> getAllUsersExcludingAdmin(int offset, int limit) {
+    // ADMIN 관리자의 열람 가능한 사용자 목록 - 검색어 없음
+    public List<UserDto> getAllUsersExcludingAdmin(int offset, int limit) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             Map<String, Object> params = new HashMap<>();
             params.put("offset", offset);
@@ -384,7 +400,7 @@ public class UserDAO {
         }
     }
 
-    public List<UserDTO> getUsersForManager(int offset, int limit) {
+    public List<UserDto> getUsersForManager(int offset, int limit) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             Map<String, Object> params = new HashMap<>();
             params.put("offset", offset);
@@ -393,7 +409,7 @@ public class UserDAO {
         }
     }
 
-    // 사용자 숫자 세기
+    // MANAGER 관리자의 열람 가능한 사용자 목록 - 검색어 없음
     public int getTotalUserCount(Grade grade) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             if (grade == Grade.ADMIN) {
@@ -405,4 +421,73 @@ public class UserDAO {
         }
     }
 
+    // 관리가자 접근 가능한 사용자 숫자 세기 - 검색어 있음(없을 경우도 사용 가능)
+    public int getTotalUserCount(Grade grade, String searchField, String searchKeyword) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            if(grade == Grade.ADMIN || grade == Grade.MANAGER){
+                Map<String, Object> params = new HashMap<>();
+                params.put("grade", grade);
+                params.put("searchField", searchField);
+                params.put("searchKeyword", searchKeyword);
+                return session.selectOne("getTotalUserCount", params);
+            }
+            return 0;
+        }
+    }
+
+    // ADMIN 사용자의 열람 가능한 사용자 목록 - 검색어 있음(없을 경우도 사용 가능)
+    public List<UserDto> getAllUsersExcludingAdmin(int offset, int limit, String searchField, String searchKeyword, String sortField, String sortOrder) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            Map<String, Object> params = new HashMap<>();
+            params.put("offset", offset);
+            params.put("limit", limit);
+            params.put("searchField", searchField);
+            params.put("searchKeyword", searchKeyword);
+            params.put("sortField", sortField);
+            params.put("sortOrder", sortOrder);
+            return session.selectList("getAllUsersExcludingAdmin", params);
+        }
+    }
+
+    // ADMIN 사용자의 열람 가능한 사용자 목록 - 검색어 있음(없을 경우도 사용 가능)
+    public List<UserDto> getUsersForManager(int offset, int limit, String searchField, String searchKeyword, String sortField, String sortOrder) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            Map<String, Object> params = new HashMap<>();
+            params.put("offset", offset);
+            params.put("limit", limit);
+            params.put("searchField", searchField);
+            params.put("searchKeyword", searchKeyword);
+            params.put("sortField", sortField);
+            params.put("sortOrder", sortOrder);
+            return session.selectList("getUsersForManager", params);
+        }
+    }
+
+    // 프로필 사진 삭제
+    public void clearUserProfile(String email) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            session.update("clearUserProfile", email);
+            session.commit();
+        }
+    }
+
+    // 닉네임 존재 여부 확인(어드민 페이지 닉네임 변경시 사용)
+    public boolean isNicknameExists(String nickname) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            int count = session.selectOne("isNicknameExists", nickname);
+            return count > 0;
+        }
+    }
+
+    // 닉네임 업데이트(어드민 페이지 닉네임 변경시 사용)
+    public int updateNickname(String email, String newNickname) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            Map<String, String> params = new HashMap<>();
+            params.put("email", email);
+            params.put("newNickname", newNickname);
+            int result = session.update("updateNickname", params);
+            session.commit();
+            return result;
+        }
+    }
 }

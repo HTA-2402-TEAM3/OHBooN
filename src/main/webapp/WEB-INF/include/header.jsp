@@ -2,22 +2,50 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
-
 <html>
 <head>
     <title>JSP - Hello World</title>
+
     <link href="../../css/bootstrap.min.css" rel="stylesheet">
     <link href="../../css/common.css" rel="stylesheet">
     <link href="../../css/sign-in.css" rel="stylesheet">
     <script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
     <script src="../../js/bootstrap.bundle.min.js"></script>
     <script src="../../js/jquery-3.7.1.min.js"></script>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-          integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
-            crossorigin="anonymous"></script>
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css">
+<style>
+    .profile {
+        max-width: 100px;  /* 원하는 최대 너비로 설정 */
+        max-height: 100px;  /* 원하는 최대 높이로 설정 */
+        width: auto;
+        height: auto;
+    }
+    #preview{
+        max-width: 100px;  /* 원하는 최대 너비로 설정 */
+        max-height: 100px;  /* 원하는 최대 높이로 설정 */
+        width: auto;
+        height: auto;
+    }
+
+    /* 테이블 스타일 */
+    table {
+        border-collapse: collapse; /* 셀 경계선을 병합하여 단일 경계선으로 표시 */
+        width: 100%; /* 테이블 너비를 전체로 설정 */
+    }
+
+    /* 테이블 헤더 스타일 */
+    th, td {
+        border: 1px solid #000; /* 셀 경계선을 검은색으로 설정 */
+        padding: 2px; /* 셀 내부 여백을 2px로 설정 */
+        text-align: left; /* 텍스트를 왼쪽 정렬 */
+    }
+
+    /* 테이블 헤더 스타일 */
+    th {
+        background-color: #f2f2f2; /* 헤더 배경색을 밝은 회색으로 설정 */
+    }
+
+</style>
 
 </head>
 <body>
@@ -31,7 +59,6 @@
             </a>
         </div>
         <ul class="nav col-12 col-md-auto mb-2 justify-content-center mb-md-0">
-
             <c:choose>
                 <c:when test="${sessionGrade eq 'ADMIN' or sessionGrade eq 'MANAGER'}">
                     <li><a href="/admin/home" class="btn btn-outline-info mx-1">ADMIN HOME</a></li>
@@ -40,9 +67,8 @@
             </c:choose>
 
             <li><a href="../index/index" class="nav-link px-2 link-secondary">Home</a></li>
-
-
             <li><a href="../board/list" class="nav-link px-2">Board</a></li>
+
         </ul>
         <c:choose>
             <c:when test="${sessionEmail eq null}">
@@ -54,13 +80,11 @@
             <c:otherwise>
                 <div class="col-md-3 text-end d-flex align-items-center">
                     <div class="d-inline-block">
-
                         <div class="col-md-3 text-end d-flex align-items-center">
                             <c:choose>
                                 <c:when test="${not empty sessionScope.sessionProfile}">
                                     <a href="/user/info?nickname=${sessionNickname}" class="d-block">
-                                        <img src="${pageContext.request.contextPath}/upload/${sessionScope.sessionProfile}"
-                                             class="profile">
+                                        <img src="${pageContext.request.contextPath}/upload/${sessionScope.sessionProfile}" class="profile">
                                     </a>
                                 </c:when>
                                 <c:otherwise>
@@ -69,7 +93,6 @@
                                     </a>
                                 </c:otherwise>
                             </c:choose>
-
                             <a href="/user/info?nickname=${sessionNickname}" class="d-block">
                                 <span> ${sessionNickname}</span>
                             </a>

@@ -1,0 +1,55 @@
+
+/*userlist 용 임시 css*/
+.profile {
+    border-radius: 100px;
+    width: 38px !important;
+    height: 50px;
+    object-fit: cover;
+    overflow: hidden;
+}
+
+/* 테이블 레이아웃 고정 및 전체 너비 설정 */
+.user-table {
+    width: 100%;
+    table-layout: fixed; /* 테이블 레이아웃을 고정 */
+    border-collapse: collapse; /* 테이블 경계선 합치기 */
+}
+
+/* 테이블 셀 스타일 */
+.user-table th, .user-table td {
+    border: 1px solid black; /* 테이블 셀 경계선 */
+    padding: 8px; /* 테이블 셀 내부 여백 */
+    white-space: nowrap; /* 글자 줄바꿈 방지 */
+    overflow: hidden; /* 넘치는 텍스트 숨기기 */
+    text-overflow: ellipsis; /* 넘치는 텍스트에 ... 표시 */
+}
+
+/* 테이블 헤더 스타일 */
+.user-table th {
+    background-color: #f2f2f2; /* 헤더 배경색 */
+}
+
+/* 테이블 셀의 너비를 colgroup으로 지정 */
+.user-table colgroup col {
+    width: 200px; /* 각 col 태그의 기본 너비 설정 */
+}
+
+/* 테이블 반응형 스타일 */
+.table-responsive {
+    overflow-x: auto; /* 가로 스크롤 허용 */
+    margin-bottom: 20px; /* 테이블 하단 여백 */
+}
+
+
+.form-group-inline {
+    display: flex;
+    align-items: center;
+}
+
+.form-group-inline label {
+    margin-right: 5px;
+}
+
+.form-group-inline select {
+    flex: 1;
+}
