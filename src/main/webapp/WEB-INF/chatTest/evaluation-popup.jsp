@@ -17,11 +17,9 @@
     <script src="https://code.jquery.com/jquery-latest.min.js"></script>
     <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
           rel="stylesheet">
-
+    <link href="https://fonts.googleapis.com/css2?family=Lato&display=swap" rel="stylesheet">
 </head>
 <body>
-
-<input type="hidden" name="evalEmpty" id="evalEmpty" value="${requestScope.evalEmpty}">
 <c:choose>
     <c:when test="${not empty requestScope.evaluationMap}">
         <form action="/match/evaluation" id="evaluationForm">
@@ -34,10 +32,6 @@
                         <c:set var="userEmail" value="${MatchDTO.email}"/>
                     </c:if>
                     <li>
-<%--                    <span> ${userEmail} </span>--%>
-                    <%--  <button type="button" id="like-${status.index}">좋아요</button>
-                              <button type="button" id="hate-${status.index}">싫어요</button>--%>
-<%--                    <div id='vote' class='page'>--%>
                         <h1 id='product-names'>${userEmail}</h1>
                         <div id='circle-container'>
                             <div id='circle-one' class='active picked'>
@@ -54,7 +48,6 @@
                                     </button>
                                 </div>
                             </div>
-<%--                        </div>--%>
                     </div>
 
                     <input type="hidden" id="match-id${status.index}" name="matchID"
@@ -65,11 +58,14 @@
                 </c:forEach>
             </ul>
             <div>
-                <button type="button" id="btn-submit" class="">평가 완료</button>
+                <button type="button" id="btn-submit" class="custom-btn btn-7">평가 완료</button>
             </div>
         </form>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
+                console.log("eval",document.getElementById('evalEmpty').value);
+                opener.document.getElementById("evalEmpty").value = document.getElementById('evalEmpty').value;
+
                 const evaluationsSize = `${evaluationMap.size()}`;
                 console.log("size", evaluationsSize);
 
@@ -120,6 +116,12 @@
                             console.log(err)
                         }
                     })
+                    if(evaluations.length === 0) {
+                        alert("좋아요 싫어요 버튼을 눌러주세요");
+                    } else {
+                        alert("평가가 완료되었습니다.");
+                        close();
+                    }
                 });
             });
         </script>
@@ -129,5 +131,4 @@
     </c:otherwise>
 </c:choose>
 </body>
-<%--<script src="../js/evaluation-popup.js"></script>--%>
 </html>

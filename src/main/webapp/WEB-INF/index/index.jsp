@@ -6,7 +6,7 @@
         <img src="/image/ohboon.png" alt="">
     </div>
     <div>
-        <button type="submit" class="btn btn-light" onclick="location.href='/board/list'"> >>> </button>
+        <button type="submit" class="btn btn-light" onclick="location.href='/board/list'"> >>></button>
     </div>
 </div>
 <script>
@@ -14,10 +14,9 @@
     console.log(sessionNickname.trim());
 
     document.addEventListener("DOMContentLoaded", function () {
-        if (sessionNickname!=='null' && sessionNickname.trim()!==null) {
+        if (sessionNickname !== 'null' && sessionNickname.trim() !== null) {
             const openPopup = window.open("/pop-up",
-                "_blank", "width=450, height=200, top=100, left=100, popup=yes");
-            openPopup.document.getElementById("evalEmpty");
+                "_blank", "width=600, height=400, top=100, left=100, popup=yes");
 
             function openSocket() {
                 alert("WebSocket is open!!!!");
