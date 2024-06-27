@@ -189,7 +189,7 @@
         </if>
     </select>
 
-    <!--사용자 프로필사진 제거-->
+    <!--사용자 스스로 프로필사진 제거-->
     <update id="clearUserProfile">
         UPDATE user SET profile = NULL WHERE email = #{email}
     </update>
@@ -200,24 +200,42 @@
     </select>
 
     <!-- 닉네임 업데이트(관리자 페이지에서 사용) -->
-    <update id="updateNickname" parameterType="map">
+    <update id="adminUpdateNickname" parameterType="map">
         UPDATE user SET nickname = #{newNickname} WHERE email = #{email}
     </update>
 
     <!-- 회원등급 업데이트(관리자 페이지에서 사용) -->
-    <update id="updateUserGrade" parameterType="map">
+    <update id="adminUpdateUserGrade" parameterType="map">
         UPDATE user
         SET grade = #{grade}
         WHERE email = #{email}
     </update>
 
-    <!-- 생년월일, 전화번호, 계정활성여부, 프로필 공개 여부 업데이트(관리자 페이지에서 사용) -->
+    <!-- 사용자 이름 변경(관리자 페이지에서 사용) -->
+    <update id="adminUpdateUserName" parameterType="map">
+        UPDATE user
+        SET username = #{newUserName}
+        WHERE email = #{email}
+    </update>
+
+    <!-- 생년월일, 전화번호, 계정활성여부 업데이트(관리자 페이지에서 사용) -->
     <update id="updateUserInfo" parameterType="map">
         UPDATE user
-        SET birth = #{birth}, phone = #{phone}, available = #{available}, privateField = #{privateField}
-        <if test="userName != null">
-            , userName = #{userName}
-        </if>
+        SET birth = #{birth}, phone = #{phone}, available = #{available}
+        WHERE email = #{email}
+    </update>
+
+    <!--사용자의 닉네임과 프로필 이미지 공개-비공개 전환 처리(관리자 페이지에서 사용)-->
+    <update id="updatePrivateField" parameterType="map">
+        UPDATE user
+        SET privateField = #{privateField}
+        WHERE email = #{email}
+    </update>
+
+    <!--사용자의 계정 활셩여부 전환 처리(관리자 페이지에서 사용)-->
+    <update id="updateAvailability" parameterType="map">
+        UPDATE user
+        SET available = #{available}
         WHERE email = #{email}
     </update>
 

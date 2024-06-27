@@ -183,10 +183,15 @@
                                     <%--4. 사용자 아이디 및 프로필사진 비공개처리--%>
                                 <td style="width:150px">
                                     <div>
-                                        <input type="radio" id="public_${user.email}" name="privateField_${user.email}" value="false" ${!user.privateField ? 'checked' : ''}>
-                                        <label for="public_${user.email}">공개</label>
-                                        <input type="radio" id="private_${user.email}" name="privateField_${user.email}" value="true" ${user.privateField ? 'checked' : ''}>
-                                        <label for="private_${user.email}">비공개</label>
+                                        <div>현재상태: </div>
+                                        <div>
+                                            <button
+                                                    id="privateFieldBtn-${user.email}"
+                                                    class="btn ${user.privateField ? 'btn-dark' : 'btn-primary'}"
+                                                    onclick="confirmPrivateFieldChange('${user.email}', ${user.privateField})">
+                                                    ${user.privateField ? '비공개' : '공개'}
+                                            </button>
+                                        </div>
                                     </div>
                                 </td>
 
@@ -218,16 +223,17 @@
                                 <c:choose>
                                     <c:when test="${sessionGrade eq 'ADMIN'}">
                                         <td><%--9. 사용자 이름--%>
-                                            <div class="form-group row align-items-center">
-                                                <ul>
-                                                    <div class="col-auto">
-                                                        <li>${user.userName}</li>
-                                                    </div>
-                                                    <div class="col-auto">
-                                                        <li><input type="text" class="form-control" id="userName"
-                                                                   name="userName" value="${user.userName}" required></li>
-                                                    </div>
-                                                </ul>
+                                            <div class= "row align-items-center">
+                                                <div class="col-auto">
+                                                    현재: ${user.userName}
+                                                </div>
+                                            </div>
+                                            <div class= "row align-items-center">
+                                                <div class="col-auto">
+                                                    <input type="text" class="form-control" id="userName-${user.email}"
+                                                               name="userName-${user.email}" value="${user.userName}" required>
+                                                    <button type="button" onclick="confirmUserNameChange('${user.email}')">변경</button>
+                                                </div>
                                             </div>
                                         </td>
                                         <td><%--10. 사용자 생년월일--%>
@@ -247,11 +253,11 @@
                                             </div>
                                         </td>
                                         <td><%--12. 사용자 계정 활성여부--%>
-                                            <div class="align-items-center" id="current-available_${user.email}">
-                                                <input type="radio" id="available_${user.email}" name="available_${user.email}" value="true" ${user.available ? 'checked' : ''}>
-                                                <label for="available_${user.email}">활성</label>
-                                                <input type="radio" id="not_available_${user.email}" name="available_${user.email}" value="false" ${!user.available ? 'checked' : ''}>
-                                                <label for="not_available_${user.email}">비활성</label>
+                                            <div>
+                                                현재상태:
+                                                <button type="button" class="btn ${user.available ? 'btn-primary' : 'btn-secondary'}" id="availability-btn-${user.email}" onclick="confirmAvailabilityChange('${user.email}')">
+                                                        ${user.available ? '활성' : '비활성'}
+                                                </button>
                                             </div>
                                         </td>
                                         <td> <%--13. 사용자 패스워드--%>
@@ -280,9 +286,12 @@
 
                                 <!-- 업데이트 버튼 -->
                                 <td>
+                                    미사용 항목
+                                    <!--
                                     <button type="button" class="btn btn-primary mt-1" id="update_${user.email}" onclick="updateUser('${user.email}', '${sessionGrade}')">
                                         업데이트
                                     </button>
+                                    -->
                                 </td>
 
                             </tr>
@@ -360,6 +369,77 @@
 </script>
 
 <script>
+    // 계정 활성 여부 변경 확인 함수
+    function confirmAvailabilityChange(email) {
+        const button = document.getElementById('availability-btn-' + email);
+        const currentStatus = button.classList.contains('btn-primary');
+        const newStatus = !currentStatus;
+        const confirmation = confirm('계정 상태를 ' + (newStatus ? '활성' : '비활성') + '으로 변경하시겠습니까?');
+
+        if (confirmation) {
+            const data = {
+                email: email,
+                available: newStatus
+            };
+
+            fetch('${pageContext.request.contextPath}/admin/updateAvailability', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(data)
+            })
+                .then(response => response.json())
+                .then(data => {
+                    if (data.status === 'success') {
+                        alert('계정 상태가 성공적으로 업데이트되었습니다.');
+                        button.classList.toggle('btn-primary', newStatus);
+                        button.classList.toggle('btn-secondary', !newStatus);
+                        button.textContent = newStatus ? '활성' : '비활성';
+                    } else {
+                        alert('업데이트 실패');
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('계정 상태 업데이트 중 오류가 발생했습니다.');
+                });
+        }
+    }
+
+    // 사용자 프로필 공개 여부 변경
+    function confirmPrivateFieldChange(email, currentPrivateField) {
+        const newPrivateField = !currentPrivateField;
+        const confirmation = confirm('프로필을 ' + (newPrivateField ? '비공개' : '공개') + '로 변경하시겠습니까?');
+
+        if (confirmation) {
+            fetch('/admin/updatePrivateField', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    email: email,
+                    privateField: newPrivateField
+                })
+            })
+                .then(response => response.json())
+                .then(data => {
+                    console.log("Data received:", data);
+                    if (data.status === 'success') {
+                        alert(data.message);
+                        window.location.reload();
+                    } else {
+                        alert(data.message);
+                    }
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                    alert('프로필 공개 여부 업데이트 중 오류가 발생했습니다.');
+                });
+        }
+    }
+
     // 사용자 등급 변경 확인 함수
     function confirmGradeChange(email) {
         const selectedGrade = document.getElementById('grade-select-' + email).value;
@@ -385,29 +465,51 @@
             form.submit();
         }
     }
+
+    // 사용자 이름 변경 확인 함수
+    function confirmUserNameChange(email) {
+        const newUserName = document.getElementById('userName-' + email).value;
+        const confirmation = confirm('이름을 ' + newUserName + '로 변경하시겠습니까?');
+        if (confirmation) {
+            const form = document.createElement('form');
+            form.method = 'POST';
+            form.action = '/admin/updateUserName';
+
+            const emailInput = document.createElement('input');
+            emailInput.type = 'hidden';
+            emailInput.name = 'email';
+            emailInput.value = email;
+            form.appendChild(emailInput);
+
+            const userNameInput = document.createElement('input');
+            userNameInput.type = 'hidden';
+            userNameInput.name = 'userName';
+            userNameInput.value = newUserName;
+            form.appendChild(userNameInput);
+
+            document.body.appendChild(form);
+            form.submit();
+        }
+    }
 </script>
 
 <script>
-    // 사용자 정보 업데이트하기
+    // 사용자 정보 업데이트하기 (미완성)
     function updateUser(email, sessionGrade) {
         console.log("sessionGrade:", sessionGrade);
         const form = document.createElement('form');
         form.method = 'POST';
         form.action = '${pageContext.request.contextPath}/admin/updateUserInfo';
 
-        const gradeElement = document.querySelector(`select[name="grade_${email}"]`);
         const birthElement = document.querySelector(`input[name="birth_${email}"]`);
         const phoneElement = document.querySelector(`input[name="phone_${email}"]`);
         const availableElement = document.querySelector(`input[name="available_${email}"]:checked`);
-        const privateFieldElement = document.querySelector(`input[name="privateField_${email}"]:checked`);
 
         const inputs = [
             { name: 'email', value: email },
-            { name: 'grade_' + email, value: gradeElement ? gradeElement.value : "" },
             { name: 'birth_' + email, value: birthElement ? birthElement.value : "" },
             { name: 'phone_' + email, value: phoneElement ? phoneElement.value : "" },
             { name: 'available_' + email, value: availableElement ? availableElement.value : "" },
-            { name: 'privateField_' + email, value: privateFieldElement ? privateFieldElement.value : "" }
         ];
 
         // ADMIN 관리자만 수정할 수 있는 필드 추가
@@ -431,82 +533,5 @@
         form.submit();
     }
 </script>
-
-<%--<script>--%>
-<%--    // 사용자 정보 업데이트하기--%>
-<%--    function updateUser(email, sessionGrade) {--%>
-<%--        console.log("Updating user with email:", email);--%>
-
-<%--        const form = document.createElement('form');--%>
-<%--        form.method = 'POST';--%>
-<%--        form.action = '${pageContext.request.contextPath}/admin/updateUserInfo';--%>
-
-<%--        const gradeElement = document.getElementById('grade_' + email) || { value: document.getElementById('current-grade_' + email).innerText.trim() };--%>
-<%--        const birthElement = document.getElementById('birth_' + email) || { value: document.getElementById('current-birth_' + email).innerText.trim() };--%>
-<%--        const phoneElement = document.getElementById('phone_' + email) || { value: document.getElementById('current-phone_' + email).innerText.trim() };--%>
-<%--        const availableElement = document.querySelector('input[name="available_' + email + '"]:checked') || { value: document.getElementById('current-available_' + email).innerText.trim() };--%>
-<%--        const privateFieldElement = document.querySelector('input[name="privateField_' + email + '"]:checked') || { value: document.getElementById('current-privateField_' + email).innerText.trim() };--%>
-
-<%--        console.log("gradeElement: ", gradeElement.value);--%>
-<%--        console.log("birthElement: ", birthElement.value);--%>
-<%--        console.log("phoneElement: ", phoneElement.value);--%>
-<%--        console.log("availableElement: ", availableElement.value);--%>
-<%--        console.log("privateFieldElement: ", privateFieldElement.value);--%>
-
-<%--        if (!gradeElement) {--%>
-<%--            console.error(`gradeElement not found for email: ${email}`);--%>
-<%--            return;--%>
-<%--        }--%>
-<%--        if (!birthElement) {--%>
-<%--            console.error(`birthElement not found for email: ${email}`);--%>
-<%--            return;--%>
-<%--        }--%>
-<%--        if (!phoneElement) {--%>
-<%--            console.error(`phoneElement not found for email: ${email}`);--%>
-<%--            return;--%>
-<%--        }--%>
-<%--        if (!availableElement) {--%>
-<%--            console.error(`availableElement not found for email: ${email}`);--%>
-<%--            return;--%>
-<%--        }--%>
-<%--        if (!privateFieldElement) {--%>
-<%--            console.error(`privateFieldElement not found for email: ${email}`);--%>
-<%--            return;--%>
-<%--        }--%>
-
-<%--        const inputs = [--%>
-<%--            { name: 'email', value: email },--%>
-<%--            { name: 'grade_' + email, value: gradeElement.value },--%>
-<%--            { name: 'birth_' + email, value: birthElement.value },--%>
-<%--            { name: 'phone_' + email, value: phoneElement.value },--%>
-<%--            { name: 'available_' + email, value: availableElement.value },--%>
-<%--            { name: 'privateField_' + email, value: privateFieldElement.value }--%>
-<%--        ];--%>
-
-<%--        console.log("inputs: ", inputs);--%>
-
-<%--        // ADMIN 관리자만 수정할 수 있는 필드 추가--%>
-<%--        if (sessionGrade === 'ADMIN') {--%>
-<%--            const userNameElement = document.getElementById('userName_' + email) || { value: document.getElementById('current-userName_' + email).innerText.trim() };--%>
-<%--            if (!userNameElement) {--%>
-<%--                console.error(`userNameElement not found for email: ${email}`);--%>
-<%--                return;--%>
-<%--            }--%>
-<%--            inputs.push({ name: 'userName_' + email, value: userNameElement.value });--%>
-<%--        }--%>
-
-<%--        inputs.forEach(function(inputData) {--%>
-<%--            const input = document.createElement('input');--%>
-<%--            input.type = 'hidden';--%>
-<%--            input.name = inputData.name;--%>
-<%--            input.value = inputData.value;--%>
-<%--            form.appendChild(input);--%>
-<%--        });--%>
-
-<%--        document.body.appendChild(form);--%>
-<%--        form.submit();--%>
-<%--    }--%>
-<%--</script>--%>
-
 
 <%@ include file="../include/footer.jsp" %>
