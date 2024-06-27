@@ -20,7 +20,6 @@ var chatRoomListObj_tmp;
 
 document.addEventListener("DOMContentLoaded", async function () {
     ChatRoomList("showL").then(result => {
-        console.log("result", result[0].key);
         if(chat_id === undefined || chat_id === "") {
             enterChat(result[0].key).then()
         } else {
