@@ -16,8 +16,7 @@
 
             <c:if test="${sessionScope.sessionEmail ne board.email}">
 
-                <form id="myForm" action="/makeChat" method="POST">
-
+                <form id="myForm" action="/makeBoardChat" method="POST">
                     <input type="hidden" name="board_id" value="${board.id}">
                     <button> 채팅하기</button>
                 </form>

@@ -26,6 +26,7 @@ import static com.ohboon.ohboon.mybatis.MybatisConnectionFactory.sqlSessionFacto
 import static java.time.LocalDateTime.now;
 
 public class UserDAO {
+
     private static SqlSessionFactory sqlSessionFactory;
     static {
         try {

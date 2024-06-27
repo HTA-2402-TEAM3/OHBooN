@@ -176,6 +176,7 @@
 
         <!-- 메인 콘텐츠 -->
         <main class="col-md-9 py-3">
+<%--            <h2 class="mt-5 mb-5"></h2>--%>
 
             <c:choose>
             <c:when test="${boards.size() le 0}">
@@ -327,6 +328,10 @@
     </div>
     </main>
 </div>
+
+<script>
+    websocket = new WebSocket("ws://192.168.0.97:8080/chat");
+</script>
 
 
 <%@ include file="../include/footer.jsp" %>

@@ -29,7 +29,7 @@
         select count(*) from chatroom where chat_id = #{chat_id}
     </select>
     <select id="getChatList" resultType="ChatDTO" parameterType="String">
-<!--        SELECT * FROM chatroom where sender = #{senderName} or receiver = #{senderName}-->
+        <!--        SELECT * FROM chatroom where sender = #{senderName} or receiver = #{senderName}-->
         SELECT c.*
         FROM chatroom c
         RIGHT OUTER JOIN (
@@ -40,7 +40,8 @@
         ) subquery
         WHERE rn = 1
         ) m ON c.chat_id = m.chatroom_id
-        WHERE c.sender = #{senderName} OR c.receiver = #{senderName}
+        WHERE c.isMatch = 0 and (
+        c.sender = #{senderName} OR c.receiver = #{senderName})
         ORDER BY m.time_stamp DESC
     </select>
     <update id="insertMatchId" parameterType="hashmap">
@@ -55,14 +56,14 @@
         select count(*) from chatroom
         <where>
             <if test="boardID != null">
-            board_idx=#{boardID} and sender=#{sender}
+                board_idx=#{boardID} and sender=#{sender}
             </if>
             <if test="boardID == null">
                 sender=#{sender} and receiver = #{receiver}
             </if>
         </where>
     </select>
-    <delete id="deleteChatRoom" parameterType="long">
-        delete from chatroom where match_id = #{match_id}
-    </delete>
+    <update id="deleteChatRoom" parameterType="long">
+        update chatroom set isMatch=1 where match_id=#{match_id}
+    </update>
 </mapper>
