@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8" ?><!DOCTYPE configuration        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<configuration>
+    <properties resource="db.properties"></properties>
+    <settings>
+        <!-- 스네이크 케이스를 CamelCase로 자동 변환 -->
+        <setting name="mapUnderscoreToCamelCase" value="true"/>
+    </settings>
+    <typeAliases>
+        <typeAlias alias="BoardDTO" type="com.ohboon.ohboon.dto.BoardDTO"/>
+        <typeAlias alias="ModalDto" type="com.ohboon.ohboon.dto.ModalDto"/>
+        <typeAlias alias="UserDTO" type="com.ohboon.ohboon.dto.UserDTO"/>
+        <typeAlias alias="ChatDTO" type="com.ohboon.ohboon.dto.ChatDTO"/>
+        <typeAlias alias="MatchDTO" type="com.ohboon.ohboon.dto.MatchDTO"/>
+        <typeAlias alias="MsgDTO" type="com.ohboon.ohboon.dto.MsgDTO"/>
+    </typeAliases>
+
+    <typeHandlers>
+        <typeHandler handler="com.ohboon.ohboon.mybatis.GradeTypeHandler"/>
+    </typeHandlers>
+
+
+    <environments default="development">
+        <environment id="development">
+            <transactionManager type="JDBC"/>
+            <dataSource type="POOLED">
+                <property name="driver" value="org.mariadb.jdbc.Driver"/>
+                <property name="url" value="jdbc:mariadb://192.168.0.37:8090/sys"/>
+                <property name="username" value="ohboon"/>
+                <property name="password" value="8090"/>
+            </dataSource>
+        </environment>
+    </environments>
+    <mappers>
+        <mapper resource="board.xml"/>
+        <mapper resource="UserMapper.xml"/>
+        <mapper resource="chat.xml"/>
+        <mapper resource="match.xml"/>
+        <mapper resource="msg.xml"/>
+    </mappers>
+</configuration>
