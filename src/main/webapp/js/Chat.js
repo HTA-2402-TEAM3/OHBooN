@@ -20,8 +20,8 @@ var chatRoomListObj_tmp;
 
 document.addEventListener("DOMContentLoaded", async function () {
     ChatRoomList("showL").then(result => {
-        console.log("result", result);
-        recentRoom = result[0].key;
+        console.log("result", result[0].key);
+        enterChat(result[0].key).then()
     });
 
     console.log("chat_id :", chat_id);
@@ -45,8 +45,9 @@ document.addEventListener("DOMContentLoaded", async function () {
     }
     if (chat_id !== undefined && chat_id !== "") {
         enterChat(chat_id).then();
-    } else {
-        enterChat(recentRoom).then();
+        // } else {
+        //     enterChat(recentRoom).then();
+        // }
     }
 });
 
