@@ -28,7 +28,6 @@ import static java.time.LocalDateTime.now;
 public class UserDAO {
 
     private static SqlSessionFactory sqlSessionFactory;
-
     static {
         try {
             String resource = "/config.xml";
@@ -362,27 +361,12 @@ public class UserDAO {
         return grade;
     }
 
-    public int updateUserInfo(String email, String nickname, String phone) {
-        int result = 0;
-        try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
-            UserDTO userDto = new UserDTO();
 
-            userDto.setEmail(email);
-            userDto.setNickname(nickname);
-            userDto.setPhone(phone);
-
-            result = sqlSession.update("updateUserInfo", userDto);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
+    // 사용자가 직접 본인의 정보 갱신 (1단계)
     public int updateUserInfo(UserDTO userDto) {
         int result = 0;
-        try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             result = sqlSession.update("updateUserInfo", userDto);
-            sqlSession.commit();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -479,15 +463,68 @@ public class UserDAO {
         }
     }
 
-    // 닉네임 업데이트(어드민 페이지 닉네임 변경시 사용)
+    // 관리자의 사용자 닉네임 업데이트(어드민 페이지 닉네임 변경시 사용)
     public int updateNickname(String email, String newNickname) {
         try (SqlSession session = sqlSessionFactory.openSession()) {
             Map<String, String> params = new HashMap<>();
             params.put("email", email);
             params.put("newNickname", newNickname);
-            int result = session.update("updateNickname", params);
+            int result = session.update("adminUpdateNickname", params);
+            return result;
+        }
+    }
+
+    // 관리자의 사용자 등급 변경(어드민 페이지에서 사용)
+    public int updateUserGrade(String email, String grade) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("email", email);
+            paramMap.put("grade", grade);
+            session.update("adminUpdateUserGrade", paramMap);
+            int result = session.update("adminUpdateUserGrade", paramMap);
+            return result;
+        }
+    }
+    // 관리자의 사용자 이름 변경(어드민 페이지에서 사용)
+    public int updateUserName(String email, String newUserName) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("email", email);
+            paramMap.put("newUserName", newUserName);
+            int result = session.update("adminUpdateUserName", paramMap);
+            return result;
+        }
+    }
+
+    // 관리자의 사용자 프로필 공개여부 변경(어드민 페이지에서 사용)
+    public int updatePrivateField(String email, boolean privateField) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("email", email);
+            paramMap.put("privateField", privateField);
+            int result = session.update("updatePrivateField", paramMap);
             session.commit();
             return result;
+        }
+    }
+
+    // 관리자의 사용자 계정 활성 여부 업데이트(어드민 페이지에서 사용)
+    public int updateAvailability(String email, boolean available) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("email", email);
+            paramMap.put("available", available);
+            int result = session.update("updateAvailability", paramMap);
+            session.commit();
+            return result;
+        }
+    }
+
+    // 관리자의 그 외 사용자 정보 변경(어드민 페이지에서 사용)
+    public void updateUserInfo(Map<String, Object> paramMap) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            session.update("adminUpdateUserInfo", paramMap);
+            session.commit();
         }
     }
 }
