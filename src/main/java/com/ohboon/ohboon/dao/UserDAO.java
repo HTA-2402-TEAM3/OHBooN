@@ -26,9 +26,7 @@ import static com.ohboon.ohboon.mybatis.MybatisConnectionFactory.sqlSessionFacto
 import static java.time.LocalDateTime.now;
 
 public class UserDAO {
-
     private static SqlSessionFactory sqlSessionFactory;
-
     static {
         try {
             String resource = "/config.xml";
@@ -362,27 +360,12 @@ public class UserDAO {
         return grade;
     }
 
-    public int updateUserInfo(String email, String nickname, String phone) {
-        int result = 0;
-        try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
-            UserDTO userDto = new UserDTO();
 
-            userDto.setEmail(email);
-            userDto.setNickname(nickname);
-            userDto.setPhone(phone);
-
-            result = sqlSession.update("updateUserInfo", userDto);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
+    // 사용자가 직접 본인의 정보 갱신 (1단계)
     public int updateUserInfo(UserDTO userDto) {
         int result = 0;
-        try (SqlSession sqlSession = MybatisConnectionFactory.getSqlSession()) {
+        try (SqlSession sqlSession = sqlSessionFactory.openSession()) {
             result = sqlSession.update("updateUserInfo", userDto);
-            sqlSession.commit();
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -486,8 +469,25 @@ public class UserDAO {
             params.put("email", email);
             params.put("newNickname", newNickname);
             int result = session.update("updateNickname", params);
-            session.commit();
             return result;
+        }
+    }
+
+    // 관리자의 그 외 사용자 정보 변경(어드민 페이지에서 사용)
+    public void updateUserInfo(Map<String, Object> paramMap) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            session.update("updateUserInfo", paramMap);
+            session.commit();
+        }
+    }
+    // 관리자의 사용자 등급 변경(어드민 페이지에서 사용)
+    public void updateUserGrade(String email, String grade) {
+        try (SqlSession session = sqlSessionFactory.openSession()) {
+            Map<String, Object> paramMap = new HashMap<>();
+            paramMap.put("email", email);
+            paramMap.put("grade", grade);
+            session.update("updateUserGrade", paramMap);
+            session.commit();
         }
     }
 }

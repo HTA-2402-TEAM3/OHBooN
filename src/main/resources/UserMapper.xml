@@ -69,15 +69,6 @@
         AND verificationcode is not null and verificationCode = #{token}
     </select>
 
-    <!--유저 정보 변경-->
-    <update id="updateUserInfo" parameterType="UserDTO">
-        UPDATE user SET
-        phone = #{phone},
-        agreeInfoOffer = #{agreeInfoOffer},
-        profile = #{profile}
-        WHERE email = #{email} and available = 1
-    </update>
-
     <!--인포 화면에서 패스워드 변경-->
     <update id="updatePassword" parameterType="map">
         UPDATE user
@@ -211,6 +202,23 @@
     <!-- 닉네임 업데이트(관리자 페이지에서 사용) -->
     <update id="updateNickname" parameterType="map">
         UPDATE user SET nickname = #{newNickname} WHERE email = #{email}
+    </update>
+
+    <!-- 회원등급 업데이트(관리자 페이지에서 사용) -->
+    <update id="updateUserGrade" parameterType="map">
+        UPDATE user
+        SET grade = #{grade}
+        WHERE email = #{email}
+    </update>
+
+    <!-- 생년월일, 전화번호, 계정활성여부, 프로필 공개 여부 업데이트(관리자 페이지에서 사용) -->
+    <update id="updateUserInfo" parameterType="map">
+        UPDATE user
+        SET birth = #{birth}, phone = #{phone}, available = #{available}, privateField = #{privateField}
+        <if test="userName != null">
+            , userName = #{userName}
+        </if>
+        WHERE email = #{email}
     </update>
 
 </mapper>
