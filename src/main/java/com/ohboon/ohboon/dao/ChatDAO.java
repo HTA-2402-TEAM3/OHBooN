@@ -81,4 +81,10 @@ public class ChatDAO {
         ss.commit();
         ss.close();
 	}
+    public long getBoardIDByChatID(long chatID) {
+        long board_id = ss.selectOne("getBoardIDByChatID", chatID);
+        ss.commit();
+        ss.close();
+        return board_id;
+    }
 }

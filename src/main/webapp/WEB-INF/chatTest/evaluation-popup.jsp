@@ -32,7 +32,7 @@
                         <c:set var="userEmail" value="${MatchDTO.email}"/>
                     </c:if>
                     <li>
-                        <h1 id='product-names'>${userEmail}</h1>
+                        <h1 id='product-names'>${userEmail}(${MatchDTO.boardIDX})</h1>
                         <div id='circle-container'>
                             <div id='circle-one' class='active picked'>
                                 <div class='overlay'></div>
@@ -63,8 +63,8 @@
         </form>
         <script>
             document.addEventListener('DOMContentLoaded', function () {
-                console.log("eval",document.getElementById('evalEmpty').value);
-                opener.document.getElementById("evalEmpty").value = document.getElementById('evalEmpty').value;
+                // console.log("eval",document.getElementById('evalEmpty').value);
+                // opener.document.getElementById("evalEmpty").value = document.getElementById('evalEmpty').value;
 
                 const evaluationsSize = `${evaluationMap.size()}`;
                 console.log("size", evaluationsSize);

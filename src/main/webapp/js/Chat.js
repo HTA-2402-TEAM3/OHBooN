@@ -21,13 +21,17 @@ var chatRoomListObj_tmp;
 document.addEventListener("DOMContentLoaded", async function () {
     ChatRoomList("showL").then(result => {
         console.log("result", result[0].key);
-        enterChat(result[0].key).then()
+        if(chat_id === undefined || chat_id === "") {
+            enterChat(result[0].key).then()
+        } else {
+            enterChat(chat_id);
+        }
     });
 
     console.log("chat_id :", chat_id);
 
     if (sessionNickname && sessionNickname.trim() !== "") {
-        websocket = new WebSocket("ws://192.168.0.97:8080/chat");
+        websocket = new WebSocket("ws://192.168.0.37:8080/chat");
         websocket.onmessage = function (event) {
             // ws객체에 전달받은 메세지가 있으면 실행되는 함수
             var message = event.data.split("|");
@@ -43,7 +47,7 @@ document.addEventListener("DOMContentLoaded", async function () {
     } else {
         console.log("user is not login...");
     }
-    if (chat_id !== undefined && chat_id !== "") {
+    if (chat_id) {
         enterChat(chat_id).then();
         // } else {
         //     enterChat(recentRoom).then();
@@ -128,6 +132,7 @@ function matching() {
         success: function (data) {
             if (data.isMatch > 0) {
                 alert("매칭 확정 되었습니다.");
+                enterChat(chatRoomListObj[1].key).then();
             } else {
                 alert("err");
             }

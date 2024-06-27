@@ -16,6 +16,8 @@
 </head>
 <body>
 <input type="hidden" id="chat_id" name="chat_id" value="${chat_id}" />
+<input type="hidden" id="board_id" name="board_id" value="${board_id}" />
+
 <%--채팅리스트--%>
 <div id="container">
     <aside id="chatRoomList">
@@ -24,7 +26,16 @@
         <ul id="messages">
         </ul>
         <footer>
-            <textarea name="sendMsg" id="messageInput" placeholder="Enter message"></textarea>
+            <textarea name="sendMsg" id="messageInput"
+                      <c:choose>
+                          <c:when test="${chat_id eq null}">
+                              placeholder="Enter message"
+                          </c:when>
+                          <c:otherwise>
+                              placeholder="${board_id}'s CHAT! Enter message"
+                          </c:otherwise>
+                      </c:choose>
+            ></textarea>
             <div class="btn-container">
                 <div class="left">
                     <button onclick="matching();" class="match">매칭완료</button>

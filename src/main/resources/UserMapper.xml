@@ -239,4 +239,18 @@
         WHERE email = #{email}
     </update>
 
+
+
+
+<!--    keyy1315 branch -->
+    <select id="findNicknameByEmail" parameterType="String" resultType="String">
+        select nickname from user where email =#{boardWriterName}
+    </select>
+    <select id="findProfileByName" parameterType="String" resultType="String">
+        select profile from user where nickname = #{nickname}
+    </select>
+    <update id="setEvaluation" parameterType="hashMap">
+        update user set evaluation = evaluation + #{evaluationResult} where email = #{email}
+    </update>
+
 </mapper>

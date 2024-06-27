@@ -45,6 +45,9 @@ public class MakeBoardChatController extends HttpServlet {
 
         ChatService chatService = new ChatService();
         long chat_id = chatService.getChatId(makeChatDto, cnt);
+        System.out.println("cnt"+cnt);
+
+
         if (cnt == 0) {
             MatchService matchService = new MatchService();
             long match_id = matchService.getMatchId(board_id, boardWriterName, senderEmail);
@@ -76,6 +79,7 @@ public class MakeBoardChatController extends HttpServlet {
             System.out.println(json);
 
             req.setAttribute("chatRoomDto", chatRoomDto);
+            req.setAttribute("board_id", board_id);
             req.setAttribute("chat_id", chat_id);
 
             req.getRequestDispatcher("/WEB-INF/chatTest/Test2.jsp").forward(req, resp);
@@ -83,6 +87,7 @@ public class MakeBoardChatController extends HttpServlet {
             ModalDto modalDto = new ModalDto("채팅", "이미 생성된 대화가 있습니다.", "show");
             HttpSession session = req.getSession();
             session.setAttribute("modal", modalDto);
+            req.setAttribute("board_id", board_id);
             req.setAttribute("chat_id", chat_id);
             System.out.println(chat_id);
             req.getRequestDispatcher("/WEB-INF/chatTest/Test2.jsp").forward(req, resp);

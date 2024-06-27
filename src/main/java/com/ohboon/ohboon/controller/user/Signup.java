@@ -35,7 +35,7 @@ public class Signup extends HttpServlet {
 
         String email = req.getParameter("email");
         String userPW = req.getParameter("userPW");
-        String username = req.getParameter("username");
+        String userName = req.getParameter("userName");
         String birth = req.getParameter("birth");
         String phone = req.getParameter("phone");
 
@@ -55,7 +55,7 @@ public class Signup extends HttpServlet {
             return;
         }
 
-        if (username == null || username.trim().isEmpty()) {
+        if (userName == null || userName.trim().isEmpty()) {
             ScriptWriter.alertAndBack(resp, "이름을 입력해주세요.");
             return;
         }

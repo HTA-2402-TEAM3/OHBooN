@@ -68,9 +68,6 @@
 
             <li><a href="../index/index" class="nav-link px-2 link-secondary">Home</a></li>
             <li><a href="../board/list" class="nav-link px-2">Board</a></li>
-
-
-            <li><a href="../board/list?page=1" class="nav-link px-2">Board</a></li>
             <li><a href="../chat" class="nav-link px-2">Chat</a></li>
 
         </ul>

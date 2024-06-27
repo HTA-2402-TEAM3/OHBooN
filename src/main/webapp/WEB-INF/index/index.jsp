@@ -27,7 +27,7 @@
                 }
             }
             // Create a new instance of the websocket
-            websocket = new WebSocket("ws://192.168.0.97:8080/chat");
+            websocket = new WebSocket("ws://192.168.0.37:8080/chat");
             websocket.onopen = function (event) {
                 if (event.data === undefined) return;
                 openSocket();

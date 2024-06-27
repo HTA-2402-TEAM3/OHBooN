@@ -3,6 +3,17 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.ohboon.ohboon">
+    <select id="getChatID" parameterType="ChatDTO" resultType="long">
+        <choose>
+            <when test="boardID == 0">
+                select chat_id from chatroom where sender = #{sender} and receiver = #{receiver}
+            </when>
+            <when test="boardID != 0">
+                select chat_id from chatroom where board_idx = #{boardID} and(sender = #{sender} and receiver = #{receiver})
+            </when>
+        </choose>
+    </select>
+
     <insert id="createChatRoom" parameterType="ChatDTO">
         <choose>
             <when test="boardID == 0">
@@ -13,10 +24,6 @@
             </when>
         </choose>
     </insert>
-
-    <select id="getChatID" parameterType="ChatDTO" resultType="long">
-        select chat_id from chatroom where sender = #{sender} and receiver = #{receiver}
-    </select>
 
     <select id="findUsersByChatId" resultType="hashmap">
         select sender, receiver from chatroom where chat_id = #{chat_id}
@@ -66,4 +73,7 @@
     <update id="deleteChatRoom" parameterType="long">
         update chatroom set isMatch=1 where match_id=#{match_id}
     </update>
+    <select id="getBoardIDByChatID" parameterType="long" resultType="long">
+        select board_idx from chatroom where chat_id = #{chatID}
+    </select>
 </mapper>

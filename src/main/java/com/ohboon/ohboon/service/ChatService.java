@@ -72,12 +72,14 @@ public class ChatService {
         ChatDAO chatRoomDAO = new ChatDAO();
         UserDAO userDAO;
         MsgDAO msgDAO;
+        ChatDAO chatDAO1;
         List<ChatDTO> chatList = chatRoomDAO.getChatList(userID);
 
         Map<Long, Map<String, Object>> roomMap = new LinkedHashMap<>();
         for (ChatDTO chatDTO : chatList) {
             userDAO = new UserDAO();
             msgDAO = new MsgDAO();
+            chatDAO1 = new ChatDAO();
             Map<String, Object> map = new HashMap<>();
 
             if (chatDTO.getSender().equals(userID)) {
@@ -87,6 +89,7 @@ public class ChatService {
                 map.put("subject", chatDTO.getSender());
                 map.put("profile", userDAO.getProfile(chatDTO.getSender()));
             }
+            map.put("board_id", chatDAO1.getBoardIDByChatID(chatDTO.getChatID()));
             map.put("profile", null);
             map.put("recentContent", msgDAO.getRecentMsg(chatDTO.getChatID()));
             roomMap.put(chatDTO.getChatID(), map);
