@@ -140,6 +140,7 @@ main header{
 #messages .message{
     padding:10px;
     color:#000000;
+
     line-height:25px;
     max-width:90%;
     display:inline-block;

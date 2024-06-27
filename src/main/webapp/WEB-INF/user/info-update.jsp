@@ -16,7 +16,7 @@
                 <td>
                     <c:choose>
                         <c:when test="${not empty infoUserDto.profile}">
-                            <img src="${request.contextPath}/upload/${infoUserDto.profile}" class="profile">
+                            <img src="${request.contextPath}/upload/${infoUserDto.profile}" class="profile" id="current-profile-img" >
                         </c:when>
                         <c:otherwise>
                             이미지없음
@@ -26,22 +26,22 @@
                 <td>
                     <label for="profile" class="form-label">PROFILE 파일</label>
                     <input class="form-control" type="file" id="profile" name="profile" accept=".gif, .jpg, .png">
+                    <button type="button" class="btn btn-dark mt-2" id="clear-profile-button">프로필 비우기</button>
                 </td>
-                <c:choose>
-                    <c:when test="${not empty infoUserDto.profile}">
-                        <td>
-                            <div class="mb-3">
-                                <div id="preview">
-                                    <img src="${pageContext.request.contextPath}/upload/${infoUserDto.profile}" alt="Profile Image" class="img-thumbnail" />
-                                </div>
-                            </div>
-                        </td>
-                    </c:when>
-                    <c:otherwise>
-                        <td>이미지없음</td>
-                    </c:otherwise>
-                </c:choose>
-
+                <td>
+                    <div class="mb-3">
+                        <div id="preview">
+                            <c:choose>
+                                <c:when test="${not empty infoUserDto.profile}">
+                                    <img src="${pageContext.request.contextPath}/upload/${infoUserDto.profile}" alt="Profile Image" class="img-thumbnail" id="preview-img"/>
+                                </c:when>
+                                <c:otherwise>
+                                    이미지없음
+                                </c:otherwise>
+                            </c:choose>
+                        </div>
+                    </div>
+                </td>
             </tr>
             <tr>
                 <th>MEMBER GRADE</th>
@@ -115,57 +115,31 @@
 </div>
 
 
+
 <script>
+    let originalProfileHtml = document.getElementById('preview').innerHTML;
+    let clearProfileClicked = false;
+
     let isValidPhone = false; // 전역 변수로 선언
-    let profile = $(#profile).val();
+    let profile = $("#profile").val();
 
     document.querySelector("form").addEventListener("submit", function(event) {
         console.log("form");
-        //sphoneCheck();
-        const phoneInput = $("#phone");
-        var checkPhoneLength = /^.{9,14}$/; // 길이 제한: 9~14
-        var checkPhoneNumber = /^[0-9]+$/; // 숫자만 입력 가능
-        console.log(phoneInput.val());
         phoneCheck();
-        if (profile.isEmpty) {
+        if (!profile) {
             var ask = confirm("프로필 사진이 없는 상태로 사용자 정보를 저장하시겠습니까?");
-            if(ask) return true;
+            if(ask){
+                if (!isValidPhone) { // 전역 변수 isValidPhone을 직접 확인
+                    alert("휴대폰 번호를 작성해주세요.(없이 숫자만 사용, 9~14자리)")
+                    event.preventDefault();
+                }
+                return true;
+            }
             else event.preventDefault();
         }
-        if (!isValidPhone) { // 전역 변수 isValidPhone을 직접 확인
-            alert("휴대폰 번호를 작성해주세요.(없이 숫자만 사용, 9~14자리)")
-            event.preventDefault();
-        }
     });
 
-    //프로필 사진 넣기
-    $("#profile").on("change", function(e){
-        const file = e.currentTarget.files[0]; // 파일 선택
-
-        if (!file) { // 파일 선택 안 함
-            $("#preview").html(""); // 미리보기 영역 비우기
-            return false;
-        }
-
-        const extension = file.name.substring(file.name.lastIndexOf(".")+1).toLowerCase(); // 확장자 확인
-        // 뒤에서부터 '.' 을 찾아 그 다음에 적힌 string 을 뽑아옴 => 확장자명을 의미
-        console.log(extension);
-        if (!(extension === "png" || extension === "jpg" || extension === "gif")) { // 확장자가 png, jpg, gif가 아닐 경우
-            alert("이미지 파일(png, jpg, gif)만 업로드 가능합니다.");
-            $(this).val("");
-            $("#preview").html(""); // 미리보기 영역 비우기
-            return false;
-        }else {
-            const profileReader = new FileReader(); // FileReader 객체 생성
-            profileReader.addEventListener("load", function(e){
-                const img = e.target.result; // 미리보기 이미지 설정
-                $("#preview").html(`<img src="\${img}" width="200" height="200">`);
-            });
-            profileReader.readAsDataURL(file); // 파일 데이터를 base64 형식으로 읽음
-        }
-    });
-
-
+    // 전화번호 유효성 검사
     function phoneCheck() {
         //isValidPhone = false;
         const phoneInput = $("#phone");
@@ -185,6 +159,52 @@
             isValidPhone = true; // 전역 변수 isValidPhone을 true로 설정
         }
     }
+
+    // 프로필 사진 추가/변경시 적용
+    document.getElementById('profile').addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (!file) {
+            document.getElementById('preview').innerHTML = originalProfileHtml;
+            clearProfileClicked = false;
+            return;
+        }
+
+        const extension = file.name.substring(file.name.lastIndexOf(".")+1).toLowerCase();
+        if (!(extension === "png" || extension === "jpg" || extension === "gif")) {
+            alert("이미지 파일(png, jpg, gif)만 업로드 가능합니다.");
+            e.target.value = "";
+            document.getElementById('preview').innerHTML = originalProfileHtml;
+            clearProfileClicked = false;
+            return;
+        } else {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                const img = e.target.result; // 미리보기 이미지
+                document.getElementById('preview').innerHTML = `<img src="\${img}" width="200" height="200" class="img-thumbnail"/>`;
+                clearProfileClicked = false;
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+
+    // 기존 프로필 사진 지우기
+    document.getElementById('clear-profile-button').addEventListener('click', function() {
+        const profileInput = document.getElementById('profile');
+        profileInput.value = ""; // 파일 선택 취소
+        const clearProfileInput = document.getElementById('clear-profile-input');
+        if (!clearProfileInput) {
+            const input = document.createElement('input');
+            input.type = 'hidden';
+            input.name = 'clearProfile';
+            input.id = 'clear-profile-input';
+            input.value = 'true';
+            document.querySelector('form').appendChild(input);
+        }
+        document.getElementById('preview').innerHTML = '이미지없음';
+        clearProfileClicked = true;
+    });
+
 </script>
 
 

@@ -177,6 +177,7 @@
         <!-- 메인 콘텐츠 -->
         <main class="col-md-9 py-3">
 <%--            <h2 class="mt-5 mb-5"></h2>--%>
+
             <c:choose>
             <c:when test="${boards.size() le 0}">
             <p>게시글이 없습니다.</p>
@@ -242,6 +243,33 @@
             </c:otherwise>
 
             </c:choose>
+            <form action="../board/list" method="get">
+
+                <div class="row g-3 align-items-center">
+
+                    <div class="col-2">
+                        <select class="form-select" aria-label="Default select example" name="searchOption">
+                            <option value="subject" ${searchOption eq "subject" ? "selected" : ""}>제목</option>
+                            <option value="nickname" ${searchOption eq "nickname" ? "selected" : ""}>글쓴이</option>
+                            <option value="content" ${searchOption eq "content" ? "selected" : ""}>내용</option>
+                            <option value="all" ${searchOption eq "all" ? "selected" : ""}>제목 + 내용</option>
+                        </select>
+                    </div>
+
+                    <div class="col-8">
+                        <label>
+                            <input type="text" name="searchWord" class="form-control" value="${searchWord}"
+                                   style="width: 300%;">
+                        </label>
+                    </div>
+
+                    <div class="col-2">
+                        <button type="submit" class="btn btn-primary">검색</button>
+                    </div>
+                </div>
+
+            </form>
+            <div class="mt-5 mb-5"><a href="../board/write" class="btn btn-primary">WRITE</a></div>
 
             <div class="container mt-4">
                 <nav aria-label="Page navigation example">
@@ -296,35 +324,7 @@
             </c:otherwise>
             </c:choose>
 
-            <form action="../board/list" method="get">
 
-                <div class="row g-3 align-items-center">
-
-                    <div class="col-2">
-                        <select class="form-select" aria-label="Default select example" name="searchOption">
-                            <option value="subject" ${searchOption eq "subject" ? "selected" : ""}>제목</option>
-                            <option value="nickname" ${searchOption eq "nickname" ? "selected" : ""}>글쓴이</option>
-                            <option value="content" ${searchOption eq "content" ? "selected" : ""}>내용</option>
-                            <option value="all" ${searchOption eq "all" ? "selected" : ""}>제목 + 내용</option>
-                        </select>
-                    </div>
-
-                    <div class="col-8">
-                        <label>
-                            <input type="text" name="searchWord" class="form-control" value="${searchWord}"
-                                   style="width: 100%;">
-                        </label>
-                    </div>
-
-                    <div class="col-2">
-                        <button type="submit" class="btn btn-primary">검색</button>
-                    </div>
-                </div>
-
-            </form>
-
-
-            <div class="mt-5 mb-5"><a href="../board/write" class="btn btn-primary">WRITE</a></div>
     </div>
     </main>
 </div>
