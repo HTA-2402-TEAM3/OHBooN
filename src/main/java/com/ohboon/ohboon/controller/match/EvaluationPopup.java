@@ -30,14 +30,16 @@ public class EvaluationPopup extends HttpServlet {
             List<MatchDTO> evaluationMap = matchService.matchEvaluation(userEmail);
 //                로그인 성공하면 매치 테이블 조회 후 평가하기 알림 보냄
             System.out.println("evaluationMap in login : " + evaluationMap);
-            if(evaluationMap.isEmpty()) {
+            if (evaluationMap.isEmpty()) {
                 System.out.println("empty");
-                req.setAttribute("evalEmpty",null);
+//                String emt = "empty";
+//                req.setAttribute("evalEmpty", emt);
+                req.getRequestDispatcher("/WEB-INF/chatTest/evaluation-popup.jsp").forward(req, resp);
+            } else {
+                req.setAttribute("evaluationMap", evaluationMap);
+                req.getRequestDispatcher("/WEB-INF/chatTest/evaluation-popup.jsp").forward(req, resp);
             }
-            req.setAttribute("evaluationMap", evaluationMap);
-            req.getRequestDispatcher("/WEB-INF/chatTest/evaluation-popup.jsp").forward(req, resp);
-        }
-        else {
+        } else {
             resp.sendRedirect("/WEB-INF/index/index.jsp");
         }
     }

@@ -139,7 +139,8 @@ main header{
 }
 #messages .message{
     padding:10px;
-    color:#fff;
+    color:#000000;
+
     line-height:25px;
     max-width:90%;
     display:inline-block;
