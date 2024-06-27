@@ -42,7 +42,6 @@
             <li><a href="../board/list?page=1" class="nav-link px-2">Board</a></li>
             <li><a href="../chat" class="nav-link px-2">Chat</a></li>
 
-            <li><a href="" class="nav-link px-2">FAQs</a></li>
         </ul>
         <c:choose>
             <c:when test="${sessionEmail eq null}">
