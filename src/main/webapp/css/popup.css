@@ -13,7 +13,6 @@ body, html{
 #circle-one{
     width:30vw;
     height:30vw;
-    background:#FFF;
     background-size:cover;
     border-radius:50%;
     display:inline-block;
@@ -23,13 +22,11 @@ body, html{
     left:0;
     position:absolute;
     cursor:pointer;
-    border:1vw #000 solid;
     transition:border 0.2s;
 }
 #circle-two{
     width:30vw;
     height:30vw;
-    background:#FFF;
     background-size:cover;
     border-radius:50%;
     display:inline-block;
@@ -39,7 +36,6 @@ body, html{
     top:0;
     right:0;
     cursor:pointer;
-    border:1vw #000 solid;
     transition:border 0.2s;
 }
 .overlay{
@@ -57,13 +53,13 @@ body, html{
     background-color: #009900 !important;
 }
 #circle-two button:hover {
-     background-color: #FF0000 !important;
- }
+    background-color: #FF0000 !important;
+}
 
 #circle-one.active .overlay, #circle-two.active .overlay{
-    width:100%;
-    height:100%;
-    border-radius:50%;
+    /*width:100%;*/
+    /*height:100%;*/
+    /*border-radius:50%;*/
     top: 0;
     left:0;
 }
@@ -77,18 +73,24 @@ body, html{
 }
 
 #circle-one button, #circle-two button {
-    display: inline-block;
-    font-size: 12vw;
+    width: 30vw;
+    height: 30vw;
+    font-size: 20vw;
+    bottom: 100px;
+    background-size: cover;
     background: #808080;
     color: #FFF;
+    border-radius: 50%;
     border: #808080;
     cursor: pointer;
     position: relative;
     display: flex;
     margin: 0 auto; /* Horizontal center alignment */
-    margin-top: 5vw; /* Move the buttons up by 5vw */
-    opacity: 0;
-    transition: opacity 0.3s, margin-top 0.7s;
+    /*margin-top: 5vw; !* Move the buttons up by 5vw *!*/
+    /*opacity: 0;*/
+    /*transition: opacity 0.3s, margin-top 0.7s;*/
+    justify-content: center;
+    align-items: center;
 }
 #next-button{
     transition:opacity 0.3s;
@@ -195,8 +197,3 @@ nav{
     7px 7px 20px 0px rgba(0, 0, 0, .2),
     4px 4px 5px 0px rgba(0, 0, 0, .3);
 }
-
-
-
-
-

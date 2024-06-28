@@ -202,6 +202,7 @@ async function ChatRoomList(text) {
         data = await resp.json();
 
         chatRoomListObj = data;
+        console.log(data);
 
         if (text === "showL") {
             console.log("showL");
@@ -216,12 +217,13 @@ async function ChatRoomList(text) {
                     enterChat(item.key);
                 };
 
-                if (item.value.profile === undefined) {
+
+                // if (item.value.profile === undefined) {
                     img.setAttribute("src", "/image/defaultImage.png");
                     img.setAttribute("alt", "");
-                } else {
-                    img.setAttribute("src", item.value.profile);
-                }
+                // } else {
+                //     img.setAttribute("src", `/upload/${item.value.profile}`);
+                // }
                 a.appendChild(img);
 
                 div.innerHTML = `  <h2>${item.value.subject}</h2>

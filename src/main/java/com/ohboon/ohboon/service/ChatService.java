@@ -90,10 +90,10 @@ public class ChatService {
                 map.put("profile", userDAO.getProfile(chatDTO.getSender()));
             }
             map.put("board_id", chatDAO1.getBoardIDByChatID(chatDTO.getChatID()));
-            map.put("profile", null);
             map.put("recentContent", msgDAO.getRecentMsg(chatDTO.getChatID()));
             roomMap.put(chatDTO.getChatID(), map);
         }
+        System.out.println(roomMap);
         return roomMap;
     }
 }

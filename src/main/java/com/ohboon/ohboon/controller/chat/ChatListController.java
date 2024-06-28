@@ -34,9 +34,9 @@ public class ChatListController extends HttpServlet {
             entry.put("value", value);
             list.add(entry);
         });
-
         Gson gson = new Gson();
         String json = gson.toJson(list);
+
 
         resp.setContentType("application/json");
         resp.setCharacterEncoding("utf-8");
