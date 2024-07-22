@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.ohboon.ohboon.mybatis">
+
+    <insert id="signup" parameterType="UserDto">
+        INSERT INTO user values(
+            #{email}, #{nickname}, #{userName}, #{birth}, #{phone}, true, #{userPW},
+            #{grade}, null, #{profile}, #{createDate}, #{agreeInfoOffer}, null, #{verificationCode}, false
+        )
+    </insert>
+
+    <!--사용자 메일 인증을 위해 계정에 토큰 저장-->
+    <update id="saveVerificationToken" parameterType="map">
+        UPDATE user SET verificationcode = #{token} WHERE email = #{email}
+    </update>
+
+    <!--사용자가 메일 인증을 한 경우 등급을 STANDBY에서 MEMBER로 변경-->
+    <update id="verifyEmail" parameterType="map">
+        UPDATE user SET grade = 'MEMBER', verificationcode = NULL
+        WHERE email = #{email} AND verificationcode = #{token}
+    </update>
+
+    <!--사용자가 메일 인증을 한 경우 등급을 STANDBY에서 MEMBER로 변경-->
+
+
+    <select id="emailCheck"  parameterType="String" resultType="int">
+        Select count(*) as total from user where email = #{email} and available = 1
+    </select>
+
+    <select id="gradeCheck" parameterType="String" resultType="String">
+        Select grade from user where email = #{email} and available = 1
+    </select>
+
+    <select id="loginUser" parameterType="UserDto" resultType="UserDto">
+        select * from user where email = #{email} and available = 1
+    </select>
+
+    <select id="infoUser" resultType="UserDto" parameterType="String">
+        select * from user where nickname = #{nickName} and available = 1
+    </select>
+
+
+    <select id="findUserByEmail" parameterType="String" resultType="UserDto">
+        SELECT * FROM user WHERE email = #{email} and available = 1
+    </select>
+
+    <select id="findUserByNickname" parameterType="String" resultType="UserDto">
+        SELECT * FROM user WHERE nickname = #{nickname} and available = 1
+    </select>
+
+    <!--    비밀번호 변경창 링크용 토큰 생성-->
+    <update id="savePasswordResetToken" parameterType="map">
+        UPDATE user SET verificationcode = #{token} WHERE email = #{email}
+    </update>
+
+    <!--비밀번호 변경창 링크용 토큰 검증-->
+    <select id="isTokenValid" parameterType="String" resultType="int">
+        SELECT COUNT(*) FROM user WHERE verificationcode = #{token}
+    </select>
+
+    <!--유저 정보 변경-->
+    <update id="updateUserInfo" parameterType="UserDto">
+        UPDATE user SET
+        phone = #{phone},
+        agreeinfooffer = #{agreeInfoOffer},
+        profile = #{profile}
+        WHERE email = #{email} and available = 1
+    </update>
+
+    <!--패스워드 변경-->
+    <update id="updatePassword">
+        UPDATE users SET password = #{password} WHERE email = #{email}
+    </update>
+
+    <update id="updatePasswordByToken" parameterType="map">
+        UPDATE user SET userPW = #{hashedPassword}, verificationcode = NULL WHERE verificationcode = #{token}
+    </update>
+
+    <!--회원 탈퇴시 available -> false 로 변경 -->
+    <update id="userWithdrawal">
+        update user set requesttimefordeletion = now(), available = 0
+        where email = #{email} and available = 1
+    </update>
+
+    <!--DB에서 회원 정보 삭제-->
+    <delete id="deleteUser" parameterType="String">
+        delete from user where email = #{email} and available = 1
+    </delete>
+
+    <!--관리자 페이지에서 ADMIN 관리자가 접근할 수 있는 사용자목록-->
+    <select id="getAllUsersExcludingAdmin" resultType="UserDto">
+        SELECT * FROM user WHERE grade != 'ADMIN'
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!--관리자 페이지에서 MANAGER 접근 가능한 사용자목록-->
+    <select id="getUsersForManager" resultType="UserDto">
+        SELECT email, nickname, grade, evaluation, profile, createdate, agreeinfooffer
+        FROM user
+        WHERE available = 1
+        AND grade IN ('STANDBY', 'MEMBER', 'RESTRICTED1', 'RESTRICTED2', 'BANNED')
+        LIMIT #{offset}, #{limit}
+    </select>
+
+    <!-- 총 사용자 수를 가져오는 쿼리 -->
+    <select id="getTotalUserCountExcludingAdmin" resultType="int">
+        SELECT COUNT(*) FROM user WHERE grade != 'ADMIN'
+    </select>
+
+    <select id="getTotalUserCountForManager" resultType="int">
+        SELECT COUNT(*) FROM user WHERE available = 1 AND grade IN ('STANDBY', 'MEMBER', 'RESTRICTED1', 'RESTRICTED2', 'BANNED')
+    </select>
+
+</mapper>
